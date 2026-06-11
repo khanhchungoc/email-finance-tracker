@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX Solution Evaluation"
+  short_description: "Evaluate BA UX solution quality"
+  default_prompt: "Use $ux-solution-evaluation to review this proposed UX solution and recommend improvements."

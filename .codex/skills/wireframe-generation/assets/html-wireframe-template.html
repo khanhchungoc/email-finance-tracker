@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feature Wireframe</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --panel: #ffffff;
+      --muted: #e8e8e8;
+      --line: #9a9a9a;
+      --text: #222222;
+      --accent: #2f6fdd;
+      --space: 8px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .wireframe {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: calc(var(--space) * 3);
+    }
+    .screen {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: calc(var(--space) * 3);
+      margin-bottom: calc(var(--space) * 3);
+    }
+    .placeholder {
+      border: 1px dashed var(--line);
+      background: var(--muted);
+      padding: calc(var(--space) * 2);
+    }
+    @media (max-width: 640px) {
+      .wireframe { padding: calc(var(--space) * 2); }
+      .screen { padding: calc(var(--space) * 2); }
+    }
+  </style>
+</head>
+<body>
+  <main class="wireframe">
+    <section class="screen" aria-labelledby="screen-title">
+      <h1 id="screen-title">Screen Title</h1>
+      <div class="placeholder">Primary content area</div>
+    </section>
+  </main>
+</body>
+</html>
