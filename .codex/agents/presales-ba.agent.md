@@ -14,7 +14,6 @@ tools:
   - edit
   - "atlassian/atlassian-mcp-server/*"
   - "microsoft/azure-devops-mcp/*"
-  - "com.microsoft/azure/*"
 handoffs:
   - label: Required First Step
     agent: requirements-elicitor

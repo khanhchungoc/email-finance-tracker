@@ -14,7 +14,6 @@ tools:
   - edit
   - "atlassian/atlassian-mcp-server/*"
   - "microsoft/azure-devops-mcp/*"
-  - "com.microsoft/azure/*"
 handoffs:
   - label: Clarify API Requirements
     agent: api-requirements-analyst

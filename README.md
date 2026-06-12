@@ -41,6 +41,32 @@ Use the agents like this:
 
 For direct artifact requests, ask for the matching skill output, such as UX solution evaluations, user stories, API specs, diagrams, GUI specs, wireframes, WBS, or sprint scope emails.
 
+## Skills Overview
+
+Use skills for artifact-specific outputs after the elicitation and BA-analysis checkpoints.
+
+### Core BA Artifact Skills
+
+- `api-specification-writing`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
+- `diagram-generation`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
+- `figma-prompt-enhancement`: structured, implementation-ready prompts for Figma Make.
+- `gui-specification`: UI specification tables from screenshots, wireframes, or screen descriptions.
+- `sprint-scope-email`: sprint commitment emails with goals and ticket tables.
+  - Adapt the skill per project: Jira or Azure DevOps.
+  - Define the sprint query/filter and ticket URL format.
+  - Map output fields: ID, title, type, parent/epic, priority, status, sprint/iteration, and story points/effort.
+  - Confirm the estimate field: Jira custom field (e.g., `customfield_10036`) or Azure DevOps `Story Points`/`Effort`.
+- `user-story-writing`: backlog-ready user stories with acceptance criteria (NT standard).
+- `ux-solution-evaluation`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
+- `wbs-writing`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
+- `wireframe-generation`: HTML/text wireframes and responsive screen layout artifacts.
+
+### Quick Routing Guide
+
+- If requirements are still unclear: start with `requirements-elicitor`.
+- If readiness/check quality is needed: use `business-requirements-analyst`.
+- If an artifact is clearly requested: use the matching skill directly.
+
 ## Suggested VS Code Extensions
 
 ### Diagrams
