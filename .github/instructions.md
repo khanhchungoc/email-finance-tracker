@@ -104,4 +104,4 @@ When beginning a request:
 2. Apply the Elicitor-First Gate for BA work unless an exception applies.
 3. Use the relevant agent or skill as defined in its own file.
 4. Produce the requested response or artifact with assumptions, risks, dependencies, exclusions, and open questions separated when applicable.
-5. On response, please generate a table as a markdown format.
+5. Create output in a md file in memory folder if there are tables or long list in the chat response, only keep the summary in the response
