@@ -141,6 +141,10 @@ Choose one mode based on the request. Keep the output proportional to scope and 
 - Keep client questions for low-confidence, high-impact, owner-validation, or client-validation items.
 - For pre-sales, prioritize estimation impact, external-system ownership, assumptions, exclusions, and confidence.
 - For delivery, prioritize acceptance readiness, testability, data/rules, edge cases, NFRs, dependencies, and change impact.
+- For user story and feature reviews, explicitly verify that all relevant statuses, transitions, and invalid transition handling are defined.
+- For each identified edge case, require explicit expected system behavior (response path, user/system message, recovery/fallback, and logging/audit expectation when relevant).
+- Explicitly assess whether a UI artifact is needed and state `UI Artifact Needed: Yes/No` with reason; if yes, route to `gui-specification` and/or `wireframe-generation`.
+- Explicitly assess whether a diagram is required or recommended and name the type (state, sequence, process/BPMN, or wireflow) with rationale.
 - Use concise tables. Do not produce every table unless the mode requires it.
 
 ### Mode 1: Quick Requirement Gap Scan
@@ -227,6 +231,20 @@ Use for requirements, features, user stories, and acceptance criteria.
 #### Testability Questions
 | Question | Why It Matters | Needed From |
 |---|---|---|
+
+#### Status And Edge Case Coverage
+| Check | Status | Notes / Missing Detail | Impact | Action |
+|---|---|---|---|---|
+| Status lifecycle and transitions defined |  |  |  |  |
+| Invalid transition handling defined |  |  |  |  |
+| Edge cases enumerated |  |  |  |  |
+| Expected system behavior per edge case defined |  |  |  |  |
+
+#### UI And Diagram Need Assessment
+| Item | Required? | Recommendation | Why It Is Needed |
+|---|---|---|---|
+| UI mockup / wireframe |  |  |  |
+| Diagram |  | Type: State / Sequence / Process-BPMN / Wireflow |  |
 
 ### Mode 5: Dependency And Impact Analysis
 
@@ -426,4 +444,8 @@ Before responding, check:
 - [ ] Assumptions are labeled and not presented as facts.
 - [ ] Estimate-impacting gaps are called out for pre-sales work.
 - [ ] Delivery-readiness gaps are called out for implementation work.
+- [ ] Status lifecycle completeness, transitions, and invalid transition handling are checked.
+- [ ] Edge cases are listed and expected system behavior for each edge case is explicitly defined.
+- [ ] UI mockup/wireframe need is assessed and recorded with rationale.
+- [ ] Diagram need is assessed and a specific recommended diagram type is provided when relevant.
 - [ ] The next route is clear and practical.
