@@ -4,12 +4,13 @@ This repository contains BA agent and skill configuration for different AI assis
 
 - `.github`: Use with GitHub Copilot Chat or GitHub Copilot CLI.
 - `.codex`: Use with Codex Chat or Codex CLI.
+- `.gemini`: Use with Gemini or Google AI assistants.
 
 ## Getting Started
 
 - Create or open a VS Code workspace for your project.
 - Add your project's source code as one workspace folder.
-- Add either the `.codex` or `.github` folder as another workspace folder, depending on the assistant you are using.
+- Add either the `.codex`, `.github`, or `.gemini` folder as another workspace folder, depending on the assistant you are using.
 - Keep the BA agents and skills separate from the project source code so they can be reused across multiple repositories.
 - To reuse this setup, add a different project source folder to the same workspace.
 
