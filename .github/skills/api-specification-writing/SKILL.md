@@ -21,7 +21,7 @@ Create clear, implementation-ready API specifications for any custom software pr
 
 ## Templates
 
-- [api-specification-template.md](./assets/api-specification-template.md) - single output template containing the API contract, request/response data dictionary sections, request/response mapping sections, processing rules, errors, optional NFR sections, assumptions, and open questions
+- `assets/api-specification-template.md` — read using your file-reading tools. Single output template containing the API contract, request/response data dictionary sections, request/response mapping sections, processing rules, errors, optional NFR sections, assumptions, and open questions. If unavailable, notify the user and proceed using the structure rules in this skill.
 
 ## Authoring Guidelines
 
@@ -41,7 +41,7 @@ If the user provides existing OpenAPI/Swagger, technical docs, payload samples, 
 
 ### 2. Create the API Specification
 
-Use [api-specification-template.md](./assets/api-specification-template.md). Keep the order:
+Use `assets/api-specification-template.md` (read using your file-reading tools). Keep the order:
 
 1. Method and endpoint
 2. Summary

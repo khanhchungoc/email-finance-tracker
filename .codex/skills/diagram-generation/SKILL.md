@@ -32,6 +32,13 @@ Decision rules:
 - Use plain business labels unless the audience is technical.
 - Ask only when missing context would change the diagram materially; otherwise state assumptions.
 
+## Output Delivery (Mandatory)
+
+- Always create the diagram as a separate file in the workspace (for example, `.mmd` or `.bpmn`).
+- Do not place the full diagram content in chat responses by default.
+- In chat, return the created file path and a brief note only.
+- Include full diagram content in chat only if the user explicitly asks for inline output.
+
 ## Diagram Rules
 
 - Use concise `Verb + Noun` activity labels.
@@ -59,4 +66,4 @@ Before presenting:
 - Check all decisions have complete outgoing paths.
 - Check cross-role steps are placed in the correct Mermaid subgraph or BPMN lane.
 - For BPMN, validate XML structure, sequence-flow references, lane containment, and connector layout per the BPMN guide.
-- Output only the diagram artifact unless the user asks for explanation.
+- Save and deliver the diagram as a file artifact; in chat, provide file path and short summary unless the user asks for inline content.

@@ -39,7 +39,7 @@ This skill does not own:
 
 1. Identify each distinct screen, state, modal, or step.
 2. Confirm platform, screen purpose, user role, and primary action when missing and not inferable from source material.
-3. Use [assets/gui-specification-template.md](assets/gui-specification-template.md) for the output structure.
+3. Read `assets/gui-specification-template.md` using your file-reading tools for the output structure. If unavailable, notify the user and proceed using the structure rules in this skill.
 4. Describe only meaningful UI components. Ignore decorative elements unless they affect usability, state, or behavior.
 5. Add assumptions only when needed; add open questions when missing information affects rules, data, permissions, or behavior.
 

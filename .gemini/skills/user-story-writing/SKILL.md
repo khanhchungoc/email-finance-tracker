@@ -48,7 +48,7 @@ When a requirement is received, first **analyze and identify**:
 ### 3. Best Practice Fill-ins
 - **Workflow Diagram**: If not available, describe the flow step-by-step in text.
 - **Screen / Mockup Reference**: If a story depends on a screen, reference the screen name, mockup, wireframe, or GUI specification. Include only story-relevant behavior needed to understand the flow and acceptance criteria.
-- Do not create detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs in this skill. Route those details to `.gemini/skills/gui-specification/SKILL.md`.
+- Do not create detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs in this skill. Route those details to `.github/skills/gui-specification/SKILL.md`.
 
 ### 4. Handling Input Cases
 - If a requirement arrives without a pre-written user story, draft the story from the available requirement.
@@ -80,7 +80,7 @@ This skill owns:
 - Acceptance criteria and Gherkin scenarios
 - References to relevant mockups, wireframes, or GUI specs
 
-`.gemini/skills/gui-specification/SKILL.md` owns:
+`.github/skills/gui-specification/SKILL.md` owns:
 - Screen title and purpose
 - UI components and controls
 - Field-level properties, validations, defaults, and visibility rules
@@ -92,7 +92,7 @@ When both artifacts are needed, write the user story first at behavior level, th
 
 ## User Story Sample Template
 
-See [assets/user-story-template.md](assets/user-story-template.md).
+Read `assets/user-story-template.md` using your file-reading tools. If unavailable, notify the user and proceed using the structure rules in this skill.
 
 ---
 

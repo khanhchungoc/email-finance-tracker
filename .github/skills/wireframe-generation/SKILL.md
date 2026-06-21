@@ -55,7 +55,7 @@ Create stakeholder-readable wireframes as static HTML/CSS files or structured te
 
 - HTML: follow [references/html-wireframe-guide.md](references/html-wireframe-guide.md) for structure, components, file naming, and validation.
 - Text-based: follow [references/text-wireframe-guide.md](references/text-wireframe-guide.md) for required sections, clarification rules, and output format.
-- Templates: use [assets/html-wireframe-template.html](assets/html-wireframe-template.html) or [assets/text-wireframe-template.md](assets/text-wireframe-template.md) when a reusable starting artifact helps.
+- Templates: read `assets/html-wireframe-template.html` or `assets/text-wireframe-template.md` using your file-reading tools when a reusable starting artifact helps. If unavailable, notify the user and proceed without a template.
 
 ## Validation
 

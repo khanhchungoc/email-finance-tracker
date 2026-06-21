@@ -42,14 +42,19 @@ Create clear, accurate sprint scope emails that communicate commitments, goals, 
      - **Use parent/epic ONLY for ordering tickets**, then remove all parent rows before finalizing
    - **Ticket Ordering:** Tickets must be ordered by Parent (epic/BAU) first, then Priority, then Issue Type. For identical values, sort alphabetically by Issue Key as a tie-breaker. If Priority is null, treat as lowest priority for ordering purposes. **After ordering, remove all Epic/BAU/parent rows from the table.**
 3. Sum Story Points for committed issues using `customfield_10036`.
-4. Draft 3–5 concise goals (short, outcome-focused phrases) ordered by ticket priority descending (Highest → Lowest). Group tickets by parent epic/BAU, then prioritize goals by the highest priority ticket in each group.
+4. Draft 3–5 meaningful goals ordered by ticket priority descending (Highest → Lowest). Group tickets by parent epic/BAU, then prioritize goals by the highest priority ticket in each group.
+  - Write each goal as: **Enhancement Action + Mapping Scope + Intended Outcome**.
+  - Preferred pattern for mapping work: **"Extend <domain> mappings across <model groups> for <outcome>"**.
+  - Target 8–14 words per goal. Avoid vague wording like "deliver mappings" or "complete tasks".
+  - Avoid bug-fix framing ("fix", "resolve defects", "stabilize") unless the sprint objective is defect-focused.
+  - Focus on value/result language: data completeness, response coverage, readiness, and consumer usability.
 5. **Verify total USPs:** Sum all individual Story Points in the final ticket table and confirm it matches the "Total USPs" value. Double-check before sending.
 6. Populate the template below and send the email.
 7. Save emails under: `Project administration/Sprint/Scope email/`
 
 ## Markdown Email Template (for tools supporting Markdown)
 
-See [assets/sprint-scope-template.md](assets/sprint-scope-template.md).
+Read `assets/sprint-scope-template.md` using your file-reading tools. If unavailable, notify the user and proceed using the structure rules in this skill.
 
 ## Jira Ticket Hyperlinks
 - **Format:** `[ISSUE-KEY](https://<your-org>.atlassian.net/browse/ISSUE-KEY)`
@@ -62,9 +67,18 @@ See [assets/sprint-scope-template.md](assets/sprint-scope-template.md).
 - Naming: `Earth Sprint <Sprint number> - Scope Email.md`
 
 ## Tips
-- Keep goals concise and outcome-focused (3–5 words each; e.g., "Fix Swinton tier click-through" not "Resolve Swinton Car aggregator click-through defects so that customers can be correctly routed through tier and cover selection without technical errors")
+- Make goals concise but meaningful (8–14 words each), with a clear outcome statement
+- Prefer impact language: "reduce clickthrough defects", "improve policy response completeness", "increase release readiness"
 - Order goals by highest priority first: sort by the highest priority ticket(s) contributing to each goal, then by epic/parent grouping
-- Avoid repeating ticket names; instead, summarize themes and business outcomes
+- Avoid repeating ticket names; summarize themes and business outcomes instead
+
+## Goal Wording for Mapping Sprints
+- Use enhancement-first verbs for mapping implementation: "Extend", "Implement", "Enable", "Expand"
+- If work is primarily new mapping/data-return scope, describe it as capability expansion, not defect reduction
+- Suggested examples:
+  - "Extend DISC policy mappings across payment, instalment, and tier models"
+  - "Extend CDL Justice policy mappings across discount, payment, instalment, and tier models"
+  - "Extend SW Car clickthrough mappings for correct NCB data behavior"
 
 ## Auto-Fill Using Atlassian MCP (Jira)
 Leverage the Atlassian MCP server to fetch sprint data (tickets and story points) using fully qualified tool names for reliable integration.
@@ -90,6 +104,6 @@ These are the fully qualified tools available from the Atlassian MCP server:
 - **Goal Ordering:** Sort goals by highest priority (Highest → Lowest) across all tickets in each epic/parent group.
 - **CRITICAL - Final Table Exclusions:** After ordering tickets by parent, **DELETE all Epic, BAU, and parent-level rows** from the final ticket table. Only Stories, Tasks, Bugs, Spikes, and Defects should appear in the email.
 - **Exclusions from JQL:** Subtasks, Test Plans, Test Executions, Test Sets, Sub Test Executions are always excluded from the query.
-- Goals are auto-generated from sprint tickets: group by epic/parent → determine highest priority within each group → create concise 3–5 word goal statement → order goals by priority descending.
+- Goals are auto-generated from sprint tickets: group by epic/parent → determine highest priority within each group → create a meaningful enhancement-oriented mapping goal (Enhancement Action + Mapping Scope + Outcome) → order goals by priority descending.
 
 ---

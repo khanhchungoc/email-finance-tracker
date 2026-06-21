@@ -8,6 +8,7 @@ Use Mermaid for quick flowcharts, sequence diagrams, state diagrams, use cases, 
 - Do not include headings or code fences in diagram files.
 - Keep labels short and business-readable.
 - Use comments with `%%` only when they clarify a complex section.
+- **Do not use semicolons (`;`) in node labels, decisions, notes, or any diagram content** — semicolons cause Mermaid rendering to fail. Use commas, periods, colons, or other punctuation instead.
 
 ## Flowcharts
 

@@ -54,7 +54,7 @@ Create clear, accurate sprint scope emails that communicate commitments, goals, 
 
 ## Markdown Email Template (for tools supporting Markdown)
 
-See [assets/sprint-scope-template.md](assets/sprint-scope-template.md).
+Read `assets/sprint-scope-template.md` using your file-reading tools. If unavailable, notify the user and proceed using the structure rules in this skill.
 
 ## Jira Ticket Hyperlinks
 - **Format:** `[ISSUE-KEY](https://<your-org>.atlassian.net/browse/ISSUE-KEY)`
