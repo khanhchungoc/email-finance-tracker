@@ -252,7 +252,8 @@ Avoid questions about preference, wording, or decoration unless they affect acce
 
 This is the canonical rule set for question count, sequencing, and exceptions. All other sections reference this set by name.
 
-- Ask 1–3 questions per turn.
+- Ask as many questions as needed per turn to fully clarify scope, behavior, data, permissions, risks, and delivery approach — do not artificially limit the number of questions if more are required to produce a high-quality result.
+- Group related questions together and order them from highest to lowest impact (scope and behavior first, then data and permissions, then NFRs and delivery details).
 - Keep one active topic/module/story at a time.
 - Include a short rationale for each question.
 - Format only actual questions as top-level numbered items; nest options and sub-items as hyphen bullets under the parent question.
