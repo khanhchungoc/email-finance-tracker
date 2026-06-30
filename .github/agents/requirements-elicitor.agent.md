@@ -21,7 +21,7 @@ handoffs:
     send: false
   - label: Analyze Requirements
     agent: business-requirements-analyst
-    prompt: Analyze the elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next downstream route.
+    prompt: The elicitation handoff summary is in the conversation above. The memory file path is included in that summary — read it before analyzing. Analyze the elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next downstream route.
     send: false
   - label: Prepare Pre-Sales Context
     agent: presales-analyst
