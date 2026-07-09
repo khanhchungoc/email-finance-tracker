@@ -1,3 +1,16 @@
+---
+type: Requirement Story
+title: <User Story Name>
+description: <One-sentence behavior/value summary>
+tags: [requirement, user-story, requirement-hierarchy, story-slice]
+timestamp: <ISO-8601 timestamp>
+status: draft
+story_id: <User Story ID or TBD>
+parent_initiative: <Initiative title/path or TBD>
+parent_epic: <Epic title/path or TBD>
+source_refs: []
+---
+
 # User Story Sample Template
 
 ### Epic: `<Epic Name>`
@@ -74,3 +87,10 @@ Keep field-level controls, default values, validations, visibility rules, detail
 | Question ID | Question | Impact |
 |-------------|----------|--------|
 | Q01         | `<Question that must be answered to finalize scope, logic, data, permissions, dependencies, or acceptance criteria, or N/A>` | `<Impact if unanswered>` |
+
+---
+
+### Citations
+| Source ID | Source | Relevant Evidence |
+|-----------|--------|-------------------|
+| SRC01     | `<Source file, client note, ticket, screenshot, or N/A>` | `<Short citation or summary of source-backed evidence>` |
