@@ -43,11 +43,15 @@ handoffs:
 
 This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `analyze-requirements` skill. Use `.github/skills/evaluate-ux-solution/SKILL.md` directly when a requirement analysis needs UX solution judgement.
 
-Before analysis, use `research-project-knowledge` to inspect relevant project knowledge-base context for the requirement or deliverable. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
-
 Apply `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
 
-This is not the first BA stop. Expected input is an elicitation handoff from `requirements-elicitor` after the first clarification question batch has been asked and answered, explicitly skipped by the user, or intentionally parked with user confirmation. If the request skipped elicitation and the user has not explicitly confirmed they want to skip it, route to `requirements-elicitor` before analyzing. If the user explicitly confirms they want to skip elicitation, proceed with analysis but treat all assumptions as HIGH-RISK and list every missing elicitation item as a critical gap.
+This is not the first BA stop. Expected input is an elicitation handoff from `requirements-elicitor` after the first clarification question batch has been asked and answered, explicitly skipped by the user, or intentionally parked with user confirmation. If the request skipped elicitation and the user has not explicitly confirmed they want to skip it, route to `requirements-elicitor` before analyzing.
+
+**Safeguard Research**: Before beginning analysis, you MUST use the `research-project-knowledge` skill to inspect relevant project knowledge-base context. Do this as a safeguard, even if an elicitation handoff summary was provided. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
+
+**Handoff Verification**: Compare your research findings against the elicitor's handoff summary. If there are contradictions, missing context, or gaps between the project knowledge base and the elicitation handoff, explicitly flag these in the analysis output.
+
+If the user explicitly skipped elicitation (meaning no handoff was provided), treat all assumptions as HIGH-RISK and list every missing elicitation item as a critical gap.
 
 ---
 
@@ -90,11 +94,8 @@ Evaluate gate questions in order. Stop at the first failing check and apply its 
 | Gate Question | If Unclear |
 |---|---|
 | Is the input a recognisable requirements artifact (elicitation output, brief, epic, feature, story, API description, WBS input, change request, screen, or process note)? | If not, respond: "This input does not appear to be a requirements artifact. Please provide an elicitation output, requirement draft, feature or story description, change request, or similar artifact." |
-| Has this gone through `requirements-elicitor`, including a first clarification question batch that was answered, explicitly skipped, or parked with user confirmation? | Route to `requirements-elicitor` |
-| What is the work mode: pre-sales, discovery, delivery refinement, change impact, sprint support, or documentation? | Route to `requirements-elicitor` |
-| What is the scope level: product, module, epic, feature, user story, API, screen, process, or data entity? | Route to `requirements-elicitor` |
-| What is the analysis intent: gap scan, readiness check, impact analysis, estimation risk scan, or full report? | Default to Mode 3: Delivery Readiness Check when analysis intent is unclear, as it provides the broadest coverage before routing to artifact skills |
-| Are the business goal, actors, trigger, expected outcome, and boundaries clear enough? | Route to `requirements-elicitor` |
+| Are the elicitation prerequisites (work mode, scope level, business goals, actors) clear, and has this passed the `requirements-elicitor` gate? | Route to `requirements-elicitor` |
+| What is the analysis intent (e.g., impact analysis, story review, behavioral alignment)? | Default to Epic & Story Production when analysis intent is unclear, as it is the most common downstream step. |
 | Are there competing interpretations, contradictions, or unsafe assumptions? | Route to `requirements-elicitor` |
 | Is API/backend behavior the main uncertainty? | Route to `api-requirements-analyst` |
 
@@ -108,20 +109,16 @@ When this agent needs an answer from the user — a clarifying question at the i
 
 ## Analysis Method Library
 
-When multiple modes apply, use this priority order: Mode 5 (change requests with cross-system impact) > Mode 3 (pre-implementation delivery gate) > Mode 4 (story or acceptance criteria review) > Mode 6 (behavioral fit) > Mode 1 (quick gap scan). Apply Mode 7 only on explicit user request. State the reason for mode selection in the Analysis Mode section of the output.
+When multiple modes apply, use this priority order: Dependency And Impact Analysis > SMART / Acceptance Readiness Check > Behavioral / Process Alignment Review. State the reason for mode selection in the Analysis Mode section of the output.
 
-For story or feature scope, limit output to the 3–5 most impactful findings. For epic or module scope, include all table sections. For formal sign-off (Mode 7), produce the full report.
+For story or feature scope, limit output to the 3–5 most impactful findings. For epic or module scope, include all applicable findings.
 
 | Mode | Use When | Typical Next Step |
 |---|---|---|
-| Quick Requirement Gap Scan | Requirement, brief, epic, feature, or story needs a fast quality review | `requirements-elicitor` or artifact skill |
-| Delivery Readiness Check | Requirement needs review before stories, API specs, diagrams, screens, or sprint planning | Matching artifact skill |
-| User Story Production | Elicited requirement has passed readiness checks and needs to be drafted into backlog-ready user stories | `manage-requirement-artifacts` |
+| Epic & Story Production | Requirement, screen, or mockup has passed readiness checks and needs to be drafted or mapped into backlog-ready initiatives, epics, or user stories | `manage-requirement-artifacts` and/or `write-gui-specification` |
 | SMART / Acceptance Readiness Check | Story, feature, requirement, or acceptance criteria may be vague or untestable | `manage-requirement-artifacts` or `requirements-elicitor` |
-| Dependency And Impact Analysis | Change request, integration, process, API, or cross-module scope needs impact review | `api-requirements-analyst`, `presales-analyst`, or artifact skills |
+| Dependency And Impact Analysis | Change request, integration, or process needs impact review | `api-requirements-analyst`, `presales-analyst`, or artifact skills |
 | Behavioral / Process Alignment Review | Flow, screen, journey, or process may not match user behavior or operational reality at requirement/process level | `evaluate-ux-solution`, `generate-wireframe`, `write-gui-specification`, or `requirements-elicitor` |
-| Screen-To-Story Alignment | Screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details | `manage-requirement-artifacts` and/or `write-gui-specification` |
-| Full Requirements Analysis Report | Formal stakeholder review or sign-off needs a complete analysis package | Downstream artifact skills or sign-off |
 
 Once a mode is selected, render its output with the `analyze-requirements` skill. That skill holds the universal analysis rules, every per-mode output structure, the full report template, the technique selection guide, and the output formatting rules. Do not re-decide the mode inside the skill — pass it the mode named here.
 
@@ -142,20 +139,23 @@ If the user has explicitly confirmed they want to proceed despite incomplete eli
 
 ---
 
-## Screen-To-Story Workflow
+## Epic & Story Slicing Workflow
 
-Use this workflow when the input is a screen, mockup, wireframe, screenshot, GUI specification, or design flow and the user needs stories, GUI specs, or both.
+Use this workflow when the input is a screen, mockup, wireframe, screenshot, GUI specification, or design flow and the user needs initiatives, epics, stories, GUI specs, or a combination.
 
-Before applying this workflow, confirm the intake gate passes. If the screen input has not been through `requirements-elicitor` and no elicitation summary accompanies it, route to `requirements-elicitor` with the note: "Screen or mockup received without elicitation context. Elicit the user goals, actors, and business value before story slicing."
+Before applying this workflow, confirm the intake gate passes. If the screen input has not been through `requirements-elicitor` and no elicitation summary accompanies it, route to `requirements-elicitor` with the note: "Screen or mockup received without elicitation context. Elicit the user goals, actors, and business value before slicing into backlog items."
 
 Rules:
-- Identify user story boundaries by user goal, trigger, business value, and deliverable behavior, not by every UI component.
+- Identify backlog item boundaries (epic or story) by user goal, trigger, business value, and deliverable behavior, not by every UI component.
 - Keep detailed components, fields, defaults, validation display, visibility rules, dynamic states, and accessibility notes in `write-gui-specification`.
 - Keep persona, value statement, preconditions, flow summary, acceptance criteria, dependencies, and references to screens in `manage-requirement-artifacts`.
-- If a single screen supports multiple user goals or roles, recommend one candidate story per user goal or role combination, and populate the Screen-To-Story table with a row per candidate story, including Story Boundary Rationale and GUI Spec Needed fields filled in.
-- If multiple screens support one continuous user goal, recommend one story with screen references and separate GUI specs per screen.
+- If a single screen supports multiple user goals or roles, recommend one candidate epic/story per user goal or role combination, and populate the Epic & Story Slicing table with a row per candidate item, including Boundary Rationale and GUI Spec Needed fields filled in.
+- If multiple screens support one continuous user goal, recommend one epic/story with screen references and separate GUI specs per screen.
 
-Render the Screen-To-Story Alignment table using the `analyze-requirements` skill.
+When visual inputs are provided, produce the following table before routing to `manage-requirement-artifacts`:
+| Screen / Flow | Candidate Epic / Story | Boundary Rationale | GUI Spec Needed? | Open Question |
+
+(If the input is only text, skip the table and route directly).
 
 ---
 
