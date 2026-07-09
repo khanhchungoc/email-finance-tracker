@@ -77,7 +77,17 @@ jobs:
             }
 
             $archive = Join-Path $dist "ba-agents-$Name-$version.zip"
-            Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $archive -Force
+            $archivePaths = $Paths
+            if ($Name -eq "github-copilot") {
+              $archivePaths = @(".github")
+            }
+
+            Push-Location $stage
+            try {
+              Compress-Archive -LiteralPath $archivePaths -DestinationPath $archive -Force
+            } finally {
+              Pop-Location
+            }
           }
 
           New-ReleasePackage -Name "codex" -Paths @(
