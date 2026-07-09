@@ -92,17 +92,18 @@ Agent and skill triggers do not bypass the Elicitor-First Gate. For BA artifact 
 
 Use these routing rules (read the listed file before producing the artifact):
 
-- Project knowledge research, task-specific KB lookup, Wiki lookup before BA work, or avoiding broad project scans: `.gemini/skills/project-knowledge-research/SKILL.md`.
-- Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.gemini/skills/diagram-generation/SKILL.md`.
-- Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.gemini/skills/wireframe-generation/SKILL.md`.
-- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.gemini/skills/gui-specification/SKILL.md`.
-- API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `.gemini/skills/api-specification-writing/SKILL.md`.
-- User story, acceptance criteria, backlog-ready story, story refinement, requirement artifact folder maintenance, `requirements/` hierarchy updates, initiative/epic index creation, generated BA artifact placement, or requirement output re-indexing: `.gemini/skills/requirement-artifact-management/SKILL.md`.
-- WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.gemini/skills/wbs-writing/SKILL.md`.
+- Project knowledge research, task-specific KB lookup, Wiki lookup before BA work, or avoiding broad project scans: `.gemini/skills/research-project-knowledge/SKILL.md`.
+- Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.gemini/skills/generate-diagram/SKILL.md`.
+- Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.gemini/skills/generate-wireframe/SKILL.md`.
+- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.gemini/skills/write-gui-specification/SKILL.md`.
+- API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `.gemini/skills/write-api-specification/SKILL.md`.
+- User story, acceptance criteria, backlog-ready story, story refinement, requirement artifact folder maintenance, `requirements/` hierarchy updates, initiative/epic index creation, generated BA artifact placement, or requirement output re-indexing: `.gemini/skills/manage-requirement-artifacts/SKILL.md`.
+- WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.gemini/skills/write-wbs/SKILL.md`.
 - Requirement gap scan, readiness check, SMART check, dependency/impact analysis, behavioral/process alignment review, or requirements analysis report: `.gemini/agents/business-requirements-analyst.agent.md`.
-- UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.gemini/skills/ux-solution-evaluation/SKILL.md`.
-- Sprint scope email, sprint commitment note, or stakeholder sprint update: `.gemini/skills/sprint-scope-email/SKILL.md`.
-- Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.gemini/skills/project-knowledge-updating/SKILL.md`.
+- UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.gemini/skills/evaluate-ux-solution/SKILL.md`.
+- Sprint scope email, sprint commitment note, or stakeholder sprint update: `.gemini/skills/sync-backlog/SKILL.md`.
+- Backlog push, backlog pull, backlog sync, work item creation, sprint scope pull, sprint scope email, backlog reconciliation, or work item attachment: `.gemini/agents/backlog-manager.agent.md`.
+- Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.gemini/skills/update-project-knowledge/SKILL.md`.
 - API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.gemini/agents/api-requirements-analyst.agent.md`.
 - Pre-sales red-hat estimation inputs, WBS/ballpark context, assumptions, risks, exclusions, dependencies, or client clarification questions: `.gemini/agents/presales-analyst.agent.md`.
 
