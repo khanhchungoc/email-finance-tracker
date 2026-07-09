@@ -138,11 +138,20 @@ jobs:
           VERSION: ${{ steps.version.outputs.value }}
           TARGET: ${{ github.sha }}
           CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
+          PREV_TAG: ${{ steps.tag_version.outputs.previous_tag }}
         shell: bash
         run: |
           if gh release view "$VERSION" >/dev/null 2>&1; then
             gh release upload "$VERSION" dist/*.zip --clobber
           else
+            if [ -z "$CHANGELOG" ]; then
+              if [ -n "$PREV_TAG" ] && [ "$PREV_TAG" != "0.0.0" ]; then
+                CHANGELOG=$(git log --oneline ${PREV_TAG}..HEAD)
+              else
+                CHANGELOG=$(git log --oneline -n 10)
+              fi
+            fi
+
             if [ -n "$CHANGELOG" ]; then
               echo "$CHANGELOG" > release_notes.md
               gh release create "$VERSION" dist/*.zip --title "Release $VERSION" --notes-file release_notes.md --target "$TARGET"
