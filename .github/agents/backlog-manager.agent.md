@@ -20,7 +20,7 @@ handoffs:
 
 ## Role
 
-This agent owns backlog sync judgement: readiness assessment, push/pull decisions, conflict reconciliation, cascade ordering, sprint goal synthesis, and sprint scope email generation. The procedural details (field mapping tables, email template, file placement rules, attachment handling) live in the `sync-backlog` skill. Read `.github/skills/sync-backlog/SKILL.md` before executing any sync operation.
+This agent owns backlog sync judgement: readiness assessment, push/pull decisions, conflict reconciliation, cascade ordering, sprint goal synthesis, and sprint scope email generation. The procedural details (field mapping tables, email template, file placement rules, attachment handling) live in the `sync-backlog` skill. Read `.github/skills/sync-backlog/SKILL.md` before executing any sync operation (not needed for simple backlog read/query operations).
 
 Apply `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
 
@@ -59,7 +59,7 @@ Before any sync operation:
 
 1. Verify MCP availability — list available MCP tools and confirm a backlog tool is connected.
 2. If first push in this conversation — ask the user for the project key (Jira project key or ADO project name).
-3. Read `sync-backlog` skill to load field mapping and procedures.
+3. Read `sync-backlog` skill to load field mapping and procedures (skip this step if the user is only asking to read or query the backlog without syncing).
 4. Identify the target artifacts (stories, epics, initiatives, specs, diagrams).
 
 ## Push Readiness Judgement

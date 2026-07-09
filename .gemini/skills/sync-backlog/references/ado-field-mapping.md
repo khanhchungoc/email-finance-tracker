@@ -16,7 +16,7 @@ Use this reference when mapping BA workspace artifacts to Azure DevOps work item
 | Pre-conditions table | `System.Description` (section) | HTML table under `<h3>Pre-conditions</h3>` | Only if pre-conditions exist |
 | Out of scope table | `System.Description` (section) | HTML table under `<h3>Out of Scope</h3>` | Only if items exist |
 | NFR table | `System.Description` (section) | HTML table under `<h3>Non-functional Requirements</h3>` | Only if NFRs exist |
-| GUI/API spec references | `System.Description` (links section) | HTML links under `<h3>Related Specifications</h3>` | Links to attachments or Wiki pages |
+| GUI/API spec references | `System.Description` (append section) | Append markdown under `<h3>Related Specifications</h3>` | Append full markdown content |
 | Workspace file path | `System.Description` (footer) | `<em>Source: requirements/output/initiatives/.../us-001.md</em>` | For traceability |
 
 ## Epic → ADO Feature
@@ -39,15 +39,15 @@ Use this reference when mapping BA workspace artifacts to Azure DevOps work item
 
 ## Attachment Mapping
 
-| Workspace Artifact | ADO Attachment | Content Type |
+| Workspace Artifact | ADO Attachment / Field | Content Type |
 |---|---|---|
-| `gui-*.md` | Attachment on related PBI | `text/markdown` |
-| `api-*.md` | Attachment on related PBI | `text/markdown` |
-| `diagrams/diagram-*.md` | Attachment on related PBI | `text/markdown` |
+| `gui-*.md` | `System.Description` (section) | Append full markdown |
+| `api-*.md` | `System.Description` (section) | Append full markdown |
+| `diagrams/diagram-*.md` | `System.Description` (section) | Append full markdown |
 | `diagrams/diagram-*.bpmn` | Attachment on related PBI | `application/xml` |
 | `wireframes/wireframe-*.html` | Attachment on related PBI | `text/html` |
-| `wireframes/wireframe-*.md` | Attachment on related PBI | `text/markdown` |
-| `wbs-*.md` | Attachment on parent Feature | `text/markdown` |
+| `wireframes/wireframe-*.md` | `System.Description` (section) | Append full markdown |
+| `wbs-*.md` | `System.Description` (section) | Append full markdown |
 
 ## ADO-Specific Notes
 
@@ -77,10 +77,7 @@ Use this reference when mapping BA workspace artifacts to Azure DevOps work item
 </table>
 
 <h3>Related Specifications</h3>
-<ul>
-  <li><a href="attachment-link">GUI Spec: &lt;screen&gt;</a></li>
-  <li><a href="attachment-link">API Spec: &lt;endpoint&gt;</a></li>
-</ul>
+<p>&lt;Append full markdown content of GUI/API specs here&gt;</p>
 
 <hr/>
 <em>Source: requirements/output/initiatives/&lt;initiative&gt;/epics/&lt;epic&gt;/us-001-story.md</em>

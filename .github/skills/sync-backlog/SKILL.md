@@ -46,18 +46,20 @@ Read the appropriate reference for the connected backlog tool:
 | User Story | Jira Story / ADO PBI | Create/update work item |
 | Epic | Jira Epic / ADO Feature | Create/update work item |
 | Initiative | Jira Initiative / ADO Epic | Create/update work item |
-| GUI Specification | Attachment on related story | Upload `.md` |
-| API Specification | Attachment on related story | Upload `.md` |
-| Diagram | Attachment on related story | Upload `.md`/`.bpmn` |
-| Wireframe | Attachment on related story | Upload `.html`/`.md` |
-| WBS | Attachment on parent epic | Upload `.md` |
+| GUI Specification | Description of related story | Append `.md` content |
+| API Specification | Description of related story | Append `.md` content |
+| Diagram (Markdown) | Description of related story | Append `.md` content |
+| Diagram (BPMN) | Attachment on related story | Upload `.bpmn` |
+| Wireframe (Markdown) | Description of related story | Append `.md` content |
+| Wireframe (HTML) | Attachment on related story | Upload `.html` |
+| WBS | Description of parent epic | Append `.md` content |
 
 ## Attachment Handling
 
-- Upload spec/diagram files as attachments to the related work item.
-- If the backlog tool supports Confluence (Jira) or Wiki (ADO), the agent may create a linked page instead of an attachment — confirm with the user.
-- Add a reference links section in the work item description pointing to attachments.
-- When re-pushing a story with attachments, update the attachment if the spec file has changed since last push.
+- Markdown artifacts (`.md` files for specs, diagrams, wireframes, WBS) are natively supported and should be appended directly to the work item description instead of uploaded.
+- Non-markdown files (`.bpmn`, `.html`) should be uploaded as attachments.
+- When re-pushing a story, compare the current spec file content against the previously appended content in the work item description. If they differ, overwrite the appended section with the current spec file content.
+- If a spec file that was previously appended no longer exists in the workspace, notify the agent that the appended content on the work item may be stale. Do not automatically remove it — flag it for the agent to decide.
 
 ## Sprint Scope File
 
@@ -122,7 +124,7 @@ Carried from sprint planning.
 
 ### Template
 
-Read `assets/sprint-scope-template.md` for the email template.
+Read `assets/sprint-scope-template.md` for the email template. If `assets/sprint-scope-template.md` cannot be read, stop and notify the user: "Sprint scope email template not found at assets/sprint-scope-template.md. Please ensure the file exists before proceeding."
 
 ### Email Format
 
@@ -131,16 +133,15 @@ Read `assets/sprint-scope-template.md` for the email template.
 
 ### Ticket Table Rules
 
-- Include only deliverable work items: Story, Task, Bug, Spike, Defect.
-- Exclude: Subtasks, Test Plans, Test Executions, Test Sets, Epics, BAU parent items.
-- Order: Parent (epic/BAU) → Priority (descending, nulls last) → Issue Type → Issue Key (alphabetical).
-- After ordering by parent, **delete all Epic/BAU/parent rows** from the final table.
+1. Retrieve all deliverable items (Story, Task, Bug, Spike, Defect).
+2. Sort them by: their parent epic/BAU key ascending (for grouping), then priority descending (nulls last), then issue type, then issue key alphabetically.
+3. Render only the deliverable rows in that order — do not include Epic, BAU, or parent rows in the output table.
 - Hyperlink issue keys: `[ISSUE-KEY](https://<base-url>/browse/ISSUE-KEY)`.
 
 ### Story Points
 
 - Jira: use `customfield_10036`. If null or empty, display as "–".
-- ADO: use `Microsoft.VSAT.Scheduling.StoryPoints` or equivalent.
+- ADO: use `Microsoft.VSTS.Scheduling.StoryPoints` (Agile/CMMI process) or `Microsoft.VSTS.Scheduling.Effort` (Scrum process). Check the project process template to select the correct field.
 - Verify total USPs matches sum of individual story points before finalizing.
 
 ### JQL Pattern (Jira)

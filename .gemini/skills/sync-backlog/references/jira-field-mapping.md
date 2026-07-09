@@ -16,7 +16,7 @@ Use this reference when mapping BA workspace artifacts to Jira work items via th
 | Pre-conditions table | `description` (section) | Under `h3. Pre-conditions` heading | Only if pre-conditions exist |
 | Out of scope table | `description` (section) | Under `h3. Out of Scope` heading | Only if out of scope items exist |
 | NFR table | `description` (section) | Under `h3. Non-functional Requirements` heading | Only if NFRs exist |
-| GUI/API spec references | `description` (links section) | Under `h3. Related Specifications` heading | Links to attachments or Confluence pages |
+| GUI/API spec references | `description` (append section) | Under `h3. Related Specifications` heading | Append full markdown content |
 | Workspace file path | `description` (footer) | `Source: requirements/output/initiatives/.../us-001-customer-login.md` | For traceability back to workspace |
 
 ## Epic → Jira Epic
@@ -38,15 +38,15 @@ Use this reference when mapping BA workspace artifacts to Jira work items via th
 
 ## Attachment Mapping
 
-| Workspace Artifact | Jira Attachment | Content Type |
+| Workspace Artifact | Jira Attachment / Field | Content Type |
 |---|---|---|
-| `gui-*.md` | Attachment on related story | `text/markdown` |
-| `api-*.md` | Attachment on related story | `text/markdown` |
-| `diagrams/diagram-*.md` | Attachment on related story | `text/markdown` |
+| `gui-*.md` | `description` (section) | Append full markdown |
+| `api-*.md` | `description` (section) | Append full markdown |
+| `diagrams/diagram-*.md` | `description` (section) | Append full markdown |
 | `diagrams/diagram-*.bpmn` | Attachment on related story | `application/xml` |
 | `wireframes/wireframe-*.html` | Attachment on related story | `text/html` |
-| `wireframes/wireframe-*.md` | Attachment on related story | `text/markdown` |
-| `wbs-*.md` | Attachment on parent epic | `text/markdown` |
+| `wireframes/wireframe-*.md` | `description` (section) | Append full markdown |
+| `wbs-*.md` | `description` (section) | Append full markdown |
 
 ## Jira-Specific Notes
 
@@ -83,8 +83,7 @@ h3. Open Questions
 
 h3. Related Specifications
 
-- [GUI Spec: <screen>|^gui-screen-name.md]
-- [API Spec: <endpoint>|^api-endpoint-name.md]
+<Append full markdown content of GUI/API specs here>
 
 ----
 
