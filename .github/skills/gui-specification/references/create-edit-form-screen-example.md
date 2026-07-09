@@ -1,3 +1,15 @@
+---
+type: GUI Specification
+title: Create Or Edit Form Screen Example
+description: Example OKF-formatted GUI specification for a create/edit form screen.
+tags: [requirement, gui-specification, screen, validation]
+timestamp: <ISO-8601 timestamp>
+parent_initiative: TBD
+parent_epic: TBD
+related_user_stories: []
+source_refs: []
+---
+
 # Create Or Edit Form Screen Example
 
 ### Screen Title: Create Request
@@ -16,3 +28,8 @@ Behavior Notes:
 - The Submit button remains disabled until mandatory fields meet validation rules, or validation is shown after submit if the project uses submit-time validation.
 - Field-level errors appear near the relevant field and explain how to correct the input.
 - If the user leaves with unsaved changes, show a confirmation only when data loss is possible.
+
+### Citations
+| Source ID | Source | Relevant Evidence |
+|-----------|--------|-------------------|
+| SRC01 | N/A | Example only. |

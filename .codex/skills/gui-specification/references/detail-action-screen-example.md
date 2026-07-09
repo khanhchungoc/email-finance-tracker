@@ -1,3 +1,15 @@
+---
+type: GUI Specification
+title: Detail And Action Screen Example
+description: Example OKF-formatted GUI specification for a detail/action screen.
+tags: [requirement, gui-specification, screen, permission, workflow]
+timestamp: <ISO-8601 timestamp>
+parent_initiative: TBD
+parent_epic: TBD
+related_user_stories: []
+source_refs: []
+---
+
 # Detail And Action Screen Example
 
 ### Screen Title: Request Details
@@ -15,3 +27,8 @@ Behavior Notes:
 - Available actions depend on user permission and record status.
 - If an action changes status, update the status badge and activity timeline after success.
 - If an action fails, keep the user on the screen and show a recoverable error message.
+
+### Citations
+| Source ID | Source | Relevant Evidence |
+|-----------|--------|-------------------|
+| SRC01 | N/A | Example only. |

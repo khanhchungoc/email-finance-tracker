@@ -33,6 +33,8 @@ skills:
 
 You prepare BA-owned red-hat materials for outsourcing estimates after initial elicitation. The output supports clarification, proposal preparation, and TA/SA estimation. It is not signed-off delivery scope.
 
+Before presales analysis or WBS framing, use `project-knowledge-research` to inspect requirement input/output and project context for scope, assumptions, exclusions, dependencies, risks, delivery model, acceptance, and support obligations. Do this before scanning the wider workspace.
+
 ## Operating Principle
 
 Every presales request starts with `requirements-elicitor`.
@@ -183,7 +185,7 @@ Produce:
 
 ### Estimation Table
 
-Use `.github/skills/wbs-writing/SKILL.md`. Do not invent effort values. If `.github/skills/wbs-writing/SKILL.md` cannot be read, notify the user that the WBS skill file is missing and ask them to provide it or confirm they want to proceed with a default table structure (Feature | Description | Effort | Notes), leaving effort blank.
+Use `.codex/skills/wbs-writing/SKILL.md`. Do not invent effort values. If `.codex/skills/wbs-writing/SKILL.md` cannot be read, notify the user that the WBS skill file is missing and ask them to provide it or confirm they want to proceed with a default table structure (Feature | Description | Effort | Notes), leaving effort blank.
 
 ### Assumptions And Exclusions
 

@@ -72,6 +72,8 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
   - Define the sprint query/filter and ticket URL format.
   - Map output fields: ID, title, type, parent/epic, priority, status, sprint/iteration, and story points/effort.
   - Confirm the estimate field: Jira custom field (e.g., `customfield_10036`) or Azure DevOps `Story Points`/`Effort`.
+- `project-knowledge-updating`: updates outsourcing project context bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
+- `project-knowledge-research`: read-only KB research before BA work so agents inspect task-relevant project context instead of scanning the whole workspace.
 - `user-story-writing`: backlog-ready user stories with acceptance criteria (NT standard).
 - `ux-solution-evaluation`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
 - `wbs-writing`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
@@ -82,6 +84,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 - If requirements are still unclear: start with `requirements-elicitor`.
 - If readiness/check quality is needed: use `business-requirements-analyst`.
 - If an artifact is clearly requested: use the matching skill directly.
+- If durable project context should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `project-knowledge-updating` if they confirm.
 
 ## Suggested VS Code Extensions
 
