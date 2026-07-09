@@ -37,14 +37,18 @@ GitHub Actions publishes three ZIP packages on the repository Releases page:
 
 The root `.agents/` folder is not included in any release package.
 
-To publish a release, push a version tag:
+To publish a release, use one of these options:
+
+1. Push a version tag:
 
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-You can also run the `Release packages` workflow manually from GitHub Actions and provide the version tag, for example `v1.0.0`.
+2. Create and publish a GitHub Release from the Releases page. The workflow runs when the release is published and uploads the ZIP files to that release.
+
+3. Run the `Release packages` workflow manually from GitHub Actions and provide the version tag, for example `v1.0.0`.
 
 ## How To Use The BA Agents
 
