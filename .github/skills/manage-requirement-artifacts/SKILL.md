@@ -1,6 +1,6 @@
 ---
 name: manage-requirement-artifacts
-description: Create, refine, place, and re-index requirement delivery artifacts under requirements/. Use for initiatives, epics, user stories, acceptance criteria, backlog-ready story files, requirement input references, output indexes, GUI/API spec placement, diagrams, WBS, analysis artifacts, and handoff outputs. Do not update durable project wiki context; use project-knowledge-updating for that.
+description: Create, refine, place, and re-index requirement delivery artifacts under requirements/. Use for initiatives, epics, user stories, acceptance criteria, backlog-ready story files, requirement input references, output indexes, GUI/API spec placement, diagrams, WBS, analysis artifacts, and handoff outputs. Do not update durable project wiki context; use update-project-knowledge for that.
 ---
 
 # Requirement Artifact Management Skill
@@ -9,7 +9,7 @@ description: Create, refine, place, and re-index requirement delivery artifacts 
 
 Maintain the top-level `requirements/` folder as the BA delivery workbench and create backlog-ready user stories in the correct requirement output hierarchy.
 
-Use `project-knowledge-updating` only for durable reusable context in `project-knowledge-base/`.
+Use `update-project-knowledge` only for durable reusable context in `project-knowledge-base/`.
 
 ## When to Use
 
@@ -73,7 +73,7 @@ This skill must not update:
 - `project-knowledge-base/solution-context/`
 - `project-knowledge-base/glossary/`
 
-If a generated artifact contains stable reusable project knowledge, ask the user whether to update the project knowledge base. If yes, use `project-knowledge-updating`.
+If a generated artifact contains stable reusable project knowledge, ask the user whether to update the project knowledge base. If yes, use `update-project-knowledge`.
 
 ## Workflow
 
@@ -109,7 +109,7 @@ If a generated artifact contains stable reusable project knowledge, ask the user
    - List created/updated paths.
    - List assumptions or missing hierarchy decisions.
    - After creating or refining generated artifacts, ask whether stable context should be distilled into `project-knowledge-base/`.
-   - If the user says yes, use `project-knowledge-updating`.
+   - If the user says yes, use `update-project-knowledge`.
    - If the user says no or does not answer, do not update the project knowledge base.
 
 ## Boundary With Other Skills
@@ -122,11 +122,11 @@ This skill owns:
 
 Other skills own detailed artifact content:
 
-- `gui-specification`: screen/component behavior, UI fields, validations, states, and accessibility notes
-- `api-specification-writing`: endpoint contracts, schemas, data dictionaries, mappings, processing rules, errors, and payloads
-- `diagram-generation`: business diagrams, BPMN, sequence diagrams, state diagrams, use cases, ERDs, and workflow visualization
-- `wbs-writing`: WBS tables, estimates, assumptions, risks, exclusions, and additional effort rows
-- `requirements-analysis`: gap scans, readiness checks, SMART checks, dependency/impact analysis, and full analysis reports
+- `write-gui-specification`: screen/component behavior, UI fields, validations, states, and accessibility notes
+- `write-api-specification`: endpoint contracts, schemas, data dictionaries, mappings, processing rules, errors, and payloads
+- `generate-diagram`: business diagrams, BPMN, sequence diagrams, state diagrams, use cases, ERDs, and workflow visualization
+- `write-wbs`: WBS tables, estimates, assumptions, risks, exclusions, and additional effort rows
+- `analyze-requirements`: gap scans, readiness checks, SMART checks, dependency/impact analysis, and full analysis reports
 - `elicitation-outputs`: elicitation wrap-up, checkpoint, and handoff outputs
 
 When both a story and a GUI/API/detail artifact are needed, write the user story at behavior level and reference the detailed artifact instead of duplicating its tables.

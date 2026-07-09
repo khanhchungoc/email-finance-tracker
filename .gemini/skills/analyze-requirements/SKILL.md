@@ -1,6 +1,6 @@
 ---
 name: analyze-requirements
-description: Produces structured BA requirements-analysis output documents — gap scans, delivery readiness checks, SMART/acceptance reviews, dependency/impact analysis, behavioral/process alignment, screen-to-story mapping, and full analysis reports. Use when the business-requirements-analyst has selected an analysis mode and needs to render its output structure.
+description: Produces structured BA analyze-requirements output documents — gap scans, delivery readiness checks, SMART/acceptance reviews, dependency/impact analysis, behavioral/process alignment, screen-to-story mapping, and full analysis reports. Use when the business-requirements-analyst has selected an analysis mode and needs to render its output structure.
 ---
 
 # Requirements Analysis Outputs
@@ -23,7 +23,7 @@ If there are no open questions at the point of output, write `Open Questions: No
 - For delivery, prioritize acceptance readiness, testability, data/rules, edge cases, NFRs, dependencies, and change impact.
 - For user story and feature reviews, explicitly verify that all relevant statuses, transitions, and invalid transition handling are defined.
 - For each identified edge case, require explicit expected system behavior (response path, user/system message, recovery/fallback, and logging/audit expectation when relevant).
-- Explicitly assess whether a UI artifact is needed and state `UI Artifact Needed: Yes/No` with reason; if yes, route to `gui-specification` and/or `wireframe-generation`.
+- Explicitly assess whether a UI artifact is needed and state `UI Artifact Needed: Yes/No` with reason; if yes, route to `write-gui-specification` and/or `generate-wireframe`.
 - Explicitly assess whether a diagram is required or recommended and name the type (state, sequence, process/BPMN, or wireflow) with rationale.
 - Use concise tables. Do not produce every table unless the mode requires it.
 - For story or feature scope, limit output to the 3–5 most impactful findings. For epic or module scope, include all table sections. For formal sign-off (Full Requirements Analysis Report), produce the full report.
@@ -132,7 +132,7 @@ Use when a change request, integration, process, API, or cross-module scope need
 
 ## Behavioral / Process Alignment Review
 
-Use for requirement and process fit. If the question is about proposed UI layout, interaction patterns, component choices, accessibility, responsiveness, visual hierarchy, or UX solution feasibility, use `ux-solution-evaluation` instead. If the input contains both process-level and UX-solution-level concerns, run this review for the process fit and flag the UX-solution concerns as a separate section recommending `ux-solution-evaluation`.
+Use for requirement and process fit. If the question is about proposed UI layout, interaction patterns, component choices, accessibility, responsiveness, visual hierarchy, or UX solution feasibility, use `evaluate-ux-solution` instead. If the input contains both process-level and UX-solution-level concerns, run this review for the process fit and flag the UX-solution concerns as a separate section recommending `evaluate-ux-solution`.
 
 ### Behavioral / Process Alignment
 | Scenario | Expected User / Operational Behavior | Requirement / Design Behavior | Alignment | Action |
@@ -150,7 +150,7 @@ Use for requirement and process fit. If the question is about proposed UI layout
 
 ## Screen-To-Story Alignment
 
-Use when a screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details. Keep detailed components, fields, validation, and visibility rules in `gui-specification`; keep persona, value, flow, and acceptance criteria in `requirement-artifact-management`.
+Use when a screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details. Keep detailed components, fields, validation, and visibility rules in `write-gui-specification`; keep persona, value, flow, and acceptance criteria in `manage-requirement-artifacts`.
 
 | Screen / Flow | Candidate Story | Story Boundary Rationale | GUI Spec Needed? | Open Question |
 |---|---|---|---|---|

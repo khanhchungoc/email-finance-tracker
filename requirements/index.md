@@ -17,6 +17,6 @@ Boundary:
 
 * `input/` is raw client or stakeholder material.
 * `output/` is generated BA delivery material.
-* `project-knowledge-updating` may read this folder as source evidence, but must not update files under it.
+* `update-project-knowledge` may read this folder as source evidence, but must not update files under it.
 * Durable project wiki belongs in `../project-knowledge-base/wiki/`.
 * Durable solution/system context belongs in `../project-knowledge-base/solution-context/`.

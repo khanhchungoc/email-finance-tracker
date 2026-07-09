@@ -20,7 +20,7 @@ initiatives/
             `-- <user-story-id-or-slug>.md
 ```
 
-Use the `requirement-artifact-management` skill templates for generated initiative and epic folder `index.md` files.
+Use the `manage-requirement-artifacts` skill templates for generated initiative and epic folder `index.md` files.
 
 Maintenance rules:
 

@@ -30,7 +30,7 @@ This skill does NOT own:
 
 - Push/pull decisions, readiness judgement, reconciliation, cascade ordering, sprint goal synthesis — those belong to the `backlog-manager` agent
 - Story authoring or analysis — those belong to BA agents and skills
-- Requirement folder structure — that belongs to `requirement-artifact-management`
+- Requirement folder structure — that belongs to `manage-requirement-artifacts`
 
 ## Field Mapping
 
@@ -183,5 +183,5 @@ Tool names depend on the MCP server — list available tools at runtime.
 
 - Do not make push/pull decisions — the `backlog-manager` agent owns that.
 - Do not assess story readiness — the agent owns that.
-- Do not write durable project wiki facts — use `project-knowledge-updating`.
-- Do not manage requirement folder structure — use `requirement-artifact-management`.
+- Do not write durable project wiki facts — use `update-project-knowledge`.
+- Do not manage requirement folder structure — use `manage-requirement-artifacts`.

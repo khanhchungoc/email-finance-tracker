@@ -2,7 +2,7 @@
 type: GUI Specification
 title: Create Or Edit Form Screen Example
 description: Example OKF-formatted GUI specification for a create/edit form screen.
-tags: [requirement, gui-specification, screen, validation]
+tags: [requirement, write-gui-specification, screen, validation]
 timestamp: <ISO-8601 timestamp>
 parent_initiative: TBD
 parent_epic: TBD

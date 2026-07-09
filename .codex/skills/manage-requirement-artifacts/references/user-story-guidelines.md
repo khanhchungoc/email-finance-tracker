@@ -5,7 +5,7 @@ Read this file only when creating or refining user stories, acceptance criteria,
 ## Purpose And Ownership
 
 - Purpose: define a backlog-ready behavior slice with acceptance criteria.
-- Owner: `requirement-artifact-management`.
+- Owner: `manage-requirement-artifacts`.
 - Location: `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<story-id-or-slug>.md`.
 - Must include: minimal OKF frontmatter, role, goal, value, assumptions, preconditions, flow summary, GUI/API/detail references when relevant, Gherkin acceptance criteria, open questions, and citations when available.
 - Avoid: field dictionaries, full screen/component specs, endpoint schemas, or generic filler.
@@ -84,9 +84,9 @@ User stories own:
 
 User stories must not own:
 
-- Detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs; use `gui-specification`.
-- Endpoint schemas, mappings, request/response payloads, processing rules, or error catalogs; use `api-specification-writing`.
-- WBS estimates, work package breakdowns, or commitment language; use `wbs-writing`.
+- Detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs; use `write-gui-specification`.
+- Endpoint schemas, mappings, request/response payloads, processing rules, or error catalogs; use `write-api-specification`.
+- WBS estimates, work package breakdowns, or commitment language; use `write-wbs`.
 
 ## GUI Specification Traceability
 
@@ -101,7 +101,7 @@ User stories must not own:
 ## Wireframe And Diagram Traceability
 
 - Link every related wireframe or US-level diagram from the story body using a relative Markdown link.
-- If `diagram-generation` was triggered before or during story work, or the user mentions a diagram while asking for the user story, the story must reference the related diagram file.
+- If `generate-diagram` was triggered before or during story work, or the user mentions a diagram while asking for the user story, the story must reference the related diagram file.
 - Put US-related wireframes in the story epic's `wireframes/` folder and US-related diagrams in the story epic's `diagrams/` folder.
 - Put cross-epic or initiative-level wireframes and diagrams in the initiative folder, then link to them from the relevant story or epic index using the correct relative path.
 - Use stable filenames and folder-aware links such as `./wireframes/wireframe-order-detail.html`, `./wireframes/wireframe-order-detail.md`, or `./diagrams/diagram-order-approval-flow.md`.
@@ -114,5 +114,5 @@ User stories must not own:
 - Do not add generic assumptions, preconditions, out-of-scope items, or non-functional requirements just to make a section look complete; use `N/A` or open questions instead.
 - Reference GUI/API/detail artifacts by relative file link or title instead of duplicating their tables.
 - After creating or refining any user story, ask: "Do you want me to update the project knowledge base with this user story context?"
-- If the user says yes, use `project-knowledge-updating`.
+- If the user says yes, use `update-project-knowledge`.
 - If the user says no or does not answer, do not update the project knowledge base.

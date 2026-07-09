@@ -2,7 +2,7 @@
 type: GUI Specification
 title: Detail And Action Screen Example
 description: Example OKF-formatted GUI specification for a detail/action screen.
-tags: [requirement, gui-specification, screen, permission, workflow]
+tags: [requirement, write-gui-specification, screen, permission, workflow]
 timestamp: <ISO-8601 timestamp>
 parent_initiative: TBD
 parent_epic: TBD

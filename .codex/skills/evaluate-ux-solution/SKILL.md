@@ -21,8 +21,8 @@ Own:
 Do not own:
 - First-step discovery when the business goal, user role, or scope is unclear; use `requirements-elicitor`
 - Full requirement readiness or estimation impact analysis; use `business-requirements-analyst`
-- Final GUI specification tables; use `gui-specification`
-- Final wireframes; use `wireframe-generation`
+- Final GUI specification tables; use `write-gui-specification`
+- Final wireframes; use `generate-wireframe`
 - Final user stories, API specifications, diagrams, WBS, or sprint communications
 
 ## Inputs
@@ -53,8 +53,8 @@ If the evaluation can continue with safe assumptions, label the assumptions and 
 
 ## Related Skills
 
-- Use `gui-specification` when the user needs a component-by-component UI specification for implementation handoff.
-- Use `wireframe-generation` when the user asks to create or revise the actual wireframe after the evaluation.
+- Use `write-gui-specification` when the user needs a component-by-component UI specification for implementation handoff.
+- Use `generate-wireframe` when the user asks to create or revise the actual wireframe after the evaluation.
 - Use `business-requirements-analyst` when the UX concern is mainly about requirement completeness, scope, process fit, or delivery readiness.
 - Use this skill when the request asks whether a proposed UX solution is effective, feasible, usable, accessible, scalable, or better than an alternative pattern.
 

@@ -15,13 +15,13 @@ tools:
   - "atlassian/atlassian-mcp-server/*"
   - "microsoft/azure-devops-mcp/*"
 skills:
-  - ../skills/requirements-analysis
-  - ../skills/project-knowledge-research
-  - ../skills/ux-solution-evaluation
-  - ../skills/requirement-artifact-management
-  - ../skills/project-knowledge-updating
-  - ../skills/gui-specification
-  - ../skills/wireframe-generation
+  - ../skills/analyze-requirements
+  - ../skills/research-project-knowledge
+  - ../skills/evaluate-ux-solution
+  - ../skills/manage-requirement-artifacts
+  - ../skills/update-project-knowledge
+  - ../skills/write-gui-specification
+  - ../skills/generate-wireframe
 handoffs:
   - label: Run More Elicitation
     agent: requirements-elicitor
@@ -41,9 +41,9 @@ handoffs:
 
 ## Role
 
-This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `requirements-analysis` skill. Use `.github/skills/ux-solution-evaluation/SKILL.md` directly when a requirement analysis needs UX solution judgement.
+This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `analyze-requirements` skill. Use `.github/skills/evaluate-ux-solution/SKILL.md` directly when a requirement analysis needs UX solution judgement.
 
-Before analysis, use `project-knowledge-research` to inspect relevant project knowledge-base context for the requirement or deliverable. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
+Before analysis, use `research-project-knowledge` to inspect relevant project knowledge-base context for the requirement or deliverable. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
 
 Apply `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
 
@@ -57,26 +57,26 @@ Own:
 - Consuming elicitation handoff summaries and judging downstream readiness
 - Requirement quality review and readiness decisions
 - SMART, acceptance-readiness, ambiguity, dependency, behavioral/process alignment, and impact checks
-- Delivery readiness checks before `requirement-artifact-management`, `api-specification-writing`, diagrams, wireframes, GUI specs, or sprint planning
+- Delivery readiness checks before `manage-requirement-artifacts`, `write-api-specification`, diagrams, wireframes, GUI specs, or sprint planning
 - Screen-to-story workflow decisions: identify backlog story slices from screens/mockups while keeping GUI specification details separate
-- Triggering `ux-solution-evaluation` when a proposed screen, flow, component choice, or UX solution needs usability, accessibility, responsiveness, feasibility, or edge case review
+- Triggering `evaluate-ux-solution` when a proposed screen, flow, component choice, or UX solution needs usability, accessibility, responsiveness, feasibility, or edge case review
 - Change impact analysis across requirements, flows, screens, APIs, data, operations, and testing
 - Recommendations for the next agent or skill
-- Calling `project-knowledge-updating` after creating or refining initiatives, epics, or user stories, only when the user confirms the knowledge base should be updated
+- Calling `update-project-knowledge` after creating or refining initiatives, epics, or user stories, only when the user confirms the knowledge base should be updated
 
 Do not own:
 - Initial discovery or stakeholder questioning when the input is too unclear; route to `requirements-elicitor`
 - API-specific contract elicitation when backend/API behavior is unclear; route to `api-requirements-analyst`
 - Pre-sales estimation packaging; use `presales-analyst`
-- Final WBS or ballpark tables; use `wbs-writing`
-- Final user story drafting; use `requirement-artifact-management`
-- Final API specification artifacts; use `api-specification-writing`
+- Final WBS or ballpark tables; use `write-wbs`
+- Writing the final user story artifacts yourself; use the `manage-requirement-artifacts` skill instead
+- Final API specification artifacts; use `write-api-specification`
 - Final diagrams, wireframes, or GUI specifications; use the matching skill
-- Full UX solution critique; use `ux-solution-evaluation`
+- Full UX solution critique; use `evaluate-ux-solution`
 
 Knowledge-base update rule:
 - After this agent creates or refines initiatives, epics, or user stories, ask: "Do you want me to update the project knowledge base with these changes?"
-- If the user says yes, use `project-knowledge-updating` to update only source-backed project context, links, indexes, and logs.
+- If the user says yes, use `update-project-knowledge` to update only source-backed project context, links, indexes, and logs.
 - If the user says no or does not answer, do not update the knowledge base.
 
 ---
@@ -116,13 +116,14 @@ For story or feature scope, limit output to the 3–5 most impactful findings. F
 |---|---|---|
 | Quick Requirement Gap Scan | Requirement, brief, epic, feature, or story needs a fast quality review | `requirements-elicitor` or artifact skill |
 | Delivery Readiness Check | Requirement needs review before stories, API specs, diagrams, screens, or sprint planning | Matching artifact skill |
-| SMART / Acceptance Readiness Check | Story, feature, requirement, or acceptance criteria may be vague or untestable | `requirement-artifact-management` or `requirements-elicitor` |
+| User Story Production | Elicited requirement has passed readiness checks and needs to be drafted into backlog-ready user stories | `manage-requirement-artifacts` |
+| SMART / Acceptance Readiness Check | Story, feature, requirement, or acceptance criteria may be vague or untestable | `manage-requirement-artifacts` or `requirements-elicitor` |
 | Dependency And Impact Analysis | Change request, integration, process, API, or cross-module scope needs impact review | `api-requirements-analyst`, `presales-analyst`, or artifact skills |
-| Behavioral / Process Alignment Review | Flow, screen, journey, or process may not match user behavior or operational reality at requirement/process level | `ux-solution-evaluation`, `wireframe-generation`, `gui-specification`, or `requirements-elicitor` |
-| Screen-To-Story Alignment | Screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details | `requirement-artifact-management` and/or `gui-specification` |
+| Behavioral / Process Alignment Review | Flow, screen, journey, or process may not match user behavior or operational reality at requirement/process level | `evaluate-ux-solution`, `generate-wireframe`, `write-gui-specification`, or `requirements-elicitor` |
+| Screen-To-Story Alignment | Screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details | `manage-requirement-artifacts` and/or `write-gui-specification` |
 | Full Requirements Analysis Report | Formal stakeholder review or sign-off needs a complete analysis package | Downstream artifact skills or sign-off |
 
-Once a mode is selected, render its output with the `requirements-analysis` skill. That skill holds the universal analysis rules, every per-mode output structure, the full report template, the technique selection guide, and the output formatting rules. Do not re-decide the mode inside the skill — pass it the mode named here.
+Once a mode is selected, render its output with the `analyze-requirements` skill. That skill holds the universal analysis rules, every per-mode output structure, the full report template, the technique selection guide, and the output formatting rules. Do not re-decide the mode inside the skill — pass it the mode named here.
 
 ---
 
@@ -149,12 +150,12 @@ Before applying this workflow, confirm the intake gate passes. If the screen inp
 
 Rules:
 - Identify user story boundaries by user goal, trigger, business value, and deliverable behavior, not by every UI component.
-- Keep detailed components, fields, defaults, validation display, visibility rules, dynamic states, and accessibility notes in `gui-specification`.
-- Keep persona, value statement, preconditions, flow summary, acceptance criteria, dependencies, and references to screens in `requirement-artifact-management`.
+- Keep detailed components, fields, defaults, validation display, visibility rules, dynamic states, and accessibility notes in `write-gui-specification`.
+- Keep persona, value statement, preconditions, flow summary, acceptance criteria, dependencies, and references to screens in `manage-requirement-artifacts`.
 - If a single screen supports multiple user goals or roles, recommend one candidate story per user goal or role combination, and populate the Screen-To-Story table with a row per candidate story, including Story Boundary Rationale and GUI Spec Needed fields filled in.
 - If multiple screens support one continuous user goal, recommend one story with screen references and separate GUI specs per screen.
 
-Render the Screen-To-Story Alignment table using the `requirements-analysis` skill.
+Render the Screen-To-Story Alignment table using the `analyze-requirements` skill.
 
 ---
 

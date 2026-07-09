@@ -1,6 +1,6 @@
 # Project Knowledge Base
 
-This folder stores durable project wiki knowledge for BA and software delivery work. It is intentionally project-local: keep reusable framework rules in the `project-knowledge-updating` skill, not here.
+This folder stores durable project wiki knowledge for BA and software delivery work. It is intentionally project-local: keep reusable framework rules in the `update-project-knowledge` skill, not here.
 
 Use this folder for confirmed, reusable project context:
 
@@ -16,4 +16,4 @@ The sibling `../requirements/` folder is the delivery workbench:
 
 Do not store generated BA deliverables in this folder. After the user confirms a knowledge-base update, distill only stable reusable facts from `../requirements/output/` into `wiki/`, `solution-context/`, or `glossary/`.
 
-For maintenance rules, folder contracts, controlled tags, and OKF guidance, use the `project-knowledge-updating` skill for your assistant package and its `references/okf-project-knowledge-base.md` file.
+For maintenance rules, folder contracts, controlled tags, and OKF guidance, use the `update-project-knowledge` skill for your assistant package and its `references/okf-project-knowledge-base.md` file.

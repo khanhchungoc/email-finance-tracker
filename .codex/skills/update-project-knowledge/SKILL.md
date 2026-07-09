@@ -170,7 +170,7 @@ Not allowed:
 - Create or update initiative, epic, user story, GUI spec, API spec, diagram, WBS, or analysis files under `requirements/output/`.
 - Update requirement folder indexes.
 
-Route requirement-folder structure, indexes, placement work, and user story content to `requirement-artifact-management`. Route other artifact content work to the artifact-owning agent or skill, such as `gui-specification`, `api-specification-writing`, `diagram-generation`, `wbs-writing`, or the requirements analysis agents.
+Route requirement-folder structure, indexes, placement work, and user story content to `manage-requirement-artifacts`. Route other artifact content work to the artifact-owning agent or skill, such as `write-gui-specification`, `write-api-specification`, `generate-diagram`, `write-wbs`, or the requirements analysis agents.
 
 ### Consistency Checks
 

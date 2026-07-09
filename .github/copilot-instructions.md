@@ -72,7 +72,7 @@ Elicitor checkpoint rules:
 - If the user's reply to a clarifying question is incomplete or introduces new ambiguity, ask a follow-up batch of 1-3 targeted questions before proceeding. Cap elicitation rounds at 3 total unless the user requests more; after 3 rounds, state remaining open questions as labeled assumptions and proceed.
 - After elicitation is complete, proceed to the handoff summary or downstream skill as appropriate.
 
-Do not proceed directly to `business-requirements-analyst`, `wbs-writing`, `requirement-artifact-management`, `api-specification-writing`, `diagram-generation`, `wireframe-generation`, `gui-specification`, `ux-solution-evaluation`, or `sprint-scope-email` until the elicitor checkpoint is visible or explicitly referenced.
+Do not proceed directly to `business-requirements-analyst`, `write-wbs`, `manage-requirement-artifacts`, `write-api-specification`, `generate-diagram`, `generate-wireframe`, `write-gui-specification`, `evaluate-ux-solution`, or `sync-backlog` until the elicitor checkpoint is visible or explicitly referenced.
 
 If a named `requirements-elicitor` agent is not callable in the current runtime, manually perform the elicitor checkpoint using this minimal fallback definition: ask 1-3 questions covering the intended artifact type, target audience, known constraints, and permission to proceed with stated assumptions — and produce no downstream artifacts in that response. Say briefly that you are performing elicitation manually. If the elicitor agent file (`.github/agents/requirements-elicitor.agent.md`) cannot be read at all, inform the user that the file is missing, provide that expected path, and use this minimal fallback definition to run the checkpoint. Reading the elicitor agent file is not a substitute for performing the elicitor step.
 
@@ -95,7 +95,7 @@ Use these routing rules (read the listed file before producing the artifact):
 - Project knowledge research, task-specific KB lookup, Wiki lookup before BA work, or avoiding broad project scans: `.github/skills/research-project-knowledge/SKILL.md`.
 - Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.github/skills/generate-diagram/SKILL.md`.
 - Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.github/skills/generate-wireframe/SKILL.md`.
-- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.github/skills/write-gui-specification/SKILL.md`.
+- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.github/skills/write-write-gui-specification/SKILL.md`.
 - API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `.github/skills/write-api-specification/SKILL.md`.
 - User story, acceptance criteria, backlog-ready story, story refinement, requirement artifact folder maintenance, `requirements/` hierarchy updates, initiative/epic index creation, generated BA artifact placement, or requirement output re-indexing: `.github/skills/manage-requirement-artifacts/SKILL.md`.
 - WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.github/skills/write-wbs/SKILL.md`.

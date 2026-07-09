@@ -1,5 +1,5 @@
 ---
-name: write-gui-specification
+name: write-write-gui-specification
 description: Use when converting screen images, wireframes, design exports, product screenshots, HTML/text wireframes, or screen descriptions into OKF-formatted GUI specification Markdown files and UI specification tables for web, mobile, desktop, admin, customer portal, or internal-tool handoff; write generated specs into the project knowledge-base requirement output hierarchy when the target initiative/epic is known.
 ---
 
@@ -15,10 +15,10 @@ Primary inputs:
 - Existing user story files and GUI specification files in the target epic folder when the screen may already be documented.
 
 Useful upstream skills:
-- `wireframe-generation`: use its HTML or text wireframes as the main screen layout input.
-- `requirement-artifact-management`: use story title, role, goal, dependencies, and acceptance context; do not duplicate full acceptance criteria.
-- `diagram-generation`: use process or screen-flow diagrams to understand navigation and state transitions.
-- `api-specification-writing`: use API/data details only when field data source, payload, or validation behavior is relevant.
+- `generate-wireframe`: use its HTML or text wireframes as the main screen layout input.
+- `manage-requirement-artifacts`: use story title, role, goal, dependencies, and acceptance context; do not duplicate full acceptance criteria.
+- `generate-diagram`: use process or screen-flow diagrams to understand navigation and state transitions.
+- `write-api-specification`: use API/data details only when field data source, payload, or validation behavior is relevant.
 
 No separate agent is required. If another BA, UX, design, or delivery agent provides notes, treat those notes as source material and verify them against the visible screen or supplied requirements.
 
@@ -32,16 +32,16 @@ This skill owns:
 - Screen change log entries showing which user story changed which screen behavior
 
 This skill does not own:
-- Full user stories or Gherkin ACs; use `requirement-artifact-management`
-- Creating wireframes; use `wireframe-generation`
-- Process diagrams; use `diagram-generation`
-- Full API contracts or mappings; use `api-specification-writing`
+- Full user stories or Gherkin ACs; use `manage-requirement-artifacts`
+- Creating wireframes; use `generate-wireframe`
+- Process diagrams; use `generate-diagram`
+- Full API contracts or mappings; use `write-api-specification`
 
 ## Workflow
 
 1. Identify each distinct screen, state, modal, or step.
 2. Confirm platform, screen purpose, user role, and primary action when missing and not inferable from source material.
-3. Read `assets/gui-specification-template.md` using your file-reading tools for the output structure. If unavailable, notify the user and proceed using the structure rules in this skill.
+3. Read `assets/write-gui-specification-template.md` using your file-reading tools for the output structure. If unavailable, notify the user and proceed using the structure rules in this skill.
 4. Describe only meaningful UI components. Ignore decorative elements unless they affect usability, state, or behavior.
 5. Add assumptions only when needed; add open questions when missing information affects rules, data, permissions, or behavior.
 6. When writing files, place each generated GUI specification in the same requirement output epic folder as the related user story or stories.
@@ -59,7 +59,7 @@ Every generated GUI specification Markdown file must begin with YAML frontmatter
 type: GUI Specification
 title: <Screen or specification title>
 description: <One-sentence screen purpose and handoff summary>
-tags: [requirement, gui-specification, screen]
+tags: [requirement, write-gui-specification, screen]
 timestamp: <ISO-8601 timestamp>
 parent_initiative: <Initiative title/path or TBD>
 parent_epic: <Epic title/path or TBD>
@@ -70,7 +70,7 @@ source_refs: []
 
 Rules:
 - Keep `type: GUI Specification`.
-- Always include `requirement`, `gui-specification`, and `screen` tags; add only relevant controlled tags such as `workflow`, `frontend`, `backend`, `validation`, `permission`, `data`, `api`, `integration`, `reporting`, `notification`, `needs-clarification`, or `ready-for-refinement`.
+- Always include `requirement`, `write-gui-specification`, and `screen` tags; add only relevant controlled tags such as `workflow`, `frontend`, `backend`, `validation`, `permission`, `data`, `api`, `integration`, `reporting`, `notification`, `needs-clarification`, or `ready-for-refinement`.
 - Populate `related_user_stories` with relative links to every user story that affects this screen, for example `./us-001-create-order.md`.
 - Populate `source_refs` when the specification is derived from screenshots, wireframes, design exports, client notes, tickets, or other cited artifacts. Do not fabricate citations.
 - Keep the full UI specification table and behavior notes in the Markdown body. OKF frontmatter is metadata, not a replacement for the specification.
@@ -92,7 +92,7 @@ requirements/
 Folder rules:
 - Default to creating Markdown GUI specification files in this hierarchy when the user asks to generate GUI specs for a project. Do not only return the full spec inline unless the user requests inline-only output or the target hierarchy is unavailable.
 - If the parent initiative and epic folders already exist, use them.
-- If the parent initiative or epic is known but its folder does not exist, use `requirement-artifact-management` to create the folder and required `index.md` files.
+- If the parent initiative or epic is known but its folder does not exist, use `manage-requirement-artifacts` to create the folder and required `index.md` files.
 - If the parent initiative or epic is not known, ask the user for the target hierarchy before writing the file. If the user asks to proceed anyway, write the spec only after clearly marking `parent_initiative: TBD` and `parent_epic: TBD`.
 - Use stable lowercase slugs for file names, for example `gui-search-results.md`.
 - When multiple screens are generated, write each screen/spec as its own Markdown file in the same target epic folder unless the user specifies different epics.

@@ -9,7 +9,7 @@ description: Read-only project knowledge-base research for BA agents. Use before
 
 Research the project knowledge base for the current agent task and return only the context needed to proceed. This skill is read-only. It must not create, edit, move, or delete files.
 
-Use `project-knowledge-updating` only after artifact work when the user confirms that durable knowledge should be updated.
+Use `update-project-knowledge` only after artifact work when the user confirms that durable knowledge should be updated.
 
 ## Core Rules
 
@@ -81,6 +81,6 @@ No relevant project knowledge-base content was found for this task. Proceeding m
 
 - Do not produce final BA artifacts.
 - Do not ask elicitation questions unless the calling agent asks for research gaps to be phrased as questions.
-- Do not update `project-knowledge-base/`; use `project-knowledge-updating` for updates after user confirmation.
+- Do not update `project-knowledge-base/`; use `update-project-knowledge` for updates after user confirmation.
 - Do not use broad workspace scans as a substitute for missing KB structure.
 - Treat `requirements/` as delivery working material and `project-knowledge-base/wiki/` as durable project wiki.

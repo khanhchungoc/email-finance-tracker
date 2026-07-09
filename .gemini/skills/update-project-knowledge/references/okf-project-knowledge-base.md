@@ -128,7 +128,7 @@ Do not make agents read project governance folders by default for every requirem
 
 - Use top-level `requirements/` as the delivery workbench: raw client inputs go in `requirements/input/`; generated BA deliverables, specs, initiatives, epics, and user stories go in `requirements/output/`.
 - Use `project-knowledge-base/wiki/` as the durable project wiki: confirmed scope, stakeholders, assumptions, exclusions, decisions, risks, acceptance, delivery model, support expectations, and reusable project facts live there.
-- `project-knowledge-updating` may read `requirements/` as source evidence, but must not update files under it.
+- `update-project-knowledge` may read `requirements/` as source evidence, but must not update files under it.
 - Do not treat generated requirement output as durable wiki until the user confirms the knowledge-base update.
 - When the user confirms a KB update, distill stable facts from `requirements/output/` into `project-knowledge-base/wiki/` or `project-knowledge-base/solution-context/`; do not move the deliverable itself out of `requirements/output/`.
 

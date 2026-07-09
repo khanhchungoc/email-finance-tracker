@@ -2,7 +2,7 @@
 type: GUI Specification
 title: Search And Results Screen Example
 description: Example OKF-formatted GUI specification for a search/results screen.
-tags: [requirement, gui-specification, screen, workflow]
+tags: [requirement, write-gui-specification, screen, workflow]
 timestamp: <ISO-8601 timestamp>
 parent_initiative: TBD
 parent_epic: TBD

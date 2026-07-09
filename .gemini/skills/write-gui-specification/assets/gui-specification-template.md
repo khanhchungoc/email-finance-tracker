@@ -2,7 +2,7 @@
 type: GUI Specification
 title: <Screen or Specification Title>
 description: <One-sentence screen purpose and handoff summary>
-tags: [requirement, gui-specification, screen]
+tags: [requirement, write-gui-specification, screen]
 timestamp: <ISO-8601 timestamp>
 parent_initiative: <Initiative title/path or TBD>
 parent_epic: <Epic title/path or TBD>
