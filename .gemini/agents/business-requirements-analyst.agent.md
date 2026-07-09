@@ -18,7 +18,7 @@ skills:
   - ../skills/requirements-analysis
   - ../skills/project-knowledge-research
   - ../skills/ux-solution-evaluation
-  - ../skills/user-story-writing
+  - ../skills/requirement-artifact-management
   - ../skills/project-knowledge-updating
   - ../skills/gui-specification
   - ../skills/wireframe-generation
@@ -57,7 +57,7 @@ Own:
 - Consuming elicitation handoff summaries and judging downstream readiness
 - Requirement quality review and readiness decisions
 - SMART, acceptance-readiness, ambiguity, dependency, behavioral/process alignment, and impact checks
-- Delivery readiness checks before `user-story-writing`, `api-specification-writing`, diagrams, wireframes, GUI specs, or sprint planning
+- Delivery readiness checks before `requirement-artifact-management`, `api-specification-writing`, diagrams, wireframes, GUI specs, or sprint planning
 - Screen-to-story workflow decisions: identify backlog story slices from screens/mockups while keeping GUI specification details separate
 - Triggering `ux-solution-evaluation` when a proposed screen, flow, component choice, or UX solution needs usability, accessibility, responsiveness, feasibility, or edge case review
 - Change impact analysis across requirements, flows, screens, APIs, data, operations, and testing
@@ -69,7 +69,7 @@ Do not own:
 - API-specific contract elicitation when backend/API behavior is unclear; route to `api-requirements-analyst`
 - Pre-sales estimation packaging; use `presales-analyst`
 - Final WBS or ballpark tables; use `wbs-writing`
-- Final user story drafting; use `user-story-writing`
+- Final user story drafting; use `requirement-artifact-management`
 - Final API specification artifacts; use `api-specification-writing`
 - Final diagrams, wireframes, or GUI specifications; use the matching skill
 - Full UX solution critique; use `ux-solution-evaluation`
@@ -116,10 +116,10 @@ For story or feature scope, limit output to the 3–5 most impactful findings. F
 |---|---|---|
 | Quick Requirement Gap Scan | Requirement, brief, epic, feature, or story needs a fast quality review | `requirements-elicitor` or artifact skill |
 | Delivery Readiness Check | Requirement needs review before stories, API specs, diagrams, screens, or sprint planning | Matching artifact skill |
-| SMART / Acceptance Readiness Check | Story, feature, requirement, or acceptance criteria may be vague or untestable | `user-story-writing` or `requirements-elicitor` |
+| SMART / Acceptance Readiness Check | Story, feature, requirement, or acceptance criteria may be vague or untestable | `requirement-artifact-management` or `requirements-elicitor` |
 | Dependency And Impact Analysis | Change request, integration, process, API, or cross-module scope needs impact review | `api-requirements-analyst`, `presales-analyst`, or artifact skills |
 | Behavioral / Process Alignment Review | Flow, screen, journey, or process may not match user behavior or operational reality at requirement/process level | `ux-solution-evaluation`, `wireframe-generation`, `gui-specification`, or `requirements-elicitor` |
-| Screen-To-Story Alignment | Screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details | `user-story-writing` and/or `gui-specification` |
+| Screen-To-Story Alignment | Screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details | `requirement-artifact-management` and/or `gui-specification` |
 | Full Requirements Analysis Report | Formal stakeholder review or sign-off needs a complete analysis package | Downstream artifact skills or sign-off |
 
 Once a mode is selected, render its output with the `requirements-analysis` skill. That skill holds the universal analysis rules, every per-mode output structure, the full report template, the technique selection guide, and the output formatting rules. Do not re-decide the mode inside the skill — pass it the mode named here.
@@ -150,7 +150,7 @@ Before applying this workflow, confirm the intake gate passes. If the screen inp
 Rules:
 - Identify user story boundaries by user goal, trigger, business value, and deliverable behavior, not by every UI component.
 - Keep detailed components, fields, defaults, validation display, visibility rules, dynamic states, and accessibility notes in `gui-specification`.
-- Keep persona, value statement, preconditions, flow summary, acceptance criteria, dependencies, and references to screens in `user-story-writing`.
+- Keep persona, value statement, preconditions, flow summary, acceptance criteria, dependencies, and references to screens in `requirement-artifact-management`.
 - If a single screen supports multiple user goals or roles, recommend one candidate story per user goal or role combination, and populate the Screen-To-Story table with a row per candidate story, including Story Boundary Rationale and GUI Spec Needed fields filled in.
 - If multiple screens support one continuous user goal, recommend one story with screen references and separate GUI specs per screen.
 

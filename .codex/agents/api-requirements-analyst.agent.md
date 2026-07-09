@@ -18,7 +18,7 @@ skills:
   - ../skills/project-knowledge-research
   - ../skills/api-specification-writing
   - ../skills/diagram-generation
-  - ../skills/user-story-writing
+  - ../skills/requirement-artifact-management
   - ../skills/project-knowledge-updating
 handoffs:
   - label: Run Elicitation First
@@ -61,13 +61,13 @@ Do not own:
 - Final API specification authoring
 - OpenAPI/Swagger specification authoring (route to `api-specification-writing` even when explicitly requested)
 - Low-level architecture or final technical decisions
-- Sprint-ready story formatting without `user-story-writing`
+- Sprint-ready story formatting without `requirement-artifact-management`
 
 Knowledge-base update rule:
 - After this agent creates or materially refines API-related initiatives, epics, user stories, or reusable requirement context, ask: "Do you want me to update the project knowledge base with these changes?"
 - If the user says yes, use `project-knowledge-updating` to update only source-backed project context, links, indexes, and logs.
 - If the user says no or does not answer, do not update the knowledge base.
-- When producing a user story from API context, use `user-story-writing`, then apply the same knowledge-base update question after the story output.
+- When producing a user story from API context, use `requirement-artifact-management`, then apply the same knowledge-base update question after the story output.
 
 ## Input And Routing Gate
 

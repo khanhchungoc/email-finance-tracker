@@ -75,7 +75,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
   - Confirm the estimate field: Jira custom field (e.g., `customfield_10036`) or Azure DevOps `Story Points`/`Effort`.
 - `project-knowledge-updating`: updates outsourcing Wiki bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
 - `project-knowledge-research`: read-only KB research before BA work so agents inspect task-relevant Wiki instead of scanning the whole workspace.
-- `user-story-writing`: backlog-ready user stories with acceptance criteria (NT standard).
+- `requirement-artifact-management`: maintains the `requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, requirement output re-indexing, backlog-ready user stories, and acceptance criteria.
 - `ux-solution-evaluation`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
 - `wbs-writing`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
 - `wireframe-generation`: HTML/text wireframes and responsive screen layout artifacts.
@@ -85,6 +85,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 - If requirements are still unclear: start with `requirements-elicitor`.
 - If readiness/check quality is needed: use `business-requirements-analyst`.
 - If an artifact is clearly requested: use the matching skill directly.
+- If the `requirements/` folder hierarchy, initiative/epic indexes, or generated artifact placement needs maintenance: use `requirement-artifact-management`.
 - If durable Wiki should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `project-knowledge-updating` if they confirm.
 
 ## Suggested VS Code Extensions

@@ -15,7 +15,7 @@ Primary inputs:
 
 Useful upstream skills:
 - `wireframe-generation`: use its HTML or text wireframes as the main screen layout input.
-- `user-story-writing`: use story title, role, goal, dependencies, and acceptance context; do not duplicate full acceptance criteria.
+- `requirement-artifact-management`: use story title, role, goal, dependencies, and acceptance context; do not duplicate full acceptance criteria.
 - `diagram-generation`: use process or screen-flow diagrams to understand navigation and state transitions.
 - `api-specification-writing`: use API/data details only when field data source, payload, or validation behavior is relevant.
 
@@ -30,7 +30,7 @@ This skill owns:
 - References to related stories, wireframes, flows, or APIs
 
 This skill does not own:
-- Full user stories or Gherkin ACs; use `user-story-writing`
+- Full user stories or Gherkin ACs; use `requirement-artifact-management`
 - Creating wireframes; use `wireframe-generation`
 - Process diagrams; use `diagram-generation`
 - Full API contracts or mappings; use `api-specification-writing`
@@ -87,7 +87,7 @@ requirements/
 Folder rules:
 - Default to creating Markdown GUI specification files in this hierarchy when the user asks to generate GUI specs for a project. Do not only return the full spec inline unless the user requests inline-only output or the target hierarchy is unavailable.
 - If the parent initiative and epic folders already exist, use them.
-- If the parent initiative or epic is known but its folder does not exist, create the folder and required `index.md` files according to `project-knowledge-updating`.
+- If the parent initiative or epic is known but its folder does not exist, use `requirement-artifact-management` to create the folder and required `index.md` files.
 - If the parent initiative or epic is not known, ask the user for the target hierarchy before writing the file. If the user asks to proceed anyway, write the spec only after clearly marking `parent_initiative: TBD` and `parent_epic: TBD`.
 - Use stable lowercase slugs for file names, for example `gui-search-results.md`.
 - When multiple screens are generated, write each screen/spec as its own Markdown file in the same target epic folder unless the user specifies different epics.

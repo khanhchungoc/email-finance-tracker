@@ -1,0 +1,4 @@
+interface:
+  display_name: "Requirement Artifact Management"
+  short_description: "Maintain requirements folders and indexes."
+  default_prompt: "Maintain the requirements delivery workbench structure, initiative and epic indexes, and generated BA artifact placement under requirements/."

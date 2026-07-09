@@ -20,8 +20,7 @@ initiatives/
             `-- <user-story-id-or-slug>.md
 ```
 
-Use [Initiative Index Template](../../../project-knowledge-base/_templates/initiative-index-template.md) for each initiative folder `index.md`.
-Use [Epic Index Template](../../../project-knowledge-base/_templates/epic-index-template.md) for each epic folder `index.md`.
+Use the `requirement-artifact-management` skill templates for generated initiative and epic folder `index.md` files.
 
 Maintenance rules:
 

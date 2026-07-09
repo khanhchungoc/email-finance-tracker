@@ -11,7 +11,7 @@ Update and maintain a generic, OKF-style outsourcing project knowledge base that
 
 In this workspace, top-level `requirements/` is the delivery workbench for raw requirement intake and generated BA deliverables. `project-knowledge-base/wiki/` is the durable project wiki.
 
-Use the local bundle guide at `project-knowledge-base/README.md` when updating this workspace's canonical starter bundle. Use `references/okf-project-knowledge-base.md` for the project-specific interpretation of OKF.
+Use `references/okf-project-knowledge-base.md` for the reusable folder contract, controlled tags, and OKF interpretation. Treat `project-knowledge-base/README.md` as a short project-local entrypoint, not the source of framework rules.
 
 ## Core Rules
 
@@ -73,7 +73,7 @@ Directory intent:
 - `wiki/`: durable project wiki: confirmed scope, stakeholders, delivery model, decisions, assumptions, risks, acceptance, handover, support, and reusable project facts.
 - `glossary/`: business and technical terms, acronyms, synonyms, naming conventions.
 - `references/`: source documents, external links, excerpts, citations, and source inventories.
-- `_templates/`: reusable concept templates. Templates still use frontmatter so the bundle remains agent-parseable.
+- `_templates/`: reusable durable project-context templates. Requirement artifact templates live in `requirement-artifact-management/assets/`.
 
 ## Research Order For BA Deliverables
 
@@ -101,7 +101,7 @@ Do not read project governance context by default for every requirement task.
 3. Write concept frontmatter.
    - Include `type` on every non-reserved `.md` file.
    - Prefer `title`, `description`, `tags`, `timestamp`, and `source_refs` when useful.
-   - Use only controlled tags from `project-knowledge-base/README.md`; add a new tag to the controlled list before using it.
+   - Use only controlled tags from `references/okf-project-knowledge-base.md`; add a new tag to the controlled list before using it.
    - Preserve unknown existing frontmatter keys when editing.
 
 4. Write structured Markdown body.
@@ -173,7 +173,7 @@ Not allowed:
 - Create or update initiative, epic, user story, GUI spec, API spec, diagram, WBS, or analysis files under `requirements/output/`.
 - Update requirement folder indexes.
 
-Route requirement-folder work to the artifact-owning agent or skill, such as `user-story-writing`, `gui-specification`, `api-specification-writing`, `diagram-generation`, `wbs-writing`, or the requirements analysis agents.
+Route requirement-folder structure, indexes, placement work, and user story content to `requirement-artifact-management`. Route other artifact content work to the artifact-owning agent or skill, such as `gui-specification`, `api-specification-writing`, `diagram-generation`, `wbs-writing`, or the requirements analysis agents.
 
 ### Consistency Checks
 

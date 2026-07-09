@@ -150,7 +150,7 @@ Use for requirement and process fit. If the question is about proposed UI layout
 
 ## Screen-To-Story Alignment
 
-Use when a screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details. Keep detailed components, fields, validation, and visibility rules in `gui-specification`; keep persona, value, flow, and acceptance criteria in `user-story-writing`.
+Use when a screen, mockup, wireframe, or GUI spec needs mapping into backlog story slices without duplicating UI details. Keep detailed components, fields, validation, and visibility rules in `gui-specification`; keep persona, value, flow, and acceptance criteria in `requirement-artifact-management`.
 
 | Screen / Flow | Candidate Story | Story Boundary Rationale | GUI Spec Needed? | Open Question |
 |---|---|---|---|---|
