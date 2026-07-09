@@ -1,6 +1,6 @@
-# BA Agent Workspace Instructions
+# BA Agent Workspace Instructions (GitHub Copilot)
 
-This file is the lightweight global constitution for the BA Agent workspace. Keep detailed workflow behavior inside agents and procedural output formats inside skills.
+This is the GitHub Copilot instruction file. GitHub Copilot uses `.github/copilot-instructions.md` for workspace instructions. It is the lightweight global constitution for the BA Agent workspace; detailed workflow behavior lives in the `.github/agents` files and procedural output formats in the `.github/skills` files.
 
 ## Purpose
 
@@ -33,8 +33,8 @@ Known workspace paths may include:
 
 ```text
 [workspace-root]/
+|-- .github/copilot-instructions.md
 |-- .github/
-|   |-- copilot-instructions.md
 |   |-- agents/
 |   `-- skills/
 ```
@@ -49,7 +49,7 @@ Do not assume additional client-document, Jira, Confluence, design, source-code,
 
 ## BA Routing
 
-For BA workflow routing and first-step intake, use `.github/agents/requirements-elicitor.agent.md`.
+For BA workflow routing and first-step intake, read and follow `.github/agents/requirements-elicitor.agent.md`.
 
 ### Elicitor-First Gate
 
@@ -62,7 +62,7 @@ Apply this decision checklist before the first visible BA response. Each step ha
 5. Route to the matching agent or skill and produce the requested work.
 
 This gate is required even when the source material looks mature or already includes Q&A.
-Direct `presales-analyst` requests are not exceptions; they still begin with the elicitor checkpoint unless the user explicitly skips elicitation.
+Direct `presales-ba` requests are not exceptions; they still begin with the elicitor checkpoint unless the user explicitly skips elicitation.
 
 Elicitor checkpoint rules:
 
@@ -84,28 +84,30 @@ Exceptions:
 
 ## Mandatory Agent And Skill Triggers
 
-Always use the matching `.github/agents/*.agent.md` or `.github/skills/*/SKILL.md` file when the user asks to analyze, create, revise, review, or convert a BA artifact covered by a local agent or skill. Treat direct artifact requests as triggers, even when the request is brief or informal.
+Always read and follow the matching `.github/agents/*.agent.md` or `.github/skills/*/SKILL.md` file when the user asks to analyze, create, revise, review, or convert a BA artifact covered by a local agent or skill. Treat direct artifact requests as triggers, even when the request is brief or informal.
 
 If the matching agent or skill file cannot be found in the workspace, say so explicitly, list the expected file path, and ask the user whether to proceed using general knowledge or to provide the missing file before continuing.
 
-Agent and skill triggers do not bypass the Elicitor-First Gate. For BA artifact work, run the elicitor checkpoint first, then use the matching agent or skill.
+Agent and skill triggers do not bypass the Elicitor-First Gate. For BA artifact work, run the elicitor checkpoint first, then read and follow the matching agent or skill.
 
-Use these routing examples:
+Use these routing rules (read the listed file before producing the artifact):
 
-- Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `diagram-generation`.
-- Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `wireframe-generation`.
-- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `gui-specification`.
-- API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `api-specification-writing`.
-- User story, acceptance criteria, backlog-ready story, or story refinement: `user-story-writing`.
-- WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `wbs-writing`.
-- Requirement gap scan, readiness check, SMART check, dependency/impact analysis, behavioral/process alignment review, or requirements analysis report: `business-requirements-analyst`.
-- UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `ux-solution-evaluation`.
-- Figma Make prompt drafting or refinement: `figma-prompt-enhancement`.
-- Sprint scope email, sprint commitment note, or stakeholder sprint update: `sprint-scope-email`.
-- API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `api-requirements-analyst`.
-- Pre-sales red-hat estimation inputs, WBS/ballpark context, assumptions, risks, exclusions, dependencies, or client clarification questions: `presales-analyst`.
+- Project knowledge research, task-specific KB lookup, project context lookup before BA work, or avoiding broad project scans: `.github/skills/project-knowledge-research/SKILL.md`.
+- Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.github/skills/diagram-generation/SKILL.md`.
+- Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.github/skills/wireframe-generation/SKILL.md`.
+- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.github/skills/gui-specification/SKILL.md`.
+- API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `.github/skills/api-specification-writing/SKILL.md`.
+- User story, acceptance criteria, backlog-ready story, or story refinement: `.github/skills/user-story-writing/SKILL.md`.
+- WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.github/skills/wbs-writing/SKILL.md`.
+- Requirement gap scan, readiness check, SMART check, dependency/impact analysis, behavioral/process alignment review, or requirements analysis report: `.github/agents/business-requirements-analyst.agent.md`.
+- UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.github/skills/ux-solution-evaluation/SKILL.md`.
+- Figma Make prompt drafting or refinement: `.github/skills/figma-prompt-enhancement/SKILL.md`.
+- Sprint scope email, sprint commitment note, or stakeholder sprint update: `.github/skills/sprint-scope-email/SKILL.md`.
+- Outsourcing project knowledge update, OKF-style project context bundle maintenance, project-summary structure update, source-backed project context update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.github/skills/project-knowledge-updating/SKILL.md`.
+- API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.github/agents/api-requirements-analyst.agent.md`.
+- Pre-sales red-hat estimation inputs, WBS/ballpark context, assumptions, risks, exclusions, dependencies, or client clarification questions: `.github/agents/presales-analyst.agent.md`.
 
-If a request spans multiple artifact types, use every relevant agent or skill and state the order of use briefly before producing the artifact. If the correct order of agents or skills cannot be determined from the request, ask the user to confirm the desired sequence before proceeding. If agents have conflicting input requirements, surface the conflict explicitly and ask the user to resolve it.
+If a request spans multiple artifact types, read and follow every relevant agent or skill and state the order of use briefly before producing the artifact. If the correct order of agents or skills cannot be determined from the request, ask the user to confirm the desired sequence before proceeding. If agents have conflicting input requirements, surface the conflict explicitly and ask the user to resolve it.
 
 ## Startup
 
@@ -113,6 +115,6 @@ When beginning a request:
 
 1. Read any relevant source material available in the workspace.
 2. Apply the Elicitor-First Gate for BA work unless: (a) the user explicitly skipped elicitation, (b) the task is a narrow mechanical edit, (c) the task is a non-BA technical/file operation, or (d) the request is only a process or meta question.
-3. Use the relevant agent or skill as defined in its own file.
+3. Read and follow the relevant agent or skill file as defined in its own file.
 4. Produce the requested response or artifact with assumptions, risks, dependencies, exclusions, and open questions separated when applicable.
 5. When the chat response would contain a table or a list of more than 7 items, write the full content to a Markdown file in `.github/memory/` (create the folder if it does not exist) and keep only a summary inline, referencing the file path in the summary. If the folder cannot be created or written to, produce the full output inline and note that file creation was not possible — do not silently omit tables or lists.

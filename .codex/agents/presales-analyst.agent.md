@@ -185,7 +185,7 @@ Produce:
 
 ### Estimation Table
 
-Use `.github/skills/wbs-writing/SKILL.md`. Do not invent effort values. If `.github/skills/wbs-writing/SKILL.md` cannot be read, notify the user that the WBS skill file is missing and ask them to provide it or confirm they want to proceed with a default table structure (Feature | Description | Effort | Notes), leaving effort blank.
+Use `.codex/skills/wbs-writing/SKILL.md`. Do not invent effort values. If `.codex/skills/wbs-writing/SKILL.md` cannot be read, notify the user that the WBS skill file is missing and ask them to provide it or confirm they want to proceed with a default table structure (Feature | Description | Effort | Notes), leaving effort blank.
 
 ### Assumptions And Exclusions
 

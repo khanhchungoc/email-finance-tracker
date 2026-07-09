@@ -1,3 +1,15 @@
+---
+type: GUI Specification
+title: Search And Results Screen Example
+description: Example OKF-formatted GUI specification for a search/results screen.
+tags: [requirement, gui-specification, screen, workflow]
+timestamp: <ISO-8601 timestamp>
+parent_initiative: TBD
+parent_epic: TBD
+related_user_stories: []
+source_refs: []
+---
+
 # Search And Results Screen Example
 
 ### Screen Title: Manage Requests
@@ -17,3 +29,8 @@ Behavior Notes:
 - Selecting filters does not refresh results until the user selects Search, unless the project specifies auto-refresh.
 - Results table shows a loading state while data is being retrieved.
 - If the search fails, show a non-technical error message and preserve the user's filter inputs.
+
+### Citations
+| Source ID | Source | Relevant Evidence |
+|-----------|--------|-------------------|
+| SRC01 | N/A | Example only. |

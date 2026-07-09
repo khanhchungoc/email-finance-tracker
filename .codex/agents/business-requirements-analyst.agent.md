@@ -41,11 +41,11 @@ handoffs:
 
 ## Role
 
-This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `requirements-analysis` skill. Use `.github/skills/ux-solution-evaluation/SKILL.md` directly when a requirement analysis needs UX solution judgement.
+This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `requirements-analysis` skill. Use `.codex/skills/ux-solution-evaluation/SKILL.md` directly when a requirement analysis needs UX solution judgement.
 
 Before analysis, use `project-knowledge-research` to inspect relevant project knowledge-base context for the requirement or deliverable. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
 
-Apply `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
+Apply `AGENTS.md` for global accuracy, context handling, and no-fabrication rules.
 
 This is not the first BA stop. Expected input is an elicitation handoff from `requirements-elicitor` after the first clarification question batch has been asked and answered, explicitly skipped by the user, or intentionally parked with user confirmation. If the request skipped elicitation and the user has not explicitly confirmed they want to skip it, route to `requirements-elicitor` before analyzing. If the user explicitly confirms they want to skip elicitation, proceed with analysis but treat all assumptions as HIGH-RISK and list every missing elicitation item as a critical gap.
 

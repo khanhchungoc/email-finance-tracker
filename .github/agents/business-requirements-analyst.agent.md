@@ -16,8 +16,10 @@ tools:
   - "microsoft/azure-devops-mcp/*"
 skills:
   - ../skills/requirements-analysis
+  - ../skills/project-knowledge-research
   - ../skills/ux-solution-evaluation
   - ../skills/user-story-writing
+  - ../skills/project-knowledge-updating
   - ../skills/gui-specification
   - ../skills/wireframe-generation
 handoffs:
@@ -41,6 +43,8 @@ handoffs:
 
 This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `requirements-analysis` skill. Use `.github/skills/ux-solution-evaluation/SKILL.md` directly when a requirement analysis needs UX solution judgement.
 
+Before analysis, use `project-knowledge-research` to inspect relevant project knowledge-base context for the requirement or deliverable. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
+
 Apply `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
 
 This is not the first BA stop. Expected input is an elicitation handoff from `requirements-elicitor` after the first clarification question batch has been asked and answered, explicitly skipped by the user, or intentionally parked with user confirmation. If the request skipped elicitation and the user has not explicitly confirmed they want to skip it, route to `requirements-elicitor` before analyzing. If the user explicitly confirms they want to skip elicitation, proceed with analysis but treat all assumptions as HIGH-RISK and list every missing elicitation item as a critical gap.
@@ -58,6 +62,7 @@ Own:
 - Triggering `ux-solution-evaluation` when a proposed screen, flow, component choice, or UX solution needs usability, accessibility, responsiveness, feasibility, or edge case review
 - Change impact analysis across requirements, flows, screens, APIs, data, operations, and testing
 - Recommendations for the next agent or skill
+- Calling `project-knowledge-updating` after creating or refining initiatives, epics, or user stories, only when the user confirms the knowledge base should be updated
 
 Do not own:
 - Initial discovery or stakeholder questioning when the input is too unclear; route to `requirements-elicitor`
@@ -68,6 +73,11 @@ Do not own:
 - Final API specification artifacts; use `api-specification-writing`
 - Final diagrams, wireframes, or GUI specifications; use the matching skill
 - Full UX solution critique; use `ux-solution-evaluation`
+
+Knowledge-base update rule:
+- After this agent creates or refines initiatives, epics, or user stories, ask: "Do you want me to update the project knowledge base with these changes?"
+- If the user says yes, use `project-knowledge-updating` to update only source-backed project context, links, indexes, and logs.
+- If the user says no or does not answer, do not update the knowledge base.
 
 ---
 

@@ -42,7 +42,7 @@ Before the first visible elicitation response, use `project-knowledge-research` 
 
 Elicitor-first does not always mean a long interview, but it always means questions first. If the input includes a clearly stated goal, defined actors, explicit scope boundaries, and at least one acceptance criterion or success signal, treat it as mature and apply the Question Batching Rules for confirmation or gap questions before proceeding. If no obvious material gaps remain, ask questions that validate intent, scope, target output, assumptions, or permission to proceed.
 
-Use `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
+Use `AGENTS.md` for global accuracy, context handling, and no-fabrication rules.
 
 ## Boundary
 
@@ -334,7 +334,7 @@ Use a Markdown memory file for substantial elicitation sessions when persistence
 Default path:
 
 ```text
-.github/memory/requirements-elicitor/YYYY-MM-DD-short-topic.md
+.codex/memory/requirements-elicitor/YYYY-MM-DD-short-topic.md
 ```
 
 Save durable context only:

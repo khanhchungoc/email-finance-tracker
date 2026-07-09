@@ -1,6 +1,6 @@
 ---
 name: user-story-writing
-description: Creates and refines backlog-ready user stories with acceptance criteria using the NT standard template. Use for user story drafting and refinement; reference GUI specifications for detailed screen/component behavior instead of duplicating UI spec tables.
+description: Creates and refines OKF-formatted, backlog-ready user stories with acceptance criteria using the NT standard template. Use for user story drafting, refinement, and writing story Markdown files into the project knowledge-base requirement output hierarchy; reference GUI specifications for detailed screen/component behavior instead of duplicating UI spec tables.
 ---
 
 # User Story Writing Skill
@@ -12,10 +12,13 @@ Template Application
 - Creating new user stories from requirements
 - Refining existing user stories
 - Ensuring stories follow NT standard template
+- Formatting stories as OKF Markdown bundles with YAML frontmatter
+- Creating story files in the correct `project-knowledge-base/requirements/output/` initiative/epic folder when the target hierarchy is known
 - Adding acceptance criteria, flow summaries, dependencies, and references to relevant mockups or GUI specifications
 
 ## Prerequisites
 - Business requirement or feature description
+- Parent initiative and epic, or permission to create them as `TBD` placeholders
 - User role (or inferred from context)
 - Expected behavior and system response
 - Relevant mockup, wireframe, GUI specification, or screen reference when the story depends on UI behavior
@@ -24,11 +27,62 @@ Template Application
 
 ## Purpose
 
-Capture, structure, and refine requirements into clear, testable user stories using the NT standard template while following the BA core principles.
+Capture, structure, and refine requirements into clear, testable user stories using the NT standard template, wrapped in OKF-compatible Markdown metadata, while following the BA core principles.
 
 ## Objective
 
-The structure and format must follow the linked **User Story Sample** template.
+The body structure must follow the linked **User Story Sample** template. The file format must follow the OKF output contract below.
+
+## OKF Output Contract
+
+Every generated user story Markdown file must begin with YAML frontmatter:
+
+```yaml
+---
+type: Requirement Story
+title: <User story title>
+description: <One-sentence behavior/value summary>
+tags: [requirement, user-story, requirement-hierarchy, story-slice]
+timestamp: <ISO-8601 timestamp>
+status: draft
+story_id: <User story ID or TBD>
+parent_initiative: <Initiative title/path or TBD>
+parent_epic: <Epic title/path or TBD>
+source_refs: []
+---
+```
+
+Rules:
+- Keep `type: Requirement Story`.
+- Use controlled, short tags. Always include `requirement`, `user-story`, `requirement-hierarchy`, and `story-slice`; add only relevant cross-cutting tags such as `api`, `screen`, `frontend`, `backend`, `workflow`, `validation`, `permission`, `data`, `integration`, `reporting`, `notification`, or `acceptance-criteria`.
+- Use `status: draft` unless the user or source explicitly confirms another status.
+- Populate `source_refs` when the story is derived from source files, client notes, tickets, screenshots, or other cited artifacts. Do not fabricate citations.
+- Keep the full NT user story content in the Markdown body. OKF frontmatter is metadata, not a replacement for story sections.
+- Include a `### Citations` section in the body when source-backed references are available.
+
+## Requirement Output Folder
+
+When creating a user story file and the project knowledge base path is available, place the file here:
+
+```text
+project-knowledge-base/
+`-- requirements/
+    `-- output/
+        `-- initiatives/
+            `-- <initiative-slug>/
+                `-- epics/
+                    `-- <epic-slug>/
+                        `-- <user-story-id-or-slug>.md
+```
+
+Folder rules:
+- Default to creating Markdown story files in this hierarchy when the user asks to generate user stories for a project. Do not only return the full story inline unless the user requests inline-only output or the target hierarchy is unavailable.
+- If the parent initiative and epic folders already exist, use them.
+- If the parent initiative or epic is known but its folder does not exist, create the folder and required index/description files according to `project-knowledge-updating`.
+- If the parent initiative or epic is not known, ask the user for the target hierarchy before writing the file. If the user asks to proceed anyway, write the story only after clearly marking `parent_initiative: TBD` and `parent_epic: TBD`.
+- Use stable lowercase slugs for folder and file names. Prefer the story ID when available, for example `us-001-customer-login.md`.
+- When multiple stories are generated, write each story as its own Markdown file in the same target epic folder unless the user specifies different epics.
+- After writing files, summarize the created/updated file paths and only include the full story body inline if specifically requested.
 
 ## Workflow
 
@@ -39,16 +93,17 @@ When a requirement is received, first **analyze and identify**:
 - **System Response**  How the system reacts.
 
 ### 2. User Story Development
-- Use the format from **User Story Sample** to draft one or more user stories.
+- Use the OKF frontmatter plus the body format from **User Story Sample** to draft one or more user stories.
 - Complete each applicable section in the document.
 - Use `N/A` when a section is not applicable instead of adding generic filler.
 - If information is missing, fill only low-risk structural gaps with clearly labeled assumptions.
 - Add **Open Questions** for missing information that affects scope, business logic, data, permissions, dependencies, or acceptance criteria.
+- When writing files, place each story in the correct requirement output epic folder.
 
 ### 3. Best Practice Fill-ins
 - **Workflow Diagram**: If not available, describe the flow step-by-step in text.
 - **Screen / Mockup Reference**: If a story depends on a screen, reference the screen name, mockup, wireframe, or GUI specification. Include only story-relevant behavior needed to understand the flow and acceptance criteria.
-- Do not create detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs in this skill. Route those details to `.github/skills/gui-specification/SKILL.md`.
+- Do not create detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs in this skill. Route those details to `.gemini/skills/gui-specification/SKILL.md`.
 
 ### 4. Handling Input Cases
 - If a requirement arrives without a pre-written user story, draft the story from the available requirement.
@@ -63,6 +118,9 @@ When a requirement is received, first **analyze and identify**:
 
 ### 6. Review & Iteration
 - After providing user story details, **ask the user whether changes are needed**.
+- After creating or refining any user story, ask: **"Do you want me to update the project knowledge base with this user story context?"**
+- If the user says yes, use `project-knowledge-updating` to update `project-knowledge-base/` with source-backed epic/user-story context, related links, indexes, and logs.
+- If the user says no or does not answer, do not update the project knowledge base.
 - If a user story does not specify a **user role**, ask for clarification and propose relevant roles based on context.
 
 ---
@@ -72,6 +130,8 @@ When a requirement is received, first **analyze and identify**:
 User stories and GUI specifications often support the same feature, but they should not duplicate each other.
 
 This skill owns:
+- OKF user story frontmatter
+- Requirement output story file placement
 - Story title and value statement
 - User role / persona
 - Business goal and expected outcome
@@ -80,7 +140,7 @@ This skill owns:
 - Acceptance criteria and Gherkin scenarios
 - References to relevant mockups, wireframes, or GUI specs
 
-`.github/skills/gui-specification/SKILL.md` owns:
+`.gemini/skills/gui-specification/SKILL.md` owns:
 - Screen title and purpose
 - UI components and controls
 - Field-level properties, validations, defaults, and visibility rules
