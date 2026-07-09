@@ -2,6 +2,7 @@
 
 ## 2026-07-09
 
+* **Update**: Removed `references/` and `_templates/` from the project knowledge base; source evidence now belongs in `requirements/input/`, and the root `index.md` carries the compact project snapshot.
 * **Update**: Clarified that `requirements/` is the delivery workbench and `wiki/` is the durable project wiki store.
 * **Update**: Added explicit maintenance rules for initiative folders, epic folders, user story files, and hierarchy indexes.
 * **Update**: Collapsed initiative and epic descriptions into their folder `index.md` files to avoid duplicate hierarchy pages.

@@ -1,6 +1,6 @@
 ---
 name: project-knowledge-updating
-description: Update, maintain, normalize, or review durable outsourcing project knowledge using OKF-style Markdown bundles with YAML frontmatter, progressive index files, logs, citations, and cross-links. Use when Gemini needs to update wiki, solution-context, glossary, references, project summaries, client/vendor delivery context, scope, assumptions, risks, decisions, source references, or other reusable project context for outsourced software delivery projects. Never use this skill to update the requirements folder.
+description: Update, maintain, normalize, or review durable outsourcing project knowledge using OKF-style Markdown bundles with YAML frontmatter, progressive index files, logs, citations, and cross-links. Use when Gemini needs to update wiki, solution-context, glossary, project summaries, client/vendor delivery context, scope, assumptions, risks, decisions, source-linked context, or other reusable project context for outsourced software delivery projects. Never use this skill to update the requirements folder.
 ---
 
 # Project Knowledge Updating Skill
@@ -46,9 +46,7 @@ project-knowledge-base/
 |-- README.md
 |-- solution-context/
 |-- wiki/
-|-- glossary/
-|-- references/
-`-- _templates/
+`-- glossary/
 
 requirements/
 |-- index.md
@@ -72,19 +70,19 @@ Directory intent:
 - `solution-context/`: domains, systems, integrations, APIs, data, screens, and technical context needed to understand requirements.
 - `wiki/`: durable project wiki: confirmed scope, stakeholders, delivery model, decisions, assumptions, risks, acceptance, handover, support, and reusable project facts.
 - `glossary/`: business and technical terms, acronyms, synonyms, naming conventions.
-- `references/`: source documents, external links, excerpts, citations, and source inventories.
-- `_templates/`: reusable durable project-context templates. Requirement artifact templates live in `requirement-artifact-management/assets/`.
+- Source documents, external links, excerpts, screenshots, and citation anchors belong under `requirements/input/`, not inside `project-knowledge-base/`.
 
 ## Research Order For BA Deliverables
 
 When producing BA deliverables:
 
-1. Start with `requirements/input/` for new client requirement material.
-2. Open `requirements/output/initiatives/` and the relevant initiative or epic subfolder only for related generated requirement knowledge.
-3. Open `project-knowledge-base/solution-context/` only when the deliverable depends on domain, system, API, integration, data, screen, workflow, or technical ownership context.
-4. Open `project-knowledge-base/wiki/` only when the deliverable depends on scope, assumptions, exclusions, stakeholders, acceptance, delivery responsibility, risk, handover, support, or commitments.
-5. Open `project-knowledge-base/references/` for source evidence and citations.
-6. If updating durable project knowledge, distill confirmed facts into `project-knowledge-base/wiki/`, `project-knowledge-base/solution-context/`, `project-knowledge-base/glossary/`, or `project-knowledge-base/references/`; never write into `requirements/`.
+Use only user-specified or calling-agent-supplied input paths from `requirements/input/`. If no input path or source material is specified and the task depends on source evidence, ask which input to use; do not scan the whole input folder to discover it.
+
+1. Open `requirements/output/initiatives/` and the relevant initiative or epic subfolder only for related generated requirement knowledge.
+2. Open `project-knowledge-base/solution-context/` only when the deliverable depends on domain, system, API, integration, data, screen, workflow, or technical ownership context.
+3. Open `project-knowledge-base/wiki/` only when the deliverable depends on scope, assumptions, exclusions, stakeholders, acceptance, delivery responsibility, risk, handover, support, or commitments.
+4. Use specified `requirements/input/` files for source evidence and citations.
+5. If updating durable project knowledge, distill confirmed facts into `project-knowledge-base/wiki/`, `project-knowledge-base/solution-context/`, or `project-knowledge-base/glossary/`; never write into `requirements/`.
 
 Do not read project governance context by default for every requirement task.
 
@@ -151,9 +149,7 @@ Recommended `type` values for this workspace:
 - `Data Entity`
 - `Risk Register`
 - `Glossary Term`
-- `Source Reference`
 - `Guide`
-- `Template`
 
 These are conventions, not a closed taxonomy. Use clearer project-specific types when needed.
 

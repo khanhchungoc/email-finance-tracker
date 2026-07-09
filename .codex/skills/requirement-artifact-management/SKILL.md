@@ -72,7 +72,6 @@ This skill must not update:
 - `project-knowledge-base/wiki/`
 - `project-knowledge-base/solution-context/`
 - `project-knowledge-base/glossary/`
-- `project-knowledge-base/references/`
 
 If a generated artifact contains stable reusable project knowledge, ask the user whether to update the project knowledge base. If yes, use `project-knowledge-updating`.
 

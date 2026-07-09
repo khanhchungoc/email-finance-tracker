@@ -28,7 +28,7 @@ Outsourcing project knowledge bases usually need these concept families:
 - Data entities, source-of-truth notes, and mappings.
 - Delivery, dependency, acceptance, support, compliance, and commercial risks.
 - Glossary terms.
-- Source references.
+- Source evidence stored under `requirements/input/`.
 
 ## Folder Structure
 
@@ -39,9 +39,7 @@ project-knowledge-base/
 |-- README.md
 |-- solution-context/
 |-- wiki/
-|-- glossary/
-|-- references/
-`-- _templates/
+`-- glossary/
 
 requirements/
 |-- index.md
@@ -69,8 +67,7 @@ Add more directories only when there is actual project knowledge to store.
 | `project-knowledge-base/solution-context/` | Domains, systems, integrations, APIs, data, and technical context needed to understand requirements. |
 | `project-knowledge-base/wiki/` | Durable project wiki distilled from confirmed inputs and delivery outputs. |
 | `project-knowledge-base/glossary/` | Terms, acronyms, synonyms, and naming conventions. |
-| `project-knowledge-base/references/` | Source inventory, external links, copied excerpts, citation anchors. |
-| `project-knowledge-base/_templates/` | Reusable durable project-context templates. Requirement artifact templates live in `requirement-artifact-management/assets/`. |
+| `requirements/input/` | Raw source evidence such as briefs, tickets, screenshots, links, copied excerpts, and source metadata. |
 
 ## Concept File Rules
 
@@ -106,7 +103,7 @@ Recommended:
 - Keep confirmed facts, assumptions, decisions, risks, dependencies, exclusions, and open questions separate.
 - Prefer one concept per stable knowledge unit.
 - Link related concepts with bundle-relative links such as `/solution-context/core-api.md`.
-- Put long evidence or raw source references in `references/` and link to them.
+- Put long evidence, raw source references, screenshots, copied excerpts, and source metadata in `requirements/input/` and link to those files from durable concepts.
 - Keep listing `index.md` files short; they are navigation, not full documentation.
 - Keep `project-knowledge-base/index.md` short, but allow it to include a brief `Project Snapshot` section for the overall project description and highest-level business requirements.
 - Do not create a standalone `project-knowledge-base/wiki/project-overview.md` by default. Use separate wiki pages only for detailed scope, stakeholder, delivery, risk, decision, or support context that would make the root index too long.
@@ -117,12 +114,13 @@ Recommended:
 
 When producing BA deliverables, research in this order:
 
-1. Start with `requirements/input/` for the new client-provided requirement material.
-2. Open `requirements/output/initiatives/` and the relevant initiative or epic subfolder only for related generated requirement knowledge.
-3. Open `project-knowledge-base/solution-context/` only when the deliverable depends on domain rules, systems, APIs, integrations, data, screens, or technical ownership.
-4. Open `project-knowledge-base/wiki/` only when the deliverable depends on scope boundaries, assumptions, exclusions, stakeholders, acceptance, risk, handover, support, or delivery commitments.
-5. Use `project-knowledge-base/references/` for source evidence and citations.
-6. Artifact-owning agents or skills write generated BA deliverables to `requirements/output/`.
+Use only user-specified or calling-agent-supplied input paths from `requirements/input/`. If no input path or source material is specified and the task depends on source evidence, ask which input to use; do not scan the whole input folder to discover it.
+
+1. Open `requirements/output/initiatives/` and the relevant initiative or epic subfolder only for related generated requirement knowledge.
+2. Open `project-knowledge-base/solution-context/` only when the deliverable depends on domain rules, systems, APIs, integrations, data, screens, or technical ownership.
+3. Open `project-knowledge-base/wiki/` only when the deliverable depends on scope boundaries, assumptions, exclusions, stakeholders, acceptance, risk, handover, support, or delivery commitments.
+4. Use specified `requirements/input/` files for source evidence and citations.
+5. Artifact-owning agents or skills write generated BA deliverables to `requirements/output/`.
 
 Do not make agents read project governance folders by default for every requirement task.
 
@@ -217,7 +215,7 @@ Tagging rules:
 
 1. Add or update the `Project Snapshot` section in `project-knowledge-base/index.md` from `project-summary.md`, client brief, repo README, or confirmed user context. Keep it well below 100 lines and focused on the highest-level business requirements.
 2. Add or update `project-knowledge-base/wiki/stakeholders-scope-delivery.md` when stakeholder, scope, delivery, risk, or acceptance context is source-backed.
-3. Add source documents to `project-knowledge-base/references/` as summaries or source-reference concepts.
+3. Keep source documents, screenshots, links, excerpts, and source inventories in `requirements/input/`.
 4. Store new client-provided requirement material under `requirements/input/`.
 5. Generate BA deliverables into `requirements/output/`.
 6. If the user confirms knowledge-base update, keep generated deliverables in `requirements/output/` and distill durable facts into `project-knowledge-base/wiki/` or `project-knowledge-base/solution-context/`.

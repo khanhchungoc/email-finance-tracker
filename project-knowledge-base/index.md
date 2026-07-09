@@ -15,5 +15,3 @@ okf_version: "0.1"
 * [Solution Context](solution-context/) - Domains, systems, integrations, APIs, data, and technical context needed for BA deliverables.
 * [Wiki](wiki/) - Durable project wiki distilled from confirmed inputs and delivery outputs.
 * [Glossary](glossary/) - Terms, acronyms, synonyms, and naming conventions.
-* [References](references/) - Source inventory, external links, excerpts, and citation anchors.
-* [Templates](_templates/) - Reusable concept templates for durable project knowledge entries.
