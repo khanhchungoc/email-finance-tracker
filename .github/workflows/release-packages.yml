@@ -1,0 +1,112 @@
+name: Release packages
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag to create or update, for example v1.0.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Build and publish packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve release version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            $version = "${{ inputs.version }}"
+          } else {
+            $version = "${{ github.ref_name }}"
+          }
+
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            throw "Release version is required."
+          }
+
+          "value=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build ZIP packages
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.value }}"
+          $dist = Join-Path $PWD "dist"
+          $stageRoot = Join-Path $PWD "package-stage"
+
+          Remove-Item -LiteralPath $dist, $stageRoot -Recurse -Force -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Path $dist, $stageRoot | Out-Null
+
+          function New-ReleasePackage {
+            param(
+              [Parameter(Mandatory = $true)][string]$Name,
+              [Parameter(Mandatory = $true)][string[]]$Paths
+            )
+
+            $stage = Join-Path $stageRoot $Name
+            New-Item -ItemType Directory -Path $stage | Out-Null
+
+            foreach ($path in $Paths) {
+              if (-not (Test-Path -LiteralPath $path)) {
+                throw "Package '$Name' is missing expected path: $path"
+              }
+
+              $parent = Split-Path -Path $path -Parent
+              if (-not [string]::IsNullOrEmpty($parent)) {
+                New-Item -ItemType Directory -Path (Join-Path $stage $parent) -Force | Out-Null
+              }
+
+              Copy-Item -LiteralPath $path -Destination (Join-Path $stage $path) -Recurse -Force
+            }
+
+            $archive = Join-Path $dist "ba-agents-$Name-$version.zip"
+            Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $archive -Force
+          }
+
+          New-ReleasePackage -Name "codex" -Paths @(
+            "AGENTS.md",
+            ".codex"
+          )
+
+          New-ReleasePackage -Name "gemini" -Paths @(
+            "GEMINI.md",
+            ".gemini"
+          )
+
+          New-ReleasePackage -Name "github-copilot" -Paths @(
+            ".github/copilot-instructions.md",
+            ".github/agents",
+            ".github/skills"
+          )
+
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ba-agent-packages-${{ steps.version.outputs.value }}
+          path: dist/*.zip
+          if-no-files-found: error
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.value }}
+          TARGET: ${{ github.sha }}
+        shell: bash
+        run: |
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release upload "$VERSION" dist/*.zip --clobber
+          else
+            gh release create "$VERSION" dist/*.zip --title "$VERSION" --generate-notes --target "$TARGET"
+          fi
