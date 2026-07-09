@@ -25,6 +25,33 @@ Create stakeholder-readable wireframes as static HTML/CSS files or structured te
 - State assumptions briefly when they affect the screen count, entry point, responsive target, or primary action.
 - Ask only when missing context would materially change the wireframe.
 - For broad flows, create one focused screen first or split into a small screen sequence.
+- Identify whether the wireframe is related to one or more user stories, one epic, or multiple epics before writing a file.
+
+## Requirement Output Placement
+
+When writing wireframes for a project requirement output folder, place files by scope:
+
+```text
+requirements/output/initiatives/<initiative-slug>/
+|-- wireframe-<cross-epic-flow-slug>.html
+|-- wireframe-<cross-epic-flow-slug>.md
+`-- epics/
+    `-- <epic-slug>/
+        |-- <user-story-id-or-slug>.md
+        `-- wireframes/
+            |-- wireframe-<screen-or-flow-slug>.html
+            `-- wireframe-<screen-or-flow-slug>.md
+```
+
+Placement rules:
+
+- Put user-story-related wireframes in the `wireframes/` folder under the same epic as the related user story.
+- Put cross-epic or initiative-level wireframes in the initiative folder, not under a single epic.
+- If a wireframe relates to multiple user stories in the same epic, keep one shared wireframe file in that epic's `wireframes/` folder and link each story to it.
+- If related stories span multiple epics, stop and ask whether the wireframe is initiative-level or which epic owns it.
+- Use stable lowercase filenames: `wireframe-<screen-or-flow-slug>.html` or `wireframe-<screen-or-flow-slug>.md`.
+- After creating or updating a user-story-related wireframe, update the related user story to include a relative link such as `./wireframes/wireframe-order-detail.html`.
+- Update the nearest index: the epic `index.md` for epic-level wireframes, or the initiative `index.md` for cross-epic wireframes.
 
 ## HTML Wireframe Rules
 

@@ -53,21 +53,9 @@ If multiple data sources are involved, define simple aliases in the specificatio
 - Include status code, error code if applicable, message, and condition.
 - Do not link to shared error logic unless the user provides a real shared standard.
 
-## Optional Sections
+## Operational And NFR Details
 
-Include these only when relevant or requested:
-- Authentication and authorization
-- Rate limiting
-- Idempotency
-- Pagination
-- Caching
-- Audit, tracking, and logging
-- Performance and timeout behavior
-- Resilience, retry, and fallback behavior
-- Versioning and backward compatibility
-- Compliance, retention, and sensitive data handling
-- Security or compliance considerations
-- Supporting diagrams
+Do not create a standalone optional operational details section by default. Include authentication, authorization, rate limiting, idempotency, pagination, caching, audit, logging, performance, timeout, retry, fallback, versioning, compliance, retention, sensitive data handling, or supporting diagram references only where they affect the relevant contract, processing rule, error response, assumption, or open question.
 
 ## Documentation Standards
 

@@ -76,7 +76,7 @@ Do not own:
 
 Knowledge-base update rule:
 - After this agent creates or refines initiatives, epics, or user stories, ask: "Do you want me to update the project knowledge base with these changes?"
-- If the user says yes, use `project-knowledge-updating` to update only source-backed Wiki, links, indexes, and logs.
+- If the user says yes, use `project-knowledge-updating` to update only source-backed project context, links, indexes, and logs.
 - If the user says no or does not answer, do not update the knowledge base.
 
 ---

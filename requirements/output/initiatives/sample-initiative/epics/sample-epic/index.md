@@ -22,6 +22,14 @@ Placeholder for the epic goal, functional boundary, and expected outcome.
 * [US-001 Sample User Story](us-001-sample-user-story.md)
 * [US-002 Sample User Story](us-002-sample-user-story.md)
 
+## Wireframes
+
+* [Wireframes](wireframes/index.md)
+
+## Diagrams
+
+* [Diagrams](diagrams/index.md)
+
 ## Open Questions
 
 * Replace this placeholder with project-specific questions once real requirements are available.

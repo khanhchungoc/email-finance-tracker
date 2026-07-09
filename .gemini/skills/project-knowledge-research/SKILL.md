@@ -1,6 +1,6 @@
 ---
 name: project-knowledge-research
-description: Read-only project knowledge-base research for BA agents. Use before elicitation, requirements analysis, API analysis, presales analysis, user story drafting, GUI/API/diagram/WBS preparation, or any BA deliverable work when the assistant needs task-specific Wiki from project-knowledge-base without scanning the whole codebase or project folder. Produces a concise research packet from relevant knowledge-base indexes, requirement input/output, solution context, Wiki, glossary, and references; never updates files.
+description: Read-only project knowledge-base research for BA agents. Use before elicitation, requirements analysis, API analysis, presales analysis, user story drafting, GUI/API/diagram/WBS preparation, or any BA deliverable work when Gemini needs task-specific project context from project-knowledge-base without scanning the whole codebase or project folder. Produces a concise research packet from relevant knowledge-base indexes, requirement input/output, solution context, wiki, glossary, and references; never updates files.
 ---
 
 # Project Knowledge Research Skill
@@ -30,10 +30,10 @@ Use `project-knowledge-updating` only after artifact work when the user confirms
 3. Read `requirements/input/index.md` and relevant input files, if any.
 4. Read `requirements/output/index.md` and `requirements/output/initiatives/index.md`.
 5. Open only the relevant initiative folder, then relevant epic folder, then relevant user story files.
-6. Read `solution-context/index.md` only if the task needs system/domain/API/data/screen context.
-7. Read `wiki/index.md` only if the task needs scope/stakeholder/delivery/risk/acceptance context.
-8. Read `glossary/index.md` only if terms or acronyms affect interpretation.
-9. Read `references/index.md` and specific reference files only when source evidence is needed.
+6. Read `project-knowledge-base/solution-context/index.md` only if the task needs system/domain/API/data/screen context.
+7. Read `project-knowledge-base/wiki/index.md` only if the task needs scope/stakeholder/delivery/risk/acceptance context.
+8. Read `project-knowledge-base/glossary/index.md` only if terms or acronyms affect interpretation.
+9. Read `project-knowledge-base/references/index.md` and specific reference files only when source evidence is needed.
 
 If the needed KB files do not exist, say what is missing and continue with the available user-provided input. Do not compensate by scanning the whole repository unless the user explicitly asks or the current task is technical source-code analysis.
 
@@ -84,4 +84,4 @@ No relevant project knowledge-base content was found for this task. Proceeding m
 - Do not ask elicitation questions unless the calling agent asks for research gaps to be phrased as questions.
 - Do not update `project-knowledge-base/`; use `project-knowledge-updating` for updates after user confirmation.
 - Do not use broad workspace scans as a substitute for missing KB structure.
-- Treat `requirements/` as delivery working material and `wiki/` as durable project wiki.
+- Treat `requirements/` as delivery working material and `project-knowledge-base/wiki/` as durable project wiki.

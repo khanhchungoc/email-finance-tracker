@@ -30,7 +30,7 @@ Behavior Notes:
 - Results table shows a loading state while data is being retrieved.
 - If the search fails, show a non-technical error message and preserve the user's filter inputs.
 
-### Citations
-| Source ID | Source | Relevant Evidence |
-|-----------|--------|-------------------|
-| SRC01 | N/A | Example only. |
+### Screen Change Log
+| Change ID | User Story | Changed Screen Area / Behavior | Change Summary | Source / Reference |
+|---|---|---|---|---|
+| CHG01 | N/A | Search and results behavior | Example only. Replace with the story that introduced or changed the behavior. | N/A |

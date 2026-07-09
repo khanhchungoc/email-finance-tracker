@@ -66,7 +66,6 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 
 - `api-specification-writing`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
 - `diagram-generation`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
-- `figma-prompt-enhancement`: structured, implementation-ready prompts for Figma Make.
 - `gui-specification`: UI specification tables from screenshots, wireframes, or screen descriptions.
 - `sprint-scope-email`: sprint commitment emails with goals and ticket tables.
   - Adapt the skill per project: Jira or Azure DevOps.

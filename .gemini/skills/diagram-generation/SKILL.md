@@ -31,6 +31,33 @@ Decision rules:
 - Choose one focused diagram; split broad scope into happy path plus exceptions if needed.
 - Use plain business labels unless the audience is technical.
 - Ask only when missing context would change the diagram materially; otherwise state assumptions.
+- Identify whether the diagram is related to one or more user stories, one epic, or multiple epics before writing a file.
+
+## Requirement Output Placement
+
+When writing diagrams for a project requirement output folder, place files by scope:
+
+```text
+requirements/output/initiatives/<initiative-slug>/
+|-- diagram-<cross-epic-flow-slug>.md
+|-- diagram-<cross-epic-flow-slug>.bpmn
+`-- epics/
+    `-- <epic-slug>/
+        |-- <user-story-id-or-slug>.md
+        `-- diagrams/
+            |-- diagram-<diagram-slug>.md
+            `-- diagram-<diagram-slug>.bpmn
+```
+
+Placement rules:
+
+- Put user-story-related diagrams in the `diagrams/` folder under the same epic as the related user story.
+- Put cross-epic or initiative-level diagrams in the initiative folder, not under a single epic.
+- If a diagram relates to multiple user stories in the same epic, keep one shared diagram file in that epic's `diagrams/` folder and link each story to it.
+- If related stories span multiple epics, stop and ask whether the diagram is initiative-level or which epic owns it.
+- Use stable lowercase filenames: `diagram-<diagram-slug>.md` for Mermaid or `diagram-<diagram-slug>.bpmn` for BPMN.
+- After creating or updating a user-story-related diagram, update the related user story to include a relative link such as `./diagrams/diagram-order-approval-flow.md`.
+- Update the nearest index: the epic `index.md` for epic-level diagrams, or the initiative `index.md` for cross-epic diagrams.
 
 ## Output Delivery (Mandatory)
 
@@ -49,7 +76,7 @@ Decision rules:
 - Keep terminology consistent across nodes and flows.
 - Put each step in the responsible role/lane for Mermaid subgraphs and BPMN.
 - Prefer readable layout over clever compactness: minimize crossings, long detours, and duplicate branches.
-- Never use semicolons in Mermaid code because they can break parsing.
+- Never use the literal `;` character anywhere inside Mermaid code because it breaks VS Code Mermaid preview. Rewrite labels or statements with line breaks, commas, periods, colons, or arrows instead.
 
 ## Format Guides
 
@@ -68,6 +95,6 @@ Before presenting:
 - Check the diagram matches the requested scope and assumptions.
 - Check all decisions have complete outgoing paths.
 - Check cross-role steps are placed in the correct Mermaid subgraph or BPMN lane.
-- For Mermaid, confirm the file is Markdown, contains a fenced `mermaid` code block, and contains no semicolons inside the Mermaid code.
+- For Mermaid, confirm the file is Markdown, contains a fenced `mermaid` code block, and contains no literal `;` characters inside the Mermaid code.
 - For BPMN, validate XML structure, sequence-flow references, lane containment, and connector layout per the BPMN guide.
 - Save and deliver the diagram as a file artifact; in chat, provide file path and short summary unless the user asks for inline content.

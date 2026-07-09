@@ -21,7 +21,7 @@ Create clear, implementation-ready API specifications for any custom software pr
 
 ## Templates
 
-- `assets/api-specification-template.md` — read using your file-reading tools. Single output template containing the API contract, request/response data dictionary sections, request/response mapping sections, processing rules, errors, optional NFR sections, assumptions, and open questions. If unavailable, notify the user and proceed using the structure rules in this skill.
+- `assets/api-specification-template.md` — read using your file-reading tools. Single output template containing the API contract, request/response data dictionary sections, request/response mapping sections, processing rules, errors, assumptions, and open questions. If unavailable, notify the user and proceed using the structure rules in this skill.
 
 ## Authoring Guidelines
 
@@ -50,8 +50,7 @@ Use `assets/api-specification-template.md` (read using your file-reading tools).
 5. Processing rules
 6. Response contract
 7. Error responses
-8. Optional non-functional sections
-9. Open questions and assumptions
+8. Open questions and assumptions
 
 ### 3. Define the Request Contract
 
@@ -77,9 +76,9 @@ For structured response bodies:
 - Use one `Response Body Mapping` section when mapping from a source system, database, service, or upstream API to the API response is needed.
 - Represent nested fields inline with paths; do not create child model files.
 
-### 6. Define Errors and Optional Operational Details
+### 6. Define Errors
 
-Document standard and API-specific errors only when known or provided. Include authentication, authorization, audit, tracking, logging, rate limit, idempotency, pagination, caching, versioning, compliance, or other NFR sections only when supplied or confirmed and when they affect the API contract or user request.
+Document standard and API-specific errors only when known or provided. Include authentication, authorization, audit, tracking, logging, rate limit, idempotency, pagination, caching, versioning, compliance, or other NFR details only inside the relevant contract, processing rule, error, assumption, or open question when supplied or confirmed and when they affect the API contract or user request.
 
 ### 7. Generate Samples
 
@@ -99,6 +98,6 @@ Check that required fields are documented, mappings are complete, assumptions ar
 - [ ] Nested objects use field paths instead of separate model files.
 - [ ] Required fields, nullability, validation, and examples are clear.
 - [ ] Processing rules cover main success, validation, and exception branches.
-- [ ] Confirmed API-specific NFRs are documented in the relevant optional sections, and missing critical NFRs are listed as open questions.
+- [ ] Confirmed API-specific NFRs are documented where they affect the contract or behavior, and missing critical NFRs are listed as open questions.
 - [ ] Mapping gaps are marked with questions or `TBD` according to criticality.
 - [ ] Project-specific terminology appears only when supplied by the user.

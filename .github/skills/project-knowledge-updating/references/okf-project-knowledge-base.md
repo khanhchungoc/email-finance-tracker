@@ -10,7 +10,7 @@ This reference owns the reusable framework rules for the starter `project-knowle
 - Each normal concept file starts with YAML frontmatter.
 - `type` is required for concept files.
 - `title`, `description`, `resource`, `tags`, and `timestamp` are recommended when useful.
-- `index.md` supports progressive disclosure and should list local contents.
+- `index.md` supports progressive disclosure and should list local contents. The root `project-knowledge-base/index.md` may also carry a compact project snapshot.
 - `log.md` records material updates.
 - Markdown links express relationships between concepts.
 - Citations should appear under `# Citations` when content is derived from sources.
@@ -65,6 +65,7 @@ Add more directories only when there is actual project knowledge to store.
 | Directory | Use For |
 |---|---|
 | `requirements/` | Delivery workbench for raw requirement intake and generated BA deliverables. |
+| `project-knowledge-base/index.md` | Root entrypoint with a compact project snapshot, highest-level business requirements, and links to detailed concepts. Keep it well below 100 lines. |
 | `project-knowledge-base/solution-context/` | Domains, systems, integrations, APIs, data, and technical context needed to understand requirements. |
 | `project-knowledge-base/wiki/` | Durable project wiki distilled from confirmed inputs and delivery outputs. |
 | `project-knowledge-base/glossary/` | Terms, acronyms, synonyms, and naming conventions. |
@@ -77,10 +78,10 @@ Every normal `.md` concept file should start with frontmatter:
 
 ```yaml
 ---
-type: Project Overview
-title: Example Project
+type: Scope Boundary
+title: Example Scope Boundary
 description: One-sentence summary.
-tags: [project, overview]
+tags: [project, scope]
 timestamp: 2026-07-09T00:00:00Z
 source_refs: []
 ---
@@ -106,7 +107,9 @@ Recommended:
 - Prefer one concept per stable knowledge unit.
 - Link related concepts with bundle-relative links such as `/solution-context/core-api.md`.
 - Put long evidence or raw source references in `references/` and link to them.
-- Keep top-level and listing `index.md` files short; they are navigation, not full documentation.
+- Keep listing `index.md` files short; they are navigation, not full documentation.
+- Keep `project-knowledge-base/index.md` short, but allow it to include a brief `Project Snapshot` section for the overall project description and highest-level business requirements.
+- Do not create a standalone `project-knowledge-base/wiki/project-overview.md` by default. Use separate wiki pages only for detailed scope, stakeholder, delivery, risk, decision, or support context that would make the root index too long.
 - Use each initiative folder `index.md` as the canonical initiative page and each epic folder `index.md` as the canonical epic page.
 - Add `# Citations` when claims depend on source material.
 
@@ -133,7 +136,8 @@ Do not make agents read project governance folders by default for every requirem
 
 ## Folder File Rules
 
-- Use top-level and listing `index.md` files for navigation and child links.
+- Use listing `index.md` files for navigation and child links.
+- Use `project-knowledge-base/index.md` as the root project entrypoint: include a concise project description, highest-level business requirements, and links to detailed concepts.
 - Use `<initiative-slug>/index.md` to describe the initiative and link child epics.
 - Use `<epic-slug>/index.md` to describe the epic and link child stories.
 - Store user stories as individual Markdown files inside the epic folder.
@@ -211,7 +215,7 @@ Tagging rules:
 
 ## Starter Workflow
 
-1. Add or update `project-knowledge-base/wiki/project-overview.md` from `project-summary.md`, client brief, repo README, or confirmed user context.
+1. Add or update the `Project Snapshot` section in `project-knowledge-base/index.md` from `project-summary.md`, client brief, repo README, or confirmed user context. Keep it well below 100 lines and focused on the highest-level business requirements.
 2. Add or update `project-knowledge-base/wiki/stakeholders-scope-delivery.md` when stakeholder, scope, delivery, risk, or acceptance context is source-backed.
 3. Add source documents to `project-knowledge-base/references/` as summaries or source-reference concepts.
 4. Store new client-provided requirement material under `requirements/input/`.

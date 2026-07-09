@@ -20,19 +20,25 @@ Use this as a lightweight checklist for artifact placement and minimum expected 
 
 ## User Story
 
-- Purpose: define a backlog-ready behavior slice with acceptance criteria.
-- Owner: `requirement-artifact-management`.
-- Location: `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<story-id-or-slug>.md`.
-- Must include: OKF frontmatter, role, goal, value, assumptions, preconditions, flow summary, GUI references when relevant, Gherkin acceptance criteria, open questions, citations when available.
-- Avoid: field dictionaries, full screen/component specs, endpoint schemas, or generic filler.
+Read `references/user-story-guidelines.md`. Do not create or refine user stories from this generic artifact checklist alone.
 
 ## GUI Specification
 
 - Purpose: describe screen-level behavior for design and implementation handoff.
 - Owner: `gui-specification`.
-- Location: relevant epic folder as `gui-<screen-slug>.md`.
+- Location: same epic folder as the related user story or stories, as `gui-<screen-slug>.md`.
 - Must include: screen purpose, components, fields, states, validation, actions, accessibility notes, and links to related stories.
-- Avoid: rewriting the full user story or owning backlog acceptance scope.
+- Placement rules: if a related user story is supplied, write or update the GUI spec in that story's folder; do not create a separate UI-spec folder. If multiple related stories are in different epic folders, stop and ask which epic owns the screen spec.
+- Avoid: rewriting the full user story, owning backlog acceptance scope, or duplicating a screen spec that already exists in the target epic folder.
+
+## Wireframe
+
+- Purpose: visualize screen layout, flow, or responsive UI structure before detailed GUI specification.
+- Owner: `wireframe-generation`.
+- Location: US-related wireframes in `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/wireframes/` as `wireframe-<screen-or-flow-slug>.html` for HTML wireframes or `wireframe-<screen-or-flow-slug>.md` for text wireframes.
+- Placement rules: put US-related wireframes in the `wireframes/` folder under the same epic as the related user story. Put cross-epic or initiative-level wireframes in the initiative folder. If related stories span multiple epics, stop and ask whether the wireframe is initiative-level or which epic owns it.
+- Must include: screen/flow purpose, target viewport or format, key layout regions, major controls, states or annotations when relevant, and links to related stories.
+- Avoid: placing US-related wireframes at the epic root, placing them outside the story's epic folder, or using a wireframe as the source of final field-level rules when a GUI spec is needed.
 
 ## API Specification
 
@@ -46,9 +52,10 @@ Use this as a lightweight checklist for artifact placement and minimum expected 
 
 - Purpose: visualize process, state, interaction, data, or workflow logic.
 - Owner: `diagram-generation`.
-- Location: relevant epic folder as `diagram-<diagram-slug>.md`.
+- Location: US-related diagrams in `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/diagrams/` as `diagram-<diagram-slug>.md` or `diagram-<diagram-slug>.bpmn`; cross-epic diagrams in the initiative folder.
 - Must include: diagram type, Mermaid/BPMN/source notation when applicable, scope, actors/systems, key assumptions, and links to related stories/specs.
-- Avoid: diagrams without surrounding explanation or unlabeled decision points.
+- Placement rules: if a diagram supports a specific user story, write it in the `diagrams/` folder under that story's epic and link the story to the diagram. If the diagram spans multiple epics, write it in the initiative folder and link the relevant epic indexes or stories to it.
+- Avoid: diagrams without surrounding explanation, unlabeled decision points, or a missing link from related user stories.
 
 ## WBS
 

@@ -124,53 +124,7 @@ Omit this section when no response source mapping or transformation is needed.
 
 ---
 
-## 8. Optional Operational Details
-
-Include only when relevant.
-
-### Authentication and Authorization
-
-`TBD`
-
-### Rate Limiting
-
-`TBD`
-
-### Performance and Timeouts
-
-`TBD`
-
-### Resilience, Retry, and Fallback
-
-`TBD`
-
-### Idempotency
-
-`TBD`
-
-### Pagination, Sorting, and Filtering
-
-`TBD`
-
-### Audit, Tracking, and Logging
-
-`TBD`
-
-### Caching
-
-`TBD`
-
-### Versioning and Backward Compatibility
-
-`TBD`
-
-### Compliance, Retention, and Sensitive Data Handling
-
-`TBD`
-
----
-
-## 9. Assumptions and Open Questions
+## 8. Assumptions and Open Questions
 
 ### Assumptions
 

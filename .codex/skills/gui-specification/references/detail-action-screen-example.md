@@ -28,7 +28,7 @@ Behavior Notes:
 - If an action changes status, update the status badge and activity timeline after success.
 - If an action fails, keep the user on the screen and show a recoverable error message.
 
-### Citations
-| Source ID | Source | Relevant Evidence |
-|-----------|--------|-------------------|
-| SRC01 | N/A | Example only. |
+### Screen Change Log
+| Change ID | User Story | Changed Screen Area / Behavior | Change Summary | Source / Reference |
+|---|---|---|---|---|
+| CHG01 | N/A | Detail/action behavior | Example only. Replace with the story that introduced or changed the behavior. | N/A |

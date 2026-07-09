@@ -29,7 +29,7 @@ Behavior Notes:
 - Field-level errors appear near the relevant field and explain how to correct the input.
 - If the user leaves with unsaved changes, show a confirmation only when data loss is possible.
 
-### Citations
-| Source ID | Source | Relevant Evidence |
-|-----------|--------|-------------------|
-| SRC01 | N/A | Example only. |
+### Screen Change Log
+| Change ID | User Story | Changed Screen Area / Behavior | Change Summary | Source / Reference |
+|---|---|---|---|---|
+| CHG01 | N/A | Create/edit form behavior | Example only. Replace with the story that introduced or changed the behavior. | N/A |

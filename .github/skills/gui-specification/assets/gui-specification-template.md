@@ -30,10 +30,11 @@ Related Inputs:
 - Flow / process:
 - API / data source:
 
+Screen Change Log:
+
+| Change ID | User Story | Changed Screen Area / Behavior | Change Summary | Source / Reference |
+|---|---|---|---|---|
+| CHG01 | `<Story ID or relative link, e.g. ./us-001-create-order.md>` | `<Screen section, field, action, state, or interaction>` | `<What changed because of the story>` | `<Source file, ticket, screenshot, or N/A>` |
+
 Assumptions / Open Questions:
 - `<Use only when needed>`
-
-### Citations
-| Source ID | Source | Relevant Evidence |
-|-----------|--------|-------------------|
-| SRC01     | `<Screenshot, wireframe, design export, client note, ticket, or N/A>` | `<Short citation or summary of source-backed evidence>` |

@@ -41,7 +41,12 @@ requirements/
                     |-- <user-story-id-or-slug>.md
                     |-- gui-<screen-slug>.md
                     |-- api-<api-slug>.md
-                    |-- diagram-<diagram-slug>.md
+                    |-- wireframes/
+                    |   |-- wireframe-<screen-or-flow-slug>.html
+                    |   `-- wireframe-<screen-or-flow-slug>.md
+                    |-- diagrams/
+                    |   |-- diagram-<diagram-slug>.md
+                    |   `-- diagram-<diagram-slug>.bpmn
                     |-- wbs-<scope-slug>.md
                     `-- analysis-<analysis-slug>.md
 ```
@@ -56,9 +61,11 @@ Index responsibilities:
 - `<initiative-slug>/epics/index.md`: list epic folders.
 - `<epic-slug>/index.md`: describe the epic and list child artifacts.
 
-Use `assets/initiative-index-template.md` for initiative folder indexes, `assets/epic-index-template.md` for epic folder indexes, and `assets/user-story-template.md` for story files.
+Use `assets/initiative-index-template.md` for initiative folder indexes and `assets/epic-index-template.md` for epic folder indexes.
 
 For artifact-specific placement and minimum content expectations, read `references/artifact-guidelines.md` when creating or re-indexing an artifact type.
+
+When creating or refining a user story, read `references/user-story-guidelines.md` and use `assets/user-story-template.md`.
 
 This skill must not update:
 
@@ -69,38 +76,15 @@ This skill must not update:
 
 If a generated artifact contains stable reusable project knowledge, ask the user whether to update the project knowledge base. If yes, use `project-knowledge-updating`.
 
-## User Story Contract
-
-Every generated user story Markdown file must begin with OKF-compatible YAML frontmatter:
-
-```yaml
----
-type: Requirement Story
-title: <User story title>
-description: <One-sentence behavior/value summary>
-tags: [requirement, user-story, requirement-hierarchy, story-slice]
-timestamp: <ISO-8601 timestamp>
-story_id: <User story ID or TBD>
-parent_initiative: <Initiative title/path or TBD>
-parent_epic: <Epic title/path or TBD>
-source_refs: []
----
-```
-
-Rules:
-
-- Keep `type: Requirement Story`.
-- Always include `requirement`, `user-story`, `requirement-hierarchy`, and `story-slice`; add only relevant controlled tags such as `api`, `screen`, `frontend`, `backend`, `workflow`, `validation`, `permission`, `data`, `integration`, `reporting`, `notification`, or `acceptance-criteria`.
-- Populate `source_refs` when the story is derived from source files, client notes, tickets, screenshots, or other cited artifacts. Do not fabricate citations.
-- Keep the full user story content in the Markdown body. OKF frontmatter is metadata, not a replacement for story sections.
-- Include a `### Citations` section in the body when source-backed references are available.
-
 ## Workflow
 
 1. Identify the target artifact type and target hierarchy.
    - Initiative only: update `requirements/output/initiatives/index.md` and the initiative folder `index.md`.
    - Epic: update the parent initiative `index.md`, `epics/index.md`, and the epic folder `index.md`.
-   - Story/spec/diagram/WBS/analysis: place the artifact in the relevant epic folder and update the epic folder `index.md`.
+   - Story/spec/WBS/analysis: place the artifact in the relevant epic folder and update the epic folder `index.md`.
+   - GUI specification: place the spec in the same epic folder as the related user story or stories. If a related user story is supplied, use that story's folder as the destination.
+   - Wireframe: place US-related artifacts in the related epic's `wireframes/` folder. Place cross-epic initiative artifacts in the initiative folder.
+   - Diagram: place US-related artifacts in the related epic's `diagrams/` folder. Place cross-epic initiative artifacts in the initiative folder.
 
 2. Create missing folders only when hierarchy is known or the user explicitly permits placeholders.
    - If initiative or epic is unknown, ask for the target hierarchy.
@@ -108,37 +92,24 @@ Rules:
    - Use stable lowercase slugs for folders and files.
    - Prefer the story ID in story filenames when available, for example `us-001-customer-login.md`.
 
-3. Draft or refine user stories when requested.
-   - Identify actor, behavior, system response, business goal, dependencies, and story slice.
-   - Use `assets/user-story-template.md`.
-   - Use `N/A` when a section does not apply instead of adding filler assumptions.
-   - Add open questions for missing information that affects scope, business logic, data, permissions, dependencies, or acceptance criteria.
-   - If a story is too large to deliver in roughly one week, split it into smaller stories.
-
-4. Write acceptance criteria in Gherkin format.
-   - Prefix each criterion with a bold ID and descriptive title, for example `**AC01** <Title>`.
-   - Do not include the word "Scenario" in the AC title.
-   - Use sub-numbering such as `**AC02.1**`, `**AC02.2**` when one AC needs multiple test scenarios.
-   - Format Gherkin keywords in bold and indent the Given/When/Then lines.
-   - Group scenarios that share the same Given or When conditions into one AC with multiple Then statements when that improves readability.
-   - Arrange ACs that affect similar functionality next to each other.
-
-5. Apply client and naming handling.
+3. Apply client and naming handling.
    - Generalize client organization names to "the client" or "the company".
    - Preserve third-party product, platform, or integration names when they are functionally required.
    - Never retain actual client organization names as client identifiers.
 
-6. Maintain links and indexes.
+4. Maintain links and indexes.
    - Update the nearest parent `index.md`.
    - Keep listing indexes short.
    - Link from initiative to child epics and from epic to child artifacts.
+   - For GUI specs, keep the epic index, related user story links, and GUI spec `related_user_stories` links aligned.
+   - For wireframes and diagrams, keep the initiative or epic index aligned and add relative links from related user stories to the artifact files in `./wireframes/` or `./diagrams/`.
    - Do not duplicate full artifact bodies inside indexes.
    - Preserve existing folder names, IDs, links, and unknown frontmatter keys unless the user explicitly asks to rename or normalize them.
 
-7. Finish with a concise summary.
+5. Finish with a concise summary.
    - List created/updated paths.
    - List assumptions or missing hierarchy decisions.
-   - After creating or refining any user story, ask: "Do you want me to update the project knowledge base with this user story context?"
+   - After creating or refining generated artifacts, ask whether stable context should be distilled into `project-knowledge-base/`.
    - If the user says yes, use `project-knowledge-updating`.
    - If the user says no or does not answer, do not update the project knowledge base.
 
@@ -146,15 +117,8 @@ Rules:
 
 This skill owns:
 
-- OKF user story frontmatter
 - Requirement output story file placement
-- Story title and value statement
-- User role / persona
-- Business goal and expected outcome
-- Preconditions and dependencies
-- Flow summary
-- Acceptance criteria and Gherkin scenarios
-- References to relevant mockups, wireframes, or GUI specs
+- User story drafting and refinement when `references/user-story-guidelines.md` has been loaded
 - Requirement folder structure, indexes, and artifact placement
 
 Other skills own detailed artifact content:
@@ -189,5 +153,3 @@ Use clearer project-specific values when a downstream skill has a stronger contr
 - Do not write durable project wiki facts into `requirements/`.
 - Do not move generated deliverables into `project-knowledge-base/`.
 - Do not edit raw client files in `requirements/input/` unless the user explicitly asks to add or organize raw input material.
-- Do not create detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs in user stories; route those details to `gui-specification`.
-- Do not add generic assumptions, preconditions, out-of-scope items, or non-functional requirements just to make a section look complete; use `N/A` or open questions instead.

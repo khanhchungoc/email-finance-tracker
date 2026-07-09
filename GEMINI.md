@@ -101,7 +101,6 @@ Use these routing rules (read the listed file before producing the artifact):
 - WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.gemini/skills/wbs-writing/SKILL.md`.
 - Requirement gap scan, readiness check, SMART check, dependency/impact analysis, behavioral/process alignment review, or requirements analysis report: `.gemini/agents/business-requirements-analyst.agent.md`.
 - UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.gemini/skills/ux-solution-evaluation/SKILL.md`.
-- Figma Make prompt drafting or refinement: `.gemini/skills/figma-prompt-enhancement/SKILL.md`.
 - Sprint scope email, sprint commitment note, or stakeholder sprint update: `.gemini/skills/sprint-scope-email/SKILL.md`.
 - Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.gemini/skills/project-knowledge-updating/SKILL.md`.
 - API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.gemini/agents/api-requirements-analyst.agent.md`.

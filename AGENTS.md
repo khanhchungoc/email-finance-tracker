@@ -101,7 +101,6 @@ Use these routing rules (read the listed file before producing the artifact):
 - WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.codex/skills/wbs-writing/SKILL.md`.
 - Requirement gap scan, readiness check, SMART check, dependency/impact analysis, behavioral/process alignment review, or requirements analysis report: `.codex/agents/business-requirements-analyst.agent.md`.
 - UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.codex/skills/ux-solution-evaluation/SKILL.md`.
-- Figma Make prompt drafting or refinement: `.codex/skills/figma-prompt-enhancement/SKILL.md`.
 - Sprint scope email, sprint commitment note, or stakeholder sprint update: `.codex/skills/sprint-scope-email/SKILL.md`.
 - Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.codex/skills/project-knowledge-updating/SKILL.md`.
 - API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.codex/agents/api-requirements-analyst.agent.md`.

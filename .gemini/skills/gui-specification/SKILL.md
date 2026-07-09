@@ -12,6 +12,7 @@ Create OKF-formatted screen-level UI specifications for BA, QA, design, and deve
 Primary inputs:
 - Screen images, screenshots, design exports, Figma frames, HTML wireframes, text-based wireframes, or detailed screen descriptions.
 - Parent initiative and epic, related story IDs, user roles, business goals, workflow notes, and known project templates.
+- Existing user story files and GUI specification files in the target epic folder when the screen may already be documented.
 
 Useful upstream skills:
 - `wireframe-generation`: use its HTML or text wireframes as the main screen layout input.
@@ -28,6 +29,7 @@ This skill owns:
 - UI components, controls, fields, defaults, states, visibility, validation, and data source notes
 - Button behavior, navigation behavior, loading/empty/error/success states
 - References to related stories, wireframes, flows, or APIs
+- Screen change log entries showing which user story changed which screen behavior
 
 This skill does not own:
 - Full user stories or Gherkin ACs; use `requirement-artifact-management`
@@ -42,7 +44,11 @@ This skill does not own:
 3. Read `assets/gui-specification-template.md` using your file-reading tools for the output structure. If unavailable, notify the user and proceed using the structure rules in this skill.
 4. Describe only meaningful UI components. Ignore decorative elements unless they affect usability, state, or behavior.
 5. Add assumptions only when needed; add open questions when missing information affects rules, data, permissions, or behavior.
-6. When writing files, place each generated GUI specification in the correct requirement output epic folder.
+6. When writing files, place each generated GUI specification in the same requirement output epic folder as the related user story or stories.
+7. Before creating a new GUI spec, check the target epic folder for an existing `gui-<screen-slug>.md` for the same screen.
+   - If the same screen already exists, update the existing screen-centric GUI spec and append a screen change log row.
+   - Create a new GUI spec only for a meaningfully separate screen, state, modal, step, or variant.
+8. Maintain bidirectional traceability: update `related_user_stories` in the GUI spec, and make sure the related user story links back to the GUI spec.
 
 ## OKF Output Contract
 
@@ -65,14 +71,13 @@ source_refs: []
 Rules:
 - Keep `type: GUI Specification`.
 - Always include `requirement`, `gui-specification`, and `screen` tags; add only relevant controlled tags such as `workflow`, `frontend`, `backend`, `validation`, `permission`, `data`, `api`, `integration`, `reporting`, `notification`, `needs-clarification`, or `ready-for-refinement`.
-- Populate `related_user_stories` when story IDs or story files are supplied.
+- Populate `related_user_stories` with relative links to every user story that affects this screen, for example `./us-001-create-order.md`.
 - Populate `source_refs` when the specification is derived from screenshots, wireframes, design exports, client notes, tickets, or other cited artifacts. Do not fabricate citations.
 - Keep the full UI specification table and behavior notes in the Markdown body. OKF frontmatter is metadata, not a replacement for the specification.
-- Include a `### Citations` section in the body when source-backed references are available.
 
 ## Requirement Output Folder
 
-When creating a GUI specification file and the requirements output path is available, place the file here:
+When creating a GUI specification file and the requirements output path is available, place the file in the same epic folder as the related user story or stories:
 
 ```text
 requirements/
@@ -91,6 +96,8 @@ Folder rules:
 - If the parent initiative or epic is not known, ask the user for the target hierarchy before writing the file. If the user asks to proceed anyway, write the spec only after clearly marking `parent_initiative: TBD` and `parent_epic: TBD`.
 - Use stable lowercase slugs for file names, for example `gui-search-results.md`.
 - When multiple screens are generated, write each screen/spec as its own Markdown file in the same target epic folder unless the user specifies different epics.
+- Treat GUI specs as screen-centric and cumulative within the epic. If multiple user stories change the same screen, update the same GUI spec and append to its `Screen Change Log`.
+- One GUI spec may link to multiple user stories. One user story may link to multiple GUI specs.
 - After writing files, summarize the created/updated file paths and only include the full spec body inline if specifically requested.
 
 ## Output Rules
@@ -100,8 +107,8 @@ For each screen, output:
 - `### Screen Title`
 - UI Specification Table
 - Behavior Notes
+- Screen Change Log
 - Assumptions / Open Questions, only when needed
-- Citations, when source-backed references are available
 
 Use these default columns unless a project template overrides them:
 
@@ -119,6 +126,7 @@ Use these default columns unless a project template overrides them:
 - Use neutral terms when source terminology is unavailable: `user`, `record`, `request`, `item`, `status`, `action`.
 - Reference related stories, wireframes, flows, or APIs by name/ID when supplied.
 - Keep field-level behavior here; keep story-level value and acceptance criteria in user stories.
+- Keep the `Screen Change Log` append-only for traceability. Each row must identify the user story, changed screen area or behavior, change summary, and source/reference when available.
 
 ## Examples
 

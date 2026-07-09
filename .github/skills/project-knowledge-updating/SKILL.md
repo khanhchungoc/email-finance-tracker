@@ -1,6 +1,6 @@
 ---
 name: project-knowledge-updating
-description: Update, maintain, normalize, or review durable outsourcing project knowledge using OKF-style Markdown bundles with YAML frontmatter, progressive index files, logs, citations, and cross-links. Use when the assistant needs to update wiki, solution-context, glossary, references, project summaries, client/vendor delivery context, scope, assumptions, risks, decisions, source references, or other reusable Wiki for outsourced software delivery projects. Never use this skill to update the requirements folder.
+description: Update, maintain, normalize, or review durable outsourcing project knowledge using OKF-style Markdown bundles with YAML frontmatter, progressive index files, logs, citations, and cross-links. Use when GitHub Copilot needs to update wiki, solution-context, glossary, references, project summaries, client/vendor delivery context, scope, assumptions, risks, decisions, source references, or other reusable project context for outsourced software delivery projects. Never use this skill to update the requirements folder.
 ---
 
 # Project Knowledge Updating Skill
@@ -21,11 +21,11 @@ Use `references/okf-project-knowledge-base.md` for the reusable folder contract,
 - Separate confirmed facts, assumptions, decisions, risks, dependencies, exclusions, open questions, and citations.
 - Keep files small enough for agent retrieval. Split large topics into linked concepts instead of creating one long knowledge dump.
 - Prefer bundle-relative links such as `/solution-context/payment-gateway.md` for durable cross-links.
-- Treat top-level and listing `index.md` files as navigation. In the requirement output hierarchy, each initiative folder `index.md` is the canonical initiative page and each epic folder `index.md` is the canonical epic page.
+- Treat listing `index.md` files as navigation. The root `project-knowledge-base/index.md` may also include a short project snapshot, kept well below 100 lines, with the highest-level business requirements and links to detailed concepts.
 - Use `log.md` for material knowledge-base changes when the user asks for durable project maintenance.
 - For BA artifact generation, follow the workspace elicitor-first gate before producing downstream artifacts. This skill may organize known context, but it does not bypass elicitation.
 - When another agent creates or refines an initiative, epic, user story, or API requirement, update the knowledge base only after the user confirms they want the update.
-- Never create, edit, delete, move, rename, or re-index files under `requirements/`. That folder is owned by requirements/artifact agents and skills.
+- Never create, edit, delete, move, rename, or re-index files under top-level `requirements/`. That folder is owned by requirements/artifact agents and skills.
 
 ## Invocation From Other Agents
 
@@ -97,6 +97,7 @@ Do not read project governance context by default for every requirement task.
 2. Choose target concepts.
    - Create one Markdown concept per stable knowledge unit: solution context, wiki context, decision, risk, glossary term, or source reference.
    - Avoid storing the same fact in multiple places. Link to the source concept instead.
+   - Do not create a standalone `wiki/project-overview.md` by default. Put the concise project overview and highest-level business requirements in `project-knowledge-base/index.md`; create separate wiki concepts only for details that need their own durable page.
 
 3. Write concept frontmatter.
    - Include `type` on every non-reserved `.md` file.
@@ -111,7 +112,7 @@ Do not read project governance context by default for every requirement task.
 
 5. Maintain navigation.
    - Update the nearest `index.md` with a concise link and one-line description.
-   - Update root `index.md` when adding a new section or important entry point.
+   - Update root `index.md` when adding a new section, important entry point, or high-level business requirement.
    - Keep index entries short enough for progressive disclosure.
 
 6. Maintain log when meaningful.
@@ -127,10 +128,10 @@ Do not read project governance context by default for every requirement task.
 
 ```yaml
 ---
-type: Project Overview
-title: Example Project
+type: Scope Boundary
+title: Example Scope Boundary
 description: One-sentence summary of the concept.
-tags: [project, overview]
+tags: [project, scope]
 timestamp: 2026-07-09T00:00:00Z
 source_refs: []
 ---
@@ -158,7 +159,7 @@ These are conventions, not a closed taxonomy. Use clearer project-specific types
 
 ## Requirements Folder Guardrail
 
-`requirements/` is read-only for this skill.
+Top-level `requirements/` is read-only for this skill.
 
 Allowed:
 

@@ -10,7 +10,8 @@ Use Mermaid for quick flowcharts, sequence diagrams, state diagrams, use cases, 
 - Do not include headings or prose in Mermaid diagram files unless the user explicitly asks for explanatory Markdown.
 - Keep labels short and business-readable.
 - Use comments with `%%` only when they clarify a complex section.
-- Do not use semicolons anywhere inside Mermaid code. They can break parsing. Use commas, periods, colons, or other punctuation instead.
+- Do not use the literal `;` character anywhere inside Mermaid code. It breaks VS Code Mermaid preview. Use line breaks, commas, periods, colons, arrows, or other punctuation instead.
+- Before delivery, scan the Mermaid code block for `;` and remove every occurrence.
 
 ## Flowcharts
 
