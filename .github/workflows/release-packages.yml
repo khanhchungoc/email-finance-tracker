@@ -50,6 +50,10 @@ jobs:
           $version = "${{ steps.version.outputs.value }}"
           $dist = Join-Path $PWD "dist"
           $stageRoot = Join-Path $PWD "package-stage"
+          $sharedProjectPaths = @(
+            "project-knowledge-base",
+            "requirements"
+          )
 
           Remove-Item -LiteralPath $dist, $stageRoot -Recurse -Force -ErrorAction SilentlyContinue
           New-Item -ItemType Directory -Path $dist, $stageRoot | Out-Null
@@ -62,8 +66,9 @@ jobs:
 
             $stage = Join-Path $stageRoot $Name
             New-Item -ItemType Directory -Path $stage | Out-Null
+            $packagePaths = @($Paths + $sharedProjectPaths)
 
-            foreach ($path in $Paths) {
+            foreach ($path in $packagePaths) {
               if (-not (Test-Path -LiteralPath $path)) {
                 throw "Package '$Name' is missing expected path: $path"
               }
@@ -77,9 +82,9 @@ jobs:
             }
 
             $archive = Join-Path $dist "ba-agents-$Name-$version.zip"
-            $archivePaths = $Paths
+            $archivePaths = $packagePaths
             if ($Name -eq "github-copilot") {
-              $archivePaths = @(".github")
+              $archivePaths = @(".github") + $sharedProjectPaths
             }
 
             Push-Location $stage

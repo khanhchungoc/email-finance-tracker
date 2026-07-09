@@ -1,6 +1,6 @@
 # AI Assistant Configuration
 
-This repository contains BA agent and skill configuration for different AI assistant environments. Each tool has its own self-contained set (instruction file + `agents/` + `skills/`):
+This repository contains BA agent and skill configuration for different AI assistant environments. Each tool has its own self-contained set (instruction file + `agents/` + `skills/`) plus the shared `project-knowledge-base/` and `requirements/` starter structures:
 
 - GitHub Copilot: `.github/copilot-instructions.md` with `.github/agents/` and `.github/skills/`.
 - Codex: `AGENTS.md` (repo root) with `.codex/agents/` and `.codex/skills/`.
@@ -23,9 +23,35 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
   - Gemini: `ba-agents-gemini-<version>.zip`
   - GitHub Copilot: `ba-agents-github-copilot-<version>.zip`
 - Extract the downloaded package into your project or workspace folder.
+- Each package includes `project-knowledge-base/` as the starter project Wiki and `requirements/` as the requirement intake/output structure.
+- Set up the project knowledge base by populating the `project-knowledge-base/` folder with your project's specific Wiki, domain model, and existing documentation.
+- **IMPORTANT**: Customize all custom agents and skills (as well as `AGENTS.md`, `GEMINI.md`, or `.github/copilot-instructions.md`) as needed to align with your project's specific BA workflow, terminology, and communication style.
+
+## Multi-Repo Workspace Setup
+
+To manage requirements across interconnected systems, structure your workspace as follows:
+
+```text
+📁 My-Interconnected-Systems/
+ ├── 📁 backend-api-repo/        
+ ├── 📁 frontend-web-repo/       
+ ├── 📁 legacy-database-repo/    
+ │
+ └── 📁 BA-Accelerator/              
+      └── 📁 .github/            
+           ├── 📁 agents/        
+           ├── 📁 skills/        
+           │    ├── 📁 write-api-specification/
+           │    │    └── SKILL.md       (Your specific skill instructions)
+           │    └── 📁 write-wbs/
+           │         └── SKILL.md
+           │
+           └── copilot-instructions.md  (Your global BA instructions)
+```
+
 - Create or open a VS Code workspace for your project.
-- Add your project's source code as one workspace folder.
-- Add this BA Agents folder as another workspace folder so the agents and skills are reusable across projects.
+- Add your project's source code repositories (like `backend-api-repo`, `frontend-web-repo`, `legacy-database-repo`) as workspace folders.
+- Add this `BA-Accelerator` folder as another workspace folder so the agents and skills are reusable across projects.
 - For Copilot, `.github/copilot-instructions.md` loads automatically. For Codex, `AGENTS.md` loads automatically. For Gemini, `GEMINI.md` loads automatically.
 - To reuse this setup, add a different project source folder to the same workspace.
 
@@ -33,8 +59,6 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
 This will help the assistant understand the context when you ask questions or request work for each conversation.
 
 ## How To Use The BA Agents
-
-Start BA work with the requirements elicitor:
 
 ```text
 Use the requirements elicitor to help me handle this request: ...
@@ -51,7 +75,7 @@ requirements-elicitor
 Use the agents like this:
 
 - `requirements-elicitor`: ask the right questions, clarify scope, separate user-answerable and client-validation questions, and maintain the parking lot.
-- `business-requirements-analyst`: check readiness, gaps, SMART quality, dependencies, impact, and next route.
+- `business-requirements-analyst`: uses specialist skills to produce the final requirements artifacts after checking readiness, gaps, and impact.
 - `api-requirements-analyst`: clarify API/backend behavior before API specification work.
 - `presales-ba`: prepare red-hat estimation inputs, assumptions, risks, exclusions, WBS/ballpark context, and client questions after the elicitation checkpoint. Direct presales requests should still start through `requirements-elicitor`.
 
@@ -63,28 +87,28 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 
 ### Core BA Artifact Skills
 
-- `api-specification-writing`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
-- `diagram-generation`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
-- `figma-prompt-enhancement`: structured, implementation-ready prompts for Figma Make.
-- `gui-specification`: UI specification tables from screenshots, wireframes, or screen descriptions.
-- `sprint-scope-email`: sprint commitment emails with goals and ticket tables.
+- `write-api-specification`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
+- `generate-diagram`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
+- `write-gui-specification`: UI specification tables from screenshots, wireframes, or screen descriptions.
+- `sync-backlog`: sprint commitment emails with goals and ticket tables.
   - Adapt the skill per project: Jira or Azure DevOps.
   - Define the sprint query/filter and ticket URL format.
   - Map output fields: ID, title, type, parent/epic, priority, status, sprint/iteration, and story points/effort.
   - Confirm the estimate field: Jira custom field (e.g., `customfield_10036`) or Azure DevOps `Story Points`/`Effort`.
-- `project-knowledge-updating`: updates outsourcing project context bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
-- `project-knowledge-research`: read-only KB research before BA work so agents inspect task-relevant project context instead of scanning the whole workspace.
-- `user-story-writing`: backlog-ready user stories with acceptance criteria (NT standard).
-- `ux-solution-evaluation`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
-- `wbs-writing`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
-- `wireframe-generation`: HTML/text wireframes and responsive screen layout artifacts.
+- `update-project-knowledge`: updates outsourcing Wiki bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
+- `research-project-knowledge`: read-only KB research before BA work so agents inspect task-relevant Wiki instead of scanning the whole workspace.
+- `manage-requirement-artifacts`: maintains the `requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, requirement output re-indexing, backlog-ready user stories, and acceptance criteria.
+- `evaluate-ux-solution`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
+- `write-wbs`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
+- `generate-wireframe`: HTML/text wireframes and responsive screen layout artifacts.
 
 ### Quick Routing Guide
 
 - If requirements are still unclear: start with `requirements-elicitor`.
-- If readiness/check quality is needed: use `business-requirements-analyst`.
+- To produce requirement artifacts after assessing readiness, gaps, and impact: use `business-requirements-analyst`.
 - If an artifact is clearly requested: use the matching skill directly.
-- If durable project context should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `project-knowledge-updating` if they confirm.
+- If the `requirements/` folder hierarchy, initiative/epic indexes, or generated artifact placement needs maintenance: use `manage-requirement-artifacts`.
+- If durable Wiki should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `update-project-knowledge` if they confirm.
 
 ## Suggested VS Code Extensions
 

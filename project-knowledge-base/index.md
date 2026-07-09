@@ -11,9 +11,7 @@ okf_version: "0.1"
 
 ## Knowledge Areas
 
-* [Requirements](requirements/) - Delivery workbench for raw requirement intake and generated BA deliverables.
+* [Requirements](../requirements/) - Delivery workbench for raw requirement intake and generated BA deliverables.
 * [Solution Context](solution-context/) - Domains, systems, integrations, APIs, data, and technical context needed for BA deliverables.
-* [Project Context](project-context/) - Durable project wiki/context distilled from confirmed inputs and delivery outputs.
+* [Wiki](wiki/) - Durable project wiki distilled from confirmed inputs and delivery outputs.
 * [Glossary](glossary/) - Terms, acronyms, synonyms, and naming conventions.
-* [References](references/) - Source inventory, external links, excerpts, and citation anchors.
-* [Templates](_templates/) - Reusable concept templates for new knowledge entries.

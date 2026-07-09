@@ -1,4 +1,0 @@
-interface:
-  display_name: "Project Knowledge Research"
-  short_description: "Research task-specific project KB context."
-  default_prompt: "Research the project knowledge base for the current BA task and return a concise context packet."

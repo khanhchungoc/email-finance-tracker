@@ -11,7 +11,7 @@ Project-specific context must come from the user, accessible source files, or cl
 ## Global Principles
 
 - Do not assume a business domain, client, product, system type, architecture, integration provider, delivery model, folder path, stakeholder decision, business rule, estimate, date, or commitment unless supplied.
-- Preserve user-provided project context and use terminology consistently.
+- Preserve user-provided Wiki and use terminology consistently.
 - Separate confirmed facts, assumptions, decisions, risks, dependencies, exclusions, and open questions.
 - Ask targeted clarifying questions when missing information materially affects estimation, delivery, testing, compliance, support, or approval.
 - Do not fabricate file contents, requirements, API fields, mappings, diagrams, estimates, source references, or stakeholder decisions.
@@ -72,7 +72,7 @@ Elicitor checkpoint rules:
 - If the user's reply to a clarifying question is incomplete or introduces new ambiguity, ask a follow-up batch of 1-3 targeted questions before proceeding. Cap elicitation rounds at 3 total unless the user requests more; after 3 rounds, state remaining open questions as labeled assumptions and proceed.
 - After elicitation is complete, proceed to the handoff summary or downstream skill as appropriate.
 
-Do not proceed directly to `business-requirements-analyst`, `wbs-writing`, `user-story-writing`, `api-specification-writing`, `diagram-generation`, `wireframe-generation`, `gui-specification`, `ux-solution-evaluation`, or `sprint-scope-email` until the elicitor checkpoint is visible or explicitly referenced.
+Do not proceed directly to `business-requirements-analyst`, `write-wbs`, `manage-requirement-artifacts`, `write-api-specification`, `generate-diagram`, `generate-wireframe`, `write-gui-specification`, `evaluate-ux-solution`, or `sync-backlog` until the elicitor checkpoint is visible or explicitly referenced.
 
 If a named `requirements-elicitor` agent is not callable in the current runtime, manually perform the elicitor checkpoint using this minimal fallback definition: ask 1-3 questions covering the intended artifact type, target audience, known constraints, and permission to proceed with stated assumptions — and produce no downstream artifacts in that response. Say briefly that you are performing elicitation manually. If the elicitor agent file (`.github/agents/requirements-elicitor.agent.md`) cannot be read at all, inform the user that the file is missing, provide that expected path, and use this minimal fallback definition to run the checkpoint. Reading the elicitor agent file is not a substitute for performing the elicitor step.
 
@@ -92,18 +92,18 @@ Agent and skill triggers do not bypass the Elicitor-First Gate. For BA artifact 
 
 Use these routing rules (read the listed file before producing the artifact):
 
-- Project knowledge research, task-specific KB lookup, project context lookup before BA work, or avoiding broad project scans: `.github/skills/project-knowledge-research/SKILL.md`.
-- Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.github/skills/diagram-generation/SKILL.md`.
-- Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.github/skills/wireframe-generation/SKILL.md`.
-- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.github/skills/gui-specification/SKILL.md`.
-- API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `.github/skills/api-specification-writing/SKILL.md`.
-- User story, acceptance criteria, backlog-ready story, or story refinement: `.github/skills/user-story-writing/SKILL.md`.
-- WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.github/skills/wbs-writing/SKILL.md`.
+- Project knowledge research, task-specific KB lookup, Wiki lookup before BA work, or avoiding broad project scans: `.github/skills/research-project-knowledge/SKILL.md`.
+- Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.github/skills/generate-diagram/SKILL.md`.
+- Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.github/skills/generate-wireframe/SKILL.md`.
+- GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.github/skills/write-write-gui-specification/SKILL.md`.
+- API specification, endpoint contract, request/response schema, data dictionary, mapping rule, processing rule, error response, or sample payload: `.github/skills/write-api-specification/SKILL.md`.
+- User story, acceptance criteria, backlog-ready story, story refinement, requirement artifact folder maintenance, `requirements/` hierarchy updates, initiative/epic index creation, generated BA artifact placement, or requirement output re-indexing: `.github/skills/manage-requirement-artifacts/SKILL.md`.
+- WBS, ballpark estimate table, estimation scope breakdown, assumptions, risks, or additional effort table: `.github/skills/write-wbs/SKILL.md`.
 - Requirement gap scan, readiness check, SMART check, dependency/impact analysis, behavioral/process alignment review, or requirements analysis report: `.github/agents/business-requirements-analyst.agent.md`.
-- UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.github/skills/ux-solution-evaluation/SKILL.md`.
-- Figma Make prompt drafting or refinement: `.github/skills/figma-prompt-enhancement/SKILL.md`.
-- Sprint scope email, sprint commitment note, or stakeholder sprint update: `.github/skills/sprint-scope-email/SKILL.md`.
-- Outsourcing project knowledge update, OKF-style project context bundle maintenance, project-summary structure update, source-backed project context update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.github/skills/project-knowledge-updating/SKILL.md`.
+- UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.github/skills/evaluate-ux-solution/SKILL.md`.
+- Sprint scope email, sprint commitment note, or stakeholder sprint update: `.github/skills/sync-backlog/SKILL.md`.
+- Backlog push, backlog pull, backlog sync, work item creation, sprint scope pull, sprint scope email, backlog reconciliation, or work item attachment: `.github/agents/backlog-manager.agent.md`.
+- Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.github/skills/update-project-knowledge/SKILL.md`.
 - API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.github/agents/api-requirements-analyst.agent.md`.
 - Pre-sales red-hat estimation inputs, WBS/ballpark context, assumptions, risks, exclusions, dependencies, or client clarification questions: `.github/agents/presales-analyst.agent.md`.
 
