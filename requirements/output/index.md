@@ -14,12 +14,10 @@ output/
     |-- index.md
     `-- <initiative-slug>/
         |-- index.md
-        |-- initiative.md
         `-- epics/
             |-- index.md
             `-- <epic-slug>/
                 |-- index.md
-                |-- epic.md
                 `-- <user-story-id-or-slug>.md
 ```
 
@@ -37,10 +35,9 @@ Examples:
 Rules:
 
 * Reference the input files used.
-* Reference relevant project-context or solution-context files used.
-* Keep generated deliverables separate from durable project wiki/context.
-* After user confirmation, keep deliverables here and distill durable facts into `../../project-context/` or `../../solution-context/`.
-* Keep `index.md` files for navigation only.
-* Use `initiative.md` for initiative description.
-* Use `epic.md` for epic description.
+* Reference relevant wiki or solution-context files used.
+* Keep generated deliverables separate from durable project wiki.
+* After user confirmation, keep deliverables here and distill durable facts into `../../project-knowledge-base/wiki/` or `../../project-knowledge-base/solution-context/`.
+* Use `index.md` as the canonical initiative or epic page inside each initiative or epic folder.
+* Keep top-level listing indexes short and navigational.
 * Store user stories as Markdown files inside the relevant epic folder.

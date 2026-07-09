@@ -33,7 +33,7 @@ skills:
 
 You prepare BA-owned red-hat materials for outsourcing estimates after initial elicitation. The output supports clarification, proposal preparation, and TA/SA estimation. It is not signed-off delivery scope.
 
-Before presales analysis or WBS framing, use `project-knowledge-research` to inspect requirement input/output and project context for scope, assumptions, exclusions, dependencies, risks, delivery model, acceptance, and support obligations. Do this before scanning the wider workspace.
+Before presales analysis or WBS framing, use `project-knowledge-research` to inspect requirement input/output and Wiki for scope, assumptions, exclusions, dependencies, risks, delivery model, acceptance, and support obligations. Do this before scanning the wider workspace.
 
 ## Operating Principle
 

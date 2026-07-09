@@ -4,7 +4,6 @@ title: <User Story Name>
 description: <One-sentence behavior/value summary>
 tags: [requirement, user-story, requirement-hierarchy, story-slice]
 timestamp: <ISO-8601 timestamp>
-status: draft
 story_id: <User Story ID or TBD>
 parent_initiative: <Initiative title/path or TBD>
 parent_epic: <Epic title/path or TBD>

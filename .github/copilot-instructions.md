@@ -11,7 +11,7 @@ Project-specific context must come from the user, accessible source files, or cl
 ## Global Principles
 
 - Do not assume a business domain, client, product, system type, architecture, integration provider, delivery model, folder path, stakeholder decision, business rule, estimate, date, or commitment unless supplied.
-- Preserve user-provided project context and use terminology consistently.
+- Preserve user-provided Wiki and use terminology consistently.
 - Separate confirmed facts, assumptions, decisions, risks, dependencies, exclusions, and open questions.
 - Ask targeted clarifying questions when missing information materially affects estimation, delivery, testing, compliance, support, or approval.
 - Do not fabricate file contents, requirements, API fields, mappings, diagrams, estimates, source references, or stakeholder decisions.
@@ -92,7 +92,7 @@ Agent and skill triggers do not bypass the Elicitor-First Gate. For BA artifact 
 
 Use these routing rules (read the listed file before producing the artifact):
 
-- Project knowledge research, task-specific KB lookup, project context lookup before BA work, or avoiding broad project scans: `.github/skills/project-knowledge-research/SKILL.md`.
+- Project knowledge research, task-specific KB lookup, Wiki lookup before BA work, or avoiding broad project scans: `.github/skills/project-knowledge-research/SKILL.md`.
 - Diagram, process flow, BPMN, sequence diagram, state diagram, use case diagram, ERD, or workflow visualization: `.github/skills/diagram-generation/SKILL.md`.
 - Wireframe, screen mockup, UI layout, screen flow, responsive page mockup, or BA screen visualization: `.github/skills/wireframe-generation/SKILL.md`.
 - GUI specification, UI specification table, screen/component behavior handoff, or screenshot-to-spec conversion: `.github/skills/gui-specification/SKILL.md`.
@@ -103,7 +103,7 @@ Use these routing rules (read the listed file before producing the artifact):
 - UX solution review, mockup evaluation, component pattern comparison, usability/accessibility review, or UX recommendation: `.github/skills/ux-solution-evaluation/SKILL.md`.
 - Figma Make prompt drafting or refinement: `.github/skills/figma-prompt-enhancement/SKILL.md`.
 - Sprint scope email, sprint commitment note, or stakeholder sprint update: `.github/skills/sprint-scope-email/SKILL.md`.
-- Outsourcing project knowledge update, OKF-style project context bundle maintenance, project-summary structure update, source-backed project context update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.github/skills/project-knowledge-updating/SKILL.md`.
+- Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.github/skills/project-knowledge-updating/SKILL.md`.
 - API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.github/agents/api-requirements-analyst.agent.md`.
 - Pre-sales red-hat estimation inputs, WBS/ballpark context, assumptions, risks, exclusions, dependencies, or client clarification questions: `.github/agents/presales-analyst.agent.md`.
 

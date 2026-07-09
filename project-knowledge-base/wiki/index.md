@@ -1,6 +1,6 @@
-# Project Context
+# Wiki
 
-Use this folder as the durable project wiki/context. It should contain confirmed project facts distilled from source input, stakeholder confirmation, and generated delivery outputs.
+Use this folder as the durable project wiki. It should contain confirmed project facts distilled from source input, stakeholder confirmation, and generated delivery outputs.
 
 Store these topics here instead of keeping separate top-level folders:
 
@@ -11,6 +11,6 @@ Store these topics here instead of keeping separate top-level folders:
 * Product, scope, technical, BA, or delivery decisions and rationale.
 * Delivery, dependency, data, integration, security, compliance, acceptance, support, and commercial risks.
 
-Do not store generated BA deliverables here. Those belong in `../requirements/output/`.
+Do not store generated BA deliverables here. Those belong in `../../requirements/output/`.
 
 For requirement analysis, open this folder only when the deliverable needs scope, approval, responsibility, delivery, risk, or support context.

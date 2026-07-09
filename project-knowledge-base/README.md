@@ -4,7 +4,6 @@ title: Outsourcing Project Knowledge Base Guide
 description: Generic guide for maintaining OKF-style knowledge bases for outsourced software delivery projects.
 tags: [guide, okf, knowledge-base, outsourcing]
 timestamp: 2026-07-09T00:00:00Z
-status: draft
 source_refs:
   - https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
   - https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/README.md
@@ -14,7 +13,7 @@ source_refs:
 
 This folder is a generic, outsourcing-oriented knowledge-base bundle. It follows the useful parts of Open Knowledge Format (OKF): Markdown concept files, YAML frontmatter, progressive `index.md` navigation, optional `log.md` history, ordinary Markdown links, and citations.
 
-Use it to capture project context that future agents and humans need before writing BA artifacts, estimating work, reviewing requirements, preparing client questions, understanding systems, planning delivery, or answering project questions.
+Use it to capture Wiki that future agents and humans need before writing BA artifacts, estimating work, reviewing requirements, preparing client questions, understanding systems, planning delivery, or answering project questions.
 
 # Why This Structure
 
@@ -22,7 +21,7 @@ OKF is intentionally minimal and vendor-neutral. It treats a knowledge bundle as
 
 This workspace adapts that idea for outsourced software delivery projects:
 
-- Keep durable project context in small source-backed concept files.
+- Keep durable Wiki in small source-backed concept files.
 - Use indexes so an agent can inspect what exists before opening detail files.
 - Use links to express relationships between systems, requirements, data, integrations, and decisions.
 - Make scope, assumptions, responsibilities, acceptance, handover, support, and risks explicit because they drive delivery and commercial exposure.
@@ -35,34 +34,34 @@ project-knowledge-base/
 |-- index.md
 |-- log.md
 |-- README.md
-|-- requirements/
-|   |-- input/
-|   `-- output/
-|       `-- initiatives/
-|           |-- index.md
-|           `-- <initiative-slug>/
-|               |-- index.md
-|               |-- initiative.md
-|               `-- epics/
-|                   |-- index.md
-|                   `-- <epic-slug>/
-|                       |-- index.md
-|                       |-- epic.md
-|                       `-- <user-story-id-or-slug>.md
 |-- solution-context/
-|-- project-context/
+|-- wiki/
 |-- glossary/
 |-- references/
 `-- _templates/
+
+requirements/
+|-- index.md
+|-- input/
+`-- output/
+    `-- initiatives/
+        |-- index.md
+        `-- <initiative-slug>/
+            |-- index.md
+            `-- epics/
+                |-- index.md
+                `-- <epic-slug>/
+                    |-- index.md
+                    `-- <user-story-id-or-slug>.md
 ```
 
 # Directory Guide
 
 | Directory | Use For |
 |---|---|
-| `requirements/` | Delivery workbench for raw requirement intake and generated BA deliverables. |
+| `../requirements/` | Delivery workbench for raw requirement intake and generated BA deliverables. |
 | `solution-context/` | Domains, systems, integrations, APIs, data, and technical context needed to understand requirements. |
-| `project-context/` | Durable project wiki/context distilled from confirmed inputs and delivery outputs. |
+| `wiki/` | Durable project wiki distilled from confirmed inputs and delivery outputs. |
 | `glossary/` | Terms, acronyms, synonyms, and naming conventions. |
 | `references/` | Source inventory, external links, copied excerpts, citation anchors. |
 | `_templates/` | Reusable concept templates. |
@@ -78,7 +77,6 @@ title: Example Project
 description: One-sentence summary.
 tags: [project, overview]
 timestamp: 2026-07-09T00:00:00Z
-status: draft
 source_refs: []
 ---
 ```
@@ -93,7 +91,6 @@ Recommended:
 - `description`: one-sentence summary for indexes and previews.
 - `tags`: short cross-cutting labels.
 - `timestamp`: last meaningful update in ISO 8601 format.
-- `status`: `draft`, `confirmed`, `deprecated`, or another project-defined state.
 - `source_refs`: source files, URLs, ticket IDs, or notes used for the content.
 
 # Authoring Rules
@@ -104,7 +101,8 @@ Recommended:
 - Prefer one concept per stable knowledge unit.
 - Link related concepts with bundle-relative links such as `/solution-context/core-api.md`.
 - Put long evidence or raw source references in `references/` and link to them.
-- Keep `index.md` files short; they are navigation, not full documentation.
+- Keep top-level and listing `index.md` files short; they are navigation, not full documentation.
+- Use each initiative folder `index.md` as the canonical initiative page and each epic folder `index.md` as the canonical epic page.
 - Add `# Citations` when claims depend on source material.
 
 # Research Order For BA Deliverables
@@ -114,24 +112,25 @@ When producing BA deliverables, research in this order:
 1. Start with `requirements/input/` for the new client-provided requirement material.
 2. Open `requirements/output/initiatives/` and the relevant initiative or epic subfolder only for related generated requirement knowledge.
 3. Open `solution-context/` only when the deliverable depends on domain rules, systems, APIs, integrations, data, screens, or technical ownership.
-4. Open `project-context/` only when the deliverable depends on scope boundaries, assumptions, exclusions, stakeholders, acceptance, risk, handover, support, or delivery commitments.
+4. Open `wiki/` only when the deliverable depends on scope boundaries, assumptions, exclusions, stakeholders, acceptance, risk, handover, support, or delivery commitments.
 5. Use `references/` for source evidence and citations.
-6. Write generated BA deliverables to `requirements/output/`.
+6. Artifact-owning agents or skills write generated BA deliverables to `requirements/output/`.
 
 Do not make agents read project governance folders by default for every requirement task.
 
 Delivery vs wiki rule:
 
-- Use `requirements/` as the delivery workbench: raw client inputs go in `requirements/input/`; generated BA deliverables, specs, initiatives, epics, and user stories go in `requirements/output/`.
-- Use `project-context/` as the durable project wiki: confirmed scope, stakeholders, assumptions, exclusions, decisions, risks, acceptance, delivery model, support expectations, and reusable project facts live there.
-- Do not treat generated requirement output as durable project context until the user confirms the knowledge-base update.
-- When the user confirms a KB update, distill stable facts from `requirements/output/` into `project-context/` or `solution-context/`; do not move the deliverable itself out of `requirements/output/`.
+- Use top-level `requirements/` as the delivery workbench: raw client inputs go in `requirements/input/`; generated BA deliverables, specs, initiatives, epics, and user stories go in `requirements/output/`.
+- Use `wiki/` as the durable project wiki: confirmed scope, stakeholders, assumptions, exclusions, decisions, risks, acceptance, delivery model, support expectations, and reusable project facts live there.
+- `project-knowledge-updating` may read `requirements/` as source evidence, but must not update files under it.
+- Do not treat generated requirement output as durable Wiki until the user confirms the knowledge-base update.
+- When the user confirms a KB update, distill stable facts from `requirements/output/` into `wiki/` or `solution-context/`; do not move the deliverable itself out of `requirements/output/`.
 
 Folder file rules:
 
-- Use `index.md` for folder navigation and child links.
-- Use `<initiative-slug>/initiative.md` to describe the initiative.
-- Use `<epic-slug>/epic.md` to describe the epic.
+- Use top-level and listing `index.md` files for navigation and child links.
+- Use `<initiative-slug>/index.md` to describe the initiative and link child epics.
+- Use `<epic-slug>/index.md` to describe the epic and link child stories.
 - Store user stories as individual Markdown files inside the epic folder.
 
 # Controlled Tags
@@ -207,12 +206,12 @@ Tagging rules:
 
 # Starter Workflow
 
-1. Add or update `/project-context/project-overview.md` from `project-summary.md`, client brief, repo README, or confirmed user context.
-2. Add or update `/project-context/stakeholders-scope-delivery.md` when stakeholder, scope, delivery, risk, or acceptance context is source-backed.
+1. Add or update `/wiki/project-overview.md` from `project-summary.md`, client brief, repo README, or confirmed user context.
+2. Add or update `/wiki/stakeholders-scope-delivery.md` when stakeholder, scope, delivery, risk, or acceptance context is source-backed.
 3. Add source documents to `/references/` as summaries or source-reference concepts.
 4. Store new client-provided requirement material under `/requirements/input/`.
 5. Generate BA deliverables into `/requirements/output/`.
-6. If the user confirms knowledge-base update, keep generated deliverables in `/requirements/output/` and distill durable facts into `/project-context/` or `/solution-context/`.
+6. If the user confirms knowledge-base update, keep generated deliverables in `/requirements/output/` and distill durable facts into `/wiki/` or `/solution-context/`.
 7. Create solution-context, decision, risk, and glossary concepts only when source-backed and useful for future BA work.
 8. Update the nearest `index.md` each time a concept is added.
 9. Update `log.md` for material changes.

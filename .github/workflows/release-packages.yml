@@ -79,7 +79,7 @@ jobs:
             $archive = Join-Path $dist "ba-agents-$Name-$version.zip"
             $archivePaths = $Paths
             if ($Name -eq "github-copilot") {
-              $archivePaths = @(".github")
+              $archivePaths = @(".github", "project-knowledge-base", "requirements")
             }
 
             Push-Location $stage
@@ -92,18 +92,24 @@ jobs:
 
           New-ReleasePackage -Name "codex" -Paths @(
             "AGENTS.md",
-            ".codex"
+            ".codex",
+            "project-knowledge-base",
+            "requirements"
           )
 
           New-ReleasePackage -Name "gemini" -Paths @(
             "GEMINI.md",
-            ".gemini"
+            ".gemini",
+            "project-knowledge-base",
+            "requirements"
           )
 
           New-ReleasePackage -Name "github-copilot" -Paths @(
             ".github/copilot-instructions.md",
             ".github/agents",
-            ".github/skills"
+            ".github/skills",
+            "project-knowledge-base",
+            "requirements"
           )
 
       - name: Upload workflow artifacts

@@ -72,23 +72,22 @@ Rules:
 
 ## Requirement Output Folder
 
-When creating a GUI specification file and the project knowledge base path is available, place the file here:
+When creating a GUI specification file and the requirements output path is available, place the file here:
 
 ```text
-project-knowledge-base/
-`-- requirements/
-    `-- output/
-        `-- initiatives/
-            `-- <initiative-slug>/
-                `-- epics/
-                    `-- <epic-slug>/
-                        `-- gui-<screen-slug>.md
+requirements/
+`-- output/
+    `-- initiatives/
+        `-- <initiative-slug>/
+            `-- epics/
+                `-- <epic-slug>/
+                    `-- gui-<screen-slug>.md
 ```
 
 Folder rules:
 - Default to creating Markdown GUI specification files in this hierarchy when the user asks to generate GUI specs for a project. Do not only return the full spec inline unless the user requests inline-only output or the target hierarchy is unavailable.
 - If the parent initiative and epic folders already exist, use them.
-- If the parent initiative or epic is known but its folder does not exist, create the folder and required index/description files according to `project-knowledge-updating`.
+- If the parent initiative or epic is known but its folder does not exist, create the folder and required `index.md` files according to `project-knowledge-updating`.
 - If the parent initiative or epic is not known, ask the user for the target hierarchy before writing the file. If the user asks to proceed anyway, write the spec only after clearly marking `parent_initiative: TBD` and `parent_epic: TBD`.
 - Use stable lowercase slugs for file names, for example `gui-search-results.md`.
 - When multiple screens are generated, write each screen/spec as its own Markdown file in the same target epic folder unless the user specifies different epics.

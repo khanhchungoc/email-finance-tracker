@@ -13,7 +13,7 @@ Template Application
 - Refining existing user stories
 - Ensuring stories follow NT standard template
 - Formatting stories as OKF Markdown bundles with YAML frontmatter
-- Creating story files in the correct `project-knowledge-base/requirements/output/` initiative/epic folder when the target hierarchy is known
+- Creating story files in the correct `requirements/output/` initiative/epic folder when the target hierarchy is known
 - Adding acceptance criteria, flow summaries, dependencies, and references to relevant mockups or GUI specifications
 
 ## Prerequisites
@@ -44,7 +44,6 @@ title: <User story title>
 description: <One-sentence behavior/value summary>
 tags: [requirement, user-story, requirement-hierarchy, story-slice]
 timestamp: <ISO-8601 timestamp>
-status: draft
 story_id: <User story ID or TBD>
 parent_initiative: <Initiative title/path or TBD>
 parent_epic: <Epic title/path or TBD>
@@ -55,30 +54,28 @@ source_refs: []
 Rules:
 - Keep `type: Requirement Story`.
 - Use controlled, short tags. Always include `requirement`, `user-story`, `requirement-hierarchy`, and `story-slice`; add only relevant cross-cutting tags such as `api`, `screen`, `frontend`, `backend`, `workflow`, `validation`, `permission`, `data`, `integration`, `reporting`, `notification`, or `acceptance-criteria`.
-- Use `status: draft` unless the user or source explicitly confirms another status.
 - Populate `source_refs` when the story is derived from source files, client notes, tickets, screenshots, or other cited artifacts. Do not fabricate citations.
 - Keep the full NT user story content in the Markdown body. OKF frontmatter is metadata, not a replacement for story sections.
 - Include a `### Citations` section in the body when source-backed references are available.
 
 ## Requirement Output Folder
 
-When creating a user story file and the project knowledge base path is available, place the file here:
+When creating a user story file and the requirements output path is available, place the file here:
 
 ```text
-project-knowledge-base/
-`-- requirements/
-    `-- output/
-        `-- initiatives/
-            `-- <initiative-slug>/
-                `-- epics/
-                    `-- <epic-slug>/
-                        `-- <user-story-id-or-slug>.md
+requirements/
+`-- output/
+    `-- initiatives/
+        `-- <initiative-slug>/
+            `-- epics/
+                `-- <epic-slug>/
+                    `-- <user-story-id-or-slug>.md
 ```
 
 Folder rules:
 - Default to creating Markdown story files in this hierarchy when the user asks to generate user stories for a project. Do not only return the full story inline unless the user requests inline-only output or the target hierarchy is unavailable.
 - If the parent initiative and epic folders already exist, use them.
-- If the parent initiative or epic is known but its folder does not exist, create the folder and required index/description files according to `project-knowledge-updating`.
+- If the parent initiative or epic is known but its folder does not exist, create the folder and required `index.md` files according to `project-knowledge-updating`.
 - If the parent initiative or epic is not known, ask the user for the target hierarchy before writing the file. If the user asks to proceed anyway, write the story only after clearly marking `parent_initiative: TBD` and `parent_epic: TBD`.
 - Use stable lowercase slugs for folder and file names. Prefer the story ID when available, for example `us-001-customer-login.md`.
 - When multiple stories are generated, write each story as its own Markdown file in the same target epic folder unless the user specifies different epics.

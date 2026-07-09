@@ -1,14 +1,13 @@
 ---
 type: Requirement Epic
-title: Epic Index Template
-description: Template for an epic folder index under an initiative.
+title: Epic Template
+description: Template for the canonical epic folder index under an initiative.
 tags: [requirement, epic, requirement-hierarchy]
 timestamp: 2026-07-09T00:00:00Z
-status: draft
 source_refs: []
 ---
 
-# Epic Summary
+# Epic
 
 TBD
 

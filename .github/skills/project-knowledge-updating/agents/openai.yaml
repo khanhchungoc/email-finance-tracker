@@ -1,4 +1,4 @@
 interface:
   display_name: "Project Knowledge Updating"
   short_description: "Update outsourcing project knowledge bases."
-  default_prompt: "Update the outsourcing project knowledge base from confirmed project context and source-backed artifact changes."
+  default_prompt: "Update the outsourcing project knowledge base from confirmed Wiki and source-backed artifact changes."

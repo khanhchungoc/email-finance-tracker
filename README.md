@@ -1,6 +1,6 @@
 # AI Assistant Configuration
 
-This repository contains BA agent and skill configuration for different AI assistant environments. Each tool has its own self-contained set (instruction file + `agents/` + `skills/`):
+This repository contains BA agent and skill configuration for different AI assistant environments. Each tool has its own self-contained set (instruction file + `agents/` + `skills/`) plus the shared `project-knowledge-base/` and `requirements/` starter structures:
 
 - GitHub Copilot: `.github/copilot-instructions.md` with `.github/agents/` and `.github/skills/`.
 - Codex: `AGENTS.md` (repo root) with `.codex/agents/` and `.codex/skills/`.
@@ -23,6 +23,7 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
   - Gemini: `ba-agents-gemini-<version>.zip`
   - GitHub Copilot: `ba-agents-github-copilot-<version>.zip`
 - Extract the downloaded package into your project or workspace folder.
+- Each package includes `project-knowledge-base/` as the starter OKF-style Wiki and `requirements/` as the requirement intake/output structure.
 - Create or open a VS Code workspace for your project.
 - Add your project's source code as one workspace folder.
 - Add this BA Agents folder as another workspace folder so the agents and skills are reusable across projects.
@@ -72,8 +73,8 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
   - Define the sprint query/filter and ticket URL format.
   - Map output fields: ID, title, type, parent/epic, priority, status, sprint/iteration, and story points/effort.
   - Confirm the estimate field: Jira custom field (e.g., `customfield_10036`) or Azure DevOps `Story Points`/`Effort`.
-- `project-knowledge-updating`: updates outsourcing project context bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
-- `project-knowledge-research`: read-only KB research before BA work so agents inspect task-relevant project context instead of scanning the whole workspace.
+- `project-knowledge-updating`: updates outsourcing Wiki bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
+- `project-knowledge-research`: read-only KB research before BA work so agents inspect task-relevant Wiki instead of scanning the whole workspace.
 - `user-story-writing`: backlog-ready user stories with acceptance criteria (NT standard).
 - `ux-solution-evaluation`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
 - `wbs-writing`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
@@ -84,7 +85,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 - If requirements are still unclear: start with `requirements-elicitor`.
 - If readiness/check quality is needed: use `business-requirements-analyst`.
 - If an artifact is clearly requested: use the matching skill directly.
-- If durable project context should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `project-knowledge-updating` if they confirm.
+- If durable Wiki should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `project-knowledge-updating` if they confirm.
 
 ## Suggested VS Code Extensions
 

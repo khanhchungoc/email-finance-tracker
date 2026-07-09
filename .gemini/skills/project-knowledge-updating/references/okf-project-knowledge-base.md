@@ -17,9 +17,9 @@ Use OKF as a lightweight file contract, not as a rigid information architecture.
 
 Outsourcing project knowledge bases usually need these concept families:
 
-- Requirement hierarchy concepts under initiatives, epics, and user stories.
+- Requirement hierarchy files under initiatives, epics, and user stories, owned by requirements/artifact agents.
 - Solution context: domains, systems, modules, APIs, integrations, data, screens, and environments.
-- Project context: durable project wiki/context for engagement, stakeholders, ownership, scope boundaries, assumptions, exclusions, dependencies, delivery model, acceptance, handover, support, decisions, and risks.
+- Wiki: durable project wiki for engagement, stakeholders, ownership, scope boundaries, assumptions, exclusions, dependencies, delivery model, acceptance, handover, support, decisions, and risks.
 - Requirements, initiatives, epics, user stories, and BA artifact references.
 - Decisions and rationale.
 - Integrations and dependencies.
@@ -44,29 +44,30 @@ project-knowledge-base/
 |-- index.md
 |-- log.md
 |-- README.md
-|-- project-context/
+|-- wiki/
 |   `-- index.md
 |-- solution-context/
 |   `-- index.md
-|-- requirements/
-|   |-- index.md
-|   |-- input/
-|   `-- output/
-|       `-- initiatives/
-|           |-- index.md
-|           `-- <initiative-slug>/
-|               |-- index.md
-|               |-- initiative.md
-|               `-- epics/
-|                   |-- index.md
-|                   `-- <epic-slug>/
-|                       |-- index.md
-|                       |-- epic.md
-|                       `-- <user-story-id-or-slug>.md
 |-- references/
 |   `-- index.md
 `-- _templates/
-    `-- concept-template.md
+    |-- project-overview-template.md
+    |-- initiative-index-template.md
+    `-- epic-index-template.md
+
+requirements/
+|-- index.md
+|-- input/
+`-- output/
+    `-- initiatives/
+        |-- index.md
+        `-- <initiative-slug>/
+            |-- index.md
+            `-- epics/
+                |-- index.md
+                `-- <epic-slug>/
+                    |-- index.md
+                    `-- <user-story-id-or-slug>.md
 ```
 
 Add more directories only when there is actual project knowledge to store.
@@ -77,7 +78,7 @@ Use controlled tags for requirement navigation:
 
 - `requirement`: all requirement hierarchy concepts.
 - `epic`: epic-level concepts.
-- `user-story`: story-level context concepts.
+- `user-story`: user story files.
 - `requirement-hierarchy`: concepts that participate in initiative/epic/user-story hierarchy.
 - `parent-initiative`, `parent-epic`, `child-epic`, `child-story`: relationship navigation when useful.
 - `story-slice`: deliverable user-story slices.
@@ -90,4 +91,5 @@ Add new tags to `project-knowledge-base/README.md` before using them.
 - Use `requirements/input/` for raw client-provided requirement material.
 - Use `requirements/output/` for generated BA delivery outputs.
 - Agents should read input plus relevant curated knowledge before generating output.
-- Agents should not treat generated output as durable project wiki/context until the user confirms that durable facts should be distilled into `project-context/` or `solution-context/`.
+- `project-knowledge-updating` reads `requirements/` as source evidence only; it must not create, edit, move, delete, or re-index requirement files.
+- Agents should not treat generated output as durable project wiki until the user confirms that durable facts should be distilled into `project-knowledge-base/wiki/` or `project-knowledge-base/solution-context/`.

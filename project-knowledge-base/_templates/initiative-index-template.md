@@ -1,14 +1,13 @@
 ---
 type: Requirement Initiative
-title: Initiative Index Template
-description: Template for an initiative folder index under requirements/output/initiatives.
+title: Initiative Template
+description: Template for the canonical initiative folder index under requirements/output/initiatives.
 tags: [requirement, initiative, requirement-hierarchy]
 timestamp: 2026-07-09T00:00:00Z
-status: draft
 source_refs: []
 ---
 
-# Initiative Summary
+# Initiative
 
 TBD
 
