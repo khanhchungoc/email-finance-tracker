@@ -18,6 +18,11 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
 
 ## Getting Started
 
+- Go to [BA Accelerator releases](https://github.com/NashTech-Global/BA-accelerator/releases) and download the ZIP package that matches your AI agent:
+  - Codex: `ba-agents-codex-<version>.zip`
+  - Gemini: `ba-agents-gemini-<version>.zip`
+  - GitHub Copilot: `ba-agents-github-copilot-<version>.zip`
+- Extract the downloaded package into your project or workspace folder.
 - Create or open a VS Code workspace for your project.
 - Add your project's source code as one workspace folder.
 - Add this BA Agents folder as another workspace folder so the agents and skills are reusable across projects.
@@ -26,29 +31,6 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
 
 **IMPORTANT**: Create a file called `project-summary.md` and write a summary of the project. Then ask the assistant to always read `project-summary.md` for context.
 This will help the assistant understand the context when you ask questions or request work for each conversation.
-
-## Release Packages
-
-GitHub Actions publishes three ZIP packages on the repository Releases page:
-
-- `ba-agents-codex-<version>.zip`: `AGENTS.md` with `.codex/agents/` and `.codex/skills/`.
-- `ba-agents-gemini-<version>.zip`: `GEMINI.md` with `.gemini/agents/` and `.gemini/skills/`.
-- `ba-agents-github-copilot-<version>.zip`: `.github/copilot-instructions.md` with `.github/agents/` and `.github/skills/`.
-
-The root `.agents/` folder is not included in any release package.
-
-To publish a release, use one of these options:
-
-1. Push a version tag:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-2. Create and publish a GitHub Release from the Releases page. The workflow runs when the release is published and uploads the ZIP files to that release.
-
-3. Run the `Release packages` workflow manually from GitHub Actions and provide the version tag, for example `v1.0.0`.
 
 ## How To Use The BA Agents
 
