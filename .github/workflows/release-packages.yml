@@ -2,6 +2,8 @@ name: Release packages
 
 on:
   push:
+    branches:
+      - main
     tags:
       - "v*"
   release:
@@ -25,6 +27,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump version and push tag
+        id: tag_version
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
 
       - name: Resolve release version
         id: version
@@ -34,6 +46,8 @@ jobs:
             $version = "${{ inputs.version }}"
           } elseif ("${{ github.event_name }}" -eq "release") {
             $version = "${{ github.event.release.tag_name }}"
+          } elseif ("${{ github.ref }}" -eq "refs/heads/main" -and "${{ github.event_name }}" -eq "push") {
+            $version = "${{ steps.tag_version.outputs.new_tag }}"
           } else {
             $version = "${{ github.ref_name }}"
           }
@@ -123,10 +137,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.value }}
           TARGET: ${{ github.sha }}
+          CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
         shell: bash
         run: |
           if gh release view "$VERSION" >/dev/null 2>&1; then
             gh release upload "$VERSION" dist/*.zip --clobber
           else
-            gh release create "$VERSION" dist/*.zip --title "$VERSION" --generate-notes --target "$TARGET"
+            if [ -n "$CHANGELOG" ]; then
+              echo "$CHANGELOG" > release_notes.md
+              gh release create "$VERSION" dist/*.zip --title "Release $VERSION" --notes-file release_notes.md --target "$TARGET"
+            else
+              gh release create "$VERSION" dist/*.zip --title "Release $VERSION" --generate-notes --target "$TARGET"
+            fi
           fi
