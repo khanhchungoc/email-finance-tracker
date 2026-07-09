@@ -83,7 +83,6 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 ### Diagrams
 
 - BPMN Editor: https://marketplace.visualstudio.com/items?itemName=bpmn-io.vs-code-bpmn-io
-- Mermaid Chart: https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart
 - draw.io: https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio
 
 ### Markdown Utilities
@@ -99,4 +98,3 @@ In Codex, go to `Plugins`, then search for `@mcp <mcp-name>`.
 - `@mcp atlassian`
 - `@mcp Azure DevOps`
 - `@mcp figma` if you have a premium Figma account
-- `@mcp pencil` as a free Figma alternative

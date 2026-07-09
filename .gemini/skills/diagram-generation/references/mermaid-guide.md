@@ -4,11 +4,13 @@ Use Mermaid for quick flowcharts, sequence diagrams, state diagrams, use cases, 
 
 ## Output Rules
 
-- Output raw Mermaid only unless the user asks for markdown.
-- Do not include headings or code fences in diagram files.
+- Create Mermaid diagrams as Markdown files.
+- Put the Mermaid diagram inside a fenced `mermaid` code block.
+- Do not create `.mmd` files because VS Code natively previews Mermaid in Markdown files.
+- Do not include headings or prose in Mermaid diagram files unless the user explicitly asks for explanatory Markdown.
 - Keep labels short and business-readable.
 - Use comments with `%%` only when they clarify a complex section.
-- **Do not use semicolons (`;`) in node labels, decisions, notes, or any diagram content** — semicolons cause Mermaid rendering to fail. Use commas, periods, colons, or other punctuation instead.
+- Do not use semicolons anywhere inside Mermaid code. They can break parsing. Use commas, periods, colons, or other punctuation instead.
 
 ## Flowcharts
 
@@ -40,7 +42,7 @@ flowchart TD
 ## Sequence Diagrams
 
 - Start with `sequenceDiagram`.
-- Never include title headings or Mermaid code fences in output files.
+- Use the same Markdown fenced block output rule as other Mermaid diagrams.
 - Include `autonumber` by default.
 - Use `->>` for requests and `-->>` for responses.
 - Use `alt`, `opt`, and `loop` for conditional or repeated interactions.

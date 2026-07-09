@@ -11,13 +11,13 @@ Create concise, stakeholder-readable diagrams from requirements, process notes, 
 
 | Need | Format | Output |
 |---|---|---|
-| Simple decision or process flow | Mermaid flowchart | `.mmd` / markdown Mermaid |
-| Cross-role workflow or swimlanes | Mermaid flowchart with subgraphs, or BPMN for formal lanes | `.mmd` / `.bpmn` |
+| Simple decision or process flow | Mermaid flowchart | `.md` with fenced Mermaid block |
+| Cross-role workflow or swimlanes | Mermaid flowchart with subgraphs, or BPMN for formal lanes | `.md` with fenced Mermaid block / `.bpmn` |
 | Formal process model | BPMN 2.0 XML | `.bpmn` |
-| API/service interaction | Mermaid sequence diagram | `.mmd` / markdown Mermaid |
-| Entity lifecycle | Mermaid state diagram | `.mmd` / markdown Mermaid |
-| System scope | Mermaid use case diagram | `.mmd` / markdown Mermaid |
-| Data model | Mermaid ERD | `.mmd` / markdown Mermaid |
+| API/service interaction | Mermaid sequence diagram | `.md` with fenced Mermaid block |
+| Entity lifecycle | Mermaid state diagram | `.md` with fenced Mermaid block |
+| System scope | Mermaid use case diagram | `.md` with fenced Mermaid block |
+| Data model | Mermaid ERD | `.md` with fenced Mermaid block |
 
 Decision rules:
 - Use Mermaid flowcharts with role-based subgraphs for lightweight cross-role workflows or swimlane-like diagrams.
@@ -34,7 +34,10 @@ Decision rules:
 
 ## Output Delivery (Mandatory)
 
-- Always create the diagram as a separate file in the workspace (for example, `.mmd` or `.bpmn`).
+- Always create the diagram as a separate file in the workspace.
+- For Mermaid diagrams, create a `.md` file containing only a fenced `mermaid` code block.
+- Do not create `.mmd` files for Mermaid diagrams because VS Code natively previews Mermaid diagrams in Markdown files.
+- For BPMN diagrams, create a `.bpmn` file.
 - Do not place the full diagram content in chat responses by default.
 - In chat, return the created file path and a brief note only.
 - Include full diagram content in chat only if the user explicitly asks for inline output.
@@ -46,6 +49,7 @@ Decision rules:
 - Keep terminology consistent across nodes and flows.
 - Put each step in the responsible role/lane for Mermaid subgraphs and BPMN.
 - Prefer readable layout over clever compactness: minimize crossings, long detours, and duplicate branches.
+- Never use semicolons in Mermaid code because they can break parsing.
 
 ## Format Guides
 
@@ -54,10 +58,9 @@ Decision rules:
 
 ## Viewer Suggestions
 
-When delivering diagram artifacts, briefly suggest relevant VS Code extensions if the user may need a viewer/editor. Deduplicate repeated suggestions and keep diagram files themselves raw.
+When delivering BPMN artifacts, briefly suggest a relevant VS Code extension if the user may need a viewer/editor.
 
 - BPMN: https://marketplace.visualstudio.com/items?itemName=bpmn-io.vs-code-bpmn-io
-- Mermaid: https://marketplace.visualstudio.com/items?itemName=MermaidChart.vscode-mermaid-chart
 
 ## Validation
 
@@ -65,5 +68,6 @@ Before presenting:
 - Check the diagram matches the requested scope and assumptions.
 - Check all decisions have complete outgoing paths.
 - Check cross-role steps are placed in the correct Mermaid subgraph or BPMN lane.
+- For Mermaid, confirm the file is Markdown, contains a fenced `mermaid` code block, and contains no semicolons inside the Mermaid code.
 - For BPMN, validate XML structure, sequence-flow references, lane containment, and connector layout per the BPMN guide.
 - Save and deliver the diagram as a file artifact; in chat, provide file path and short summary unless the user asks for inline content.
