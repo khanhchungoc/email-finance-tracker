@@ -63,6 +63,9 @@ When a requirement is received, first **analyze and identify**:
 
 ### 6. Review & Iteration
 - After providing user story details, **ask the user whether changes are needed**.
+- After creating or refining any user story, ask: **"Do you want me to update the project knowledge base with this user story context?"**
+- If the user says yes, use `project-knowledge-updating` to update `project-knowledge-base/` with source-backed epic/user-story context, related links, indexes, and logs.
+- If the user says no or does not answer, do not update the project knowledge base.
 - If a user story does not specify a **user role**, ask for clarification and propose relevant roles based on context.
 
 ---
