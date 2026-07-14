@@ -13,7 +13,6 @@ Create stakeholder-readable wireframes as static HTML/CSS files or structured te
 - Use text-based wireframes when the user asks for text only, PRD-ready structure, early UX validation, documentation, or pre-visual-design handoff.
 - For HTML, generate a self-contained `.html` file with embedded CSS.
 - For text-based wireframes, output only clarifying questions or the final structured text wireframe.
-- Use lowercase kebab-case asset templates when starting from a reusable structure.
 - Use Mid-Fi fidelity by default unless the user asks for Lo-Fi or Hi-Fi.
 - Target both mobile and desktop when the request implies a responsive product; otherwise use the most relevant viewport.
 - Avoid JavaScript unless the user asks for click-through behavior or dynamic states.
@@ -82,7 +81,7 @@ Placement rules:
 
 - HTML: follow [references/html-wireframe-guide.md](references/html-wireframe-guide.md) for structure, components, file naming, and validation.
 - Text-based: follow [references/text-wireframe-guide.md](references/text-wireframe-guide.md) for required sections, clarification rules, and output format.
-- Templates: read `assets/html-wireframe-template.html` or `assets/text-wireframe-template.md` using your file-reading tools when a reusable starting artifact helps. If unavailable, notify the user and proceed without a template.
+- Templates: read `assets/text-wireframe-template.md` when producing text-based wireframes from a reusable structure. HTML wireframes should follow `references/html-wireframe-guide.md` directly and do not use a separate HTML template.
 
 ## Validation
 

@@ -1,5 +1,9 @@
 # Project Knowledge Base Update Log
 
+## 2026-07-14
+
+* **Update**: Added placeholder wiki knowledge areas and diagram folders so durable wiki pages can be grouped by project topic, with shared diagrams at `wiki/diagrams/` and area-specific diagrams under each knowledge area.
+
 ## 2026-07-09
 
 * **Update**: Removed `references/` and `_templates/` from the project knowledge base; source evidence now belongs in `requirements/input/`, and the root `index.md` carries the compact project snapshot.
