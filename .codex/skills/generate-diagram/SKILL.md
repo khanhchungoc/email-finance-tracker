@@ -78,6 +78,14 @@ Placement rules:
 - Prefer readable layout over clever compactness: minimize crossings, long detours, and duplicate branches.
 - Never use the literal `;` character anywhere inside Mermaid code because it breaks VS Code Mermaid preview. Rewrite labels or statements with line breaks, commas, periods, colons, or arrows instead.
 
+### Mermaid Routing Cleanup (When Arrows Look Weird)
+
+- Treat this as a troubleshooting step, not a default style requirement.
+- First try linear connector routing by adding an init block such as `%%{init: {'flowchart': {'curve': 'linear'}}}%%`.
+- Set explicit subgraph direction (`direction LR` or `direction TB`) before adding workaround links.
+- Reorder node declarations so visual order matches intended reading flow.
+- Use spacer or anchor nodes only as a last resort when direct links still route poorly.
+
 ## Format Guides
 
 - BPMN: follow [references/bpmn-guide.md](references/bpmn-guide.md), especially lane containment, gateway semantics, and DI validation.
