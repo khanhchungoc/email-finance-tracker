@@ -64,6 +64,8 @@ Apply this decision checklist before the first visible BA response. Each step ha
 This gate is required even when the source material looks mature or already includes Q&A.
 Direct `presales-ba` requests are not exceptions; they still begin with the elicitor checkpoint unless the user explicitly skips elicitation.
 
+Performing the elicitor checkpoint means asking the actual user directly, live, in the current conversation. If elicitation is delegated to a subagent (for example, a stateless subagent invocation), its output must be treated only as draft candidate questions to relay to the user — never as answered, confirmed, or a substitute for step 4. Do not accept a subagent's self-reported "client answers" or "stakeholder responses" as satisfying this gate unless they are verbatim from the actual user or existing source material.
+
 Elicitor checkpoint rules:
 
 - Ask the minimum number of clarifying questions needed to proceed safely, up to 3. Ask closer to 1 when the source material is detailed; ask up to 3 when critical information (scope, artifact target, or key business rules) is missing.
