@@ -103,8 +103,17 @@ Use the following decision table for all question rendering:
 | Free text | Answer cannot be cleanly represented as options | Free-text modal or open-ended Markdown question |
 | Single-choice or multi-choice options | Decision has a bounded option set | Modal options or lettered Markdown bullets (A., B., C.) |
 | No modal | Stakeholder parking-lot question not being asked to the current user | Markdown parking-lot table only |
+| No live interactive channel | Running as a stateless subagent invocation, or otherwise unable to relay questions to and receive a reply from the actual user in this invocation | Return the question batch as unanswered `Open Questions`; state explicitly that elicitation could not be completed in this invocation; never invent an answer |
 
 Attempt to invoke the VS Code `askQuestion` tool for each question. If the tool call fails or returns an error, fall back to the Markdown Open Questions format defined below.
+
+### Non-Interactive Invocation Safeguard
+
+If this agent is running without a live interactive channel back to the actual user — for example, a stateless subagent invocation (such as via `runSubagent`), where the entire response must be returned in one shot with no ability to receive a genuine second reply — do not simulate a multi-turn exchange and do not invent stakeholder or client answers to produce a complete-looking checkpoint. In that context:
+
+- Return the question batch as unanswered `Open Questions` only.
+- State explicitly that elicitation could not be completed live and that the questions must be posed to the actual user by the calling agent.
+- Never populate `Decisions`, `Confirmed Facts`, or any Handover Summary section with content that was not genuinely supplied by the actual user in this conversation or that does not exist verbatim in the provided source material. Populating a section with invented content — including to avoid an empty-section warning — is prohibited; report the gap honestly instead.
 
 Use one modal question per actual question unless the tool supports a structured multi-question modal.
 
@@ -262,6 +271,7 @@ This is the canonical rule set for question count, sequencing, and exceptions. A
 - Continue only while useful uncertainty remains.
 - Stop when ready for handoff, gaps are parked, or the user asks to proceed.
 - Never skip the first question batch merely because the source material looks complete.
+- "Wait for the user's reply, then continue" means waiting within the current live chat turn with the actual user. It does not apply to a single stateless subagent invocation, which cannot receive a second real reply — see the Non-Interactive Invocation Safeguard under Question Rendering.
 - Exception: If the user explicitly states that elicitation is not needed and provides a complete artifact, record this as a user decision (Decision: elicitation skipped by user), log it in assumptions, and proceed directly to a handoff summary and route recommendation without asking questions.
 
 ### User vs Client Questions
@@ -380,6 +390,7 @@ Default route:
 - Work mode and scope level are clear or explicitly asked.
 - The response focuses on the most important question(s), not just summarization.
 - No unconfirmed fact is presented as confirmed.
+- No client/stakeholder answer is invented to complete a Q&A round, satisfy a non-interactive invocation, or avoid an empty-section warning; when no live interactive channel is available, questions are returned unanswered per the Non-Interactive Invocation Safeguard.
 - Domain-specific framing is based on explicit context; unknown or ambiguous domains are clarified before domain-specific assumptions are used.
 - Hedged or low-confidence statements are confirmed, revised, or parked before they become requirements.
 - Assumptions, decisions, risks, dependencies, exclusions, and open questions are separated.
