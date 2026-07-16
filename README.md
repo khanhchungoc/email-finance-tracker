@@ -24,7 +24,7 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
   - GitHub Copilot: `ba-agents-github-copilot-<version>.zip`
 - Extract the downloaded package into your project or workspace folder.
 - Each package includes `project-knowledge-base/` as the starter project Wiki and `requirements/` as the requirement intake/output structure.
-- Set up the project knowledge base by populating the `project-knowledge-base/` folder with your project's specific Wiki, domain model, and existing documentation.
+- Set up the project knowledge base by populating the `project-knowledge-base/` folder with your project's specific Wiki, domain model, and existing documentation, using the `update-project-knowledge` skill.
 - **IMPORTANT**: Customize all custom agents and skills (as well as `AGENTS.md`, `GEMINI.md`, or `.github/copilot-instructions.md`) as needed to align with your project's specific BA workflow, terminology, and communication style.
 
 ## Multi-Repo Workspace Setup
