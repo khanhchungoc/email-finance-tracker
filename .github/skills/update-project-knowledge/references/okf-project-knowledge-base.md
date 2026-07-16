@@ -39,6 +39,17 @@ project-knowledge-base/
 |-- README.md
 |-- solution-context/
 |-- wiki/
+|   |-- index.md
+|   |-- diagrams/
+|   |   `-- index.md
+|   |-- knowledge-area-1/
+|   |   |-- index.md
+|   |   `-- diagrams/
+|   |       `-- index.md
+|   `-- knowledge-area-2/
+|       |-- index.md
+|       `-- diagrams/
+|           `-- index.md
 `-- glossary/
 
 requirements/
@@ -65,7 +76,9 @@ Add more directories only when there is actual project knowledge to store.
 | `requirements/` | Delivery workbench for raw requirement intake and generated BA deliverables. |
 | `project-knowledge-base/index.md` | Root entrypoint with a compact project snapshot, highest-level business requirements, and links to detailed concepts. Keep it well below 100 lines. |
 | `project-knowledge-base/solution-context/` | Domains, systems, integrations, APIs, data, and technical context needed to understand requirements. |
-| `project-knowledge-base/wiki/` | Durable project wiki distilled from confirmed inputs and delivery outputs. |
+| `project-knowledge-base/wiki/` | Durable project wiki organized into placeholder knowledge areas such as `knowledge-area-1/` and `knowledge-area-2/`, renamed to project-specific topics when known. |
+| `project-knowledge-base/wiki/diagrams/` | Shared copies of relevant requirement diagrams used by multiple wiki areas. Keep originals in `requirements/` and cite the original path. |
+| `project-knowledge-base/wiki/<knowledge-area>/diagrams/` | Area-specific copied diagrams used by pages in that knowledge area. |
 | `project-knowledge-base/glossary/` | Terms, acronyms, synonyms, and naming conventions. |
 | `requirements/input/` | Raw source evidence such as briefs, tickets, screenshots, links, copied excerpts, and source metadata. |
 
@@ -104,6 +117,7 @@ Recommended:
 - Prefer one concept per stable knowledge unit.
 - Link related concepts with bundle-relative links such as `/solution-context/core-api.md`.
 - Put long evidence, raw source references, screenshots, copied excerpts, and source metadata in `requirements/input/` and link to those files from durable concepts.
+- Copy relevant diagrams from supplied requirement folders into the wiki when they support understanding. Use `project-knowledge-base/wiki/<knowledge-area>/diagrams/` for area-specific diagrams and `project-knowledge-base/wiki/diagrams/` for cross-area diagrams. Do not move, edit, or delete the original requirement diagram.
 - Keep listing `index.md` files short; they are navigation, not full documentation.
 - Keep `project-knowledge-base/index.md` short, but allow it to include a brief `Project Snapshot` section for the overall project description and highest-level business requirements.
 - Do not create a standalone `project-knowledge-base/wiki/project-overview.md` by default. Use separate wiki pages only for detailed scope, stakeholder, delivery, risk, decision, or support context that would make the root index too long.
@@ -127,7 +141,9 @@ Do not make agents read project governance folders by default for every requirem
 ## Delivery Vs Wiki Rule
 
 - Use top-level `requirements/` as the delivery workbench: raw client inputs go in `requirements/input/`; generated BA deliverables, specs, initiatives, epics, and user stories go in `requirements/output/`.
-- Use `project-knowledge-base/wiki/` as the durable project wiki: confirmed scope, stakeholders, assumptions, exclusions, decisions, risks, acceptance, delivery model, support expectations, and reusable project facts live there.
+- Use `project-knowledge-base/wiki/` as the durable project wiki: confirmed business rules, system behavior, known issues, limitations, important notes, scope boundaries, decisions, assumptions, risks, dependencies, and reusable project facts live there.
+- Keep wiki pages under knowledge-area folders. The starter uses `knowledge-area-1/` and `knowledge-area-2/` as placeholders; rename them to project-specific areas when enough context exists.
+- Use `project-knowledge-base/wiki/<knowledge-area>/diagrams/` for area-specific copied requirement diagrams and `project-knowledge-base/wiki/diagrams/` for shared copied diagrams. Link to the copied diagram from the wiki page and cite the original `requirements/` path.
 - `update-project-knowledge` may read `requirements/` as source evidence, but must not update files under it.
 - Do not treat generated requirement output as durable wiki until the user confirms the knowledge-base update.
 - When the user confirms a KB update, distill stable facts from `requirements/output/` into `project-knowledge-base/wiki/` or `project-knowledge-base/solution-context/`; do not move the deliverable itself out of `requirements/output/`.
