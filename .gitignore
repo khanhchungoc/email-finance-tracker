@@ -2,3 +2,5 @@
 dist/
 package-stage/
 .github/memory/
+.codex/memory/
+.agents/
