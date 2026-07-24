@@ -2,7 +2,9 @@ Hi all,
 
 Please find the scope for <Team name> **Sprint <Sprint number>** below:
 
-**Total USPs: <Total user story points (USPs)>**
+- **Total USPs: <Total user story points (USPs)>**
+- **Total issues: <Total number of issues>**
+
 
 **Sprint goals:**
 - <Goal 1>

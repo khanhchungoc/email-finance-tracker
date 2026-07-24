@@ -61,82 +61,26 @@ Read the appropriate reference for the connected backlog tool:
 - When re-pushing a story, compare the current spec file content against the previously appended content in the work item description. If they differ, overwrite the appended section with the current spec file content.
 - If a spec file that was previously appended no longer exists in the workspace, notify the agent that the appended content on the work item may be stale. Do not automatically remove it — flag it for the agent to decide.
 
-## Sprint Scope File
+## Sprint Scope File and Email
 
-### Placement
+### Storage Convention
 
-```text
-requirements/output/sprint-scope/
-├── index.md
-├── sprint-1.md
-├── sprint-2.md
-└── ...
-```
-
-One flat Markdown file per sprint. No subfolders.
+- Sprint scope file: `requirements/output/sprint-scope/sprint-N.md` (One flat Markdown file per sprint, no subfolders)
+- Sprint email: stored per project convention (e.g. `Project administration/Sprint/Scope email/`)
 
 ### Template
 
-```yaml
----
-type: Sprint Scope
-sprint_name: Sprint N
-sprint_goal: "<Sprint goal statement>"
-start_date: YYYY-MM-DD
-end_date: YYYY-MM-DD
-total_usps: 0
----
-```
-
-Body:
-
-```markdown
-# Sprint N Scope
-
-## Sprint Goal
-
-<Sprint goal statement from planning>
-
-## Sprint Goals (Detailed)
-
-- <Goal 1: Enhancement Action + Scope + Outcome>
-- <Goal 2>
-- <Goal 3>
-
-## Committed Stories
-
-| Story ID | External Key | Issue Summary | Type | Priority | USPs | Epic |
-|---|---|---|---|---|---:|---|
-| US-001 | PROJ-123 | <Summary> | Story | High | 5 | <epic-slug> |
-
-## Scope Changes
-
-| Date | Change | Reason | Stories Affected |
-|---|---|---|---|
-| — | — | — | — |
-
-## Notes
-
-Carried from sprint planning.
-```
-
-## Sprint Scope Email
-
-### Template
-
-Read `assets/sprint-scope-template.md` for the email template. If `assets/sprint-scope-template.md` cannot be read, stop and notify the user: "Sprint scope email template not found at assets/sprint-scope-template.md. Please ensure the file exists before proceeding."
+Read `assets/sprint-scope-template.md` for the sprint scope template (used for both the file and the email). If the template cannot be read, stop and notify the user: "Sprint scope template not found at assets/sprint-scope-template.md. Please ensure the file exists before proceeding."
 
 ### Email Format
 
 - **Subject:** `<Team name> – Sprint <Sprint number> Scope`
-- **Body:** Greeting → Total USPs → Sprint goals (3–5) → Ticket table → Sign-off
 
 ### Ticket Table Rules
 
 1. Retrieve all deliverable items (Story, Task, Bug, Spike, Defect).
 2. Sort them by: their parent epic/BAU key ascending (for grouping), then priority descending (nulls last), then issue type, then issue key alphabetically.
 3. Render only the deliverable rows in that order — do not include Epic, BAU, or parent rows in the output table.
-- Hyperlink issue keys: `[ISSUE-KEY](https://<base-url>/browse/ISSUE-KEY)`.
 
 ### Story Points
 
@@ -150,11 +94,6 @@ Read `assets/sprint-scope-template.md` for the email template. If `assets/sprint
 sprint = "<Sprint Name>" AND issuetype in standardIssueTypes()
   ORDER BY parent ASC, priority DESC, issuetype ASC
 ```
-
-### Storage Convention
-
-- Sprint scope file: `requirements/output/sprint-scope/sprint-N.md`
-- Sprint email: stored per project convention (e.g. `Project administration/Sprint/Scope email/`)
 
 ## MCP Tools
 
