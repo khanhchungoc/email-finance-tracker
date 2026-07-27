@@ -99,6 +99,11 @@ Inspect the PACT Discovery Matrix in the Elicitation Handover:
 - **Context (C):** Confirm environmental, regulatory, and compliance bounds (GDPR/HIPAA/PCI) map to NFRs.
 - **Technologies (T):** Verify legacy system dependencies, API constraints, and hardware/platform boundaries.
 
+### NFR Scoping & Inheritance Rule
+- Treat NFRs as cross-cutting solution constraints managed at the system/module level in `project-knowledge-base/solution-context/`.
+- Do not duplicate global NFRs (e.g., standard security, general accessibility, standard API response latency) inside individual user stories.
+- Add explicit NFR Acceptance Criteria on a user story ONLY when the story introduces a specific override, custom SLA, or non-standard compliance constraint.
+
 Evaluate gate questions in order. Stop at the first failing check and apply its routing. If the only failing check is API behavior, route to `api-requirements-analyst`. If multiple non-API checks fail, route to `requirements-elicitor` and list all failing checks in the handoff note.
 
 | Gate Question | If Unclear |

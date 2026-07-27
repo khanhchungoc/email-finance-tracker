@@ -58,17 +58,18 @@ Return a concise research packet to the calling agent:
 ### Files Read
 - `path` - why it was read
 
-### Relevant Facts
-- Fact with source path.
+### Confirmed PACT Facts
+- **People (P):** Identified user roles, permissions, accessibility, and personas with source path.
+- **Activities (A):** Workflows, SLAs, task triggers, and execution frequency with source path.
+- **Context (C):** Environmental, security, and regulatory compliance bounds (GDPR/HIPAA/PCI) with source path.
+- **Technologies (T):** APIs, platforms, database schemas, and hardware constraints with source path.
 
-### Applicable Assumptions
+### Identified PACT Gaps
+- Unmentioned or unconfirmed P, A, C, or T pillars requiring user elicitation or validation.
+
+### Applicable Assumptions & Open Questions
 - Assumption and why it is not confirmed.
-
-### Open Questions
-- Question and impact.
-
-### Suggested Next Context
-- Additional KB file or user input needed, if any.
+- Question and impact on scope or estimation.
 ```
 
 If no relevant KB content exists, state:
