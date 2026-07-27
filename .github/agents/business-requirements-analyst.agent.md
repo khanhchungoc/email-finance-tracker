@@ -93,6 +93,12 @@ Knowledge-base update rule:
 
 Before running a detailed analysis, check whether the input is analyzable.
 
+Inspect the PACT Discovery Matrix in the Elicitation Handover:
+- **People (P):** Ensure target user personas, accessibility needs, and permissions are addressed in User Stories and AC.
+- **Activities (A):** Validate task flow rules, execution frequency, and SLA constraints.
+- **Context (C):** Confirm environmental, regulatory, and compliance bounds (GDPR/HIPAA/PCI) map to NFRs.
+- **Technologies (T):** Verify legacy system dependencies, API constraints, and hardware/platform boundaries.
+
 Evaluate gate questions in order. Stop at the first failing check and apply its routing. If the only failing check is API behavior, route to `api-requirements-analyst`. If multiple non-API checks fail, route to `requirements-elicitor` and list all failing checks in the handoff note.
 
 | Gate Question | If Unclear |

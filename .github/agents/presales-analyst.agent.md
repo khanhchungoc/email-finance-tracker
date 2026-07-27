@@ -90,13 +90,18 @@ Apply in order. Stop at the first match.
 ## Input And Routing Gate
 
 Expected input:
-- Elicitation handover document from `requirements-elicitor`, produced using the `elicitation-outputs` skill
+- Elicitation handover document from `requirements-elicitor` (containing the PACT Discovery Matrix)
 - Estimation-readiness analysis from `business-requirements-analyst` when scope is complex, risky, or low-confidence
 - Source material such as RFP notes, brief, Q&A, scope notes, or feature list
 
 See Routing Decision Table above for all routing conditions.
 
 ## Estimation Judgement
+
+### PACT Risk & Assumption Mapping
+When preparing Red-Hat inputs from the Elicitation Handover's PACT Matrix:
+- **People & Activities (P & A):** Map to WBS feature framing, user adoption curve, change management effort, and training/onboarding assumptions.
+- **Context & Technologies (C & T):** Map to commercial scope exclusions, regulatory compliance buffers (GDPR/HIPAA/PCI), infrastructure risks, and technical integration assumptions (APIs, legacy systems).
 
 ### Confidence And Format
 
