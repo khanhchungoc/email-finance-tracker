@@ -5,6 +5,8 @@ tags: [requirement, user-story, requirement-hierarchy, story-slice]
 timestamp: <ISO-8601 timestamp>
 story_id: <User Story ID or TBD>
 parent_epic: <Epic title/path or TBD>
+wbs_baseline_ref: "<WBS item ID or N/A>"
+commercial_scope_status: "IN_BASELINE"
 external_key: ""
 last_pushed: ""
 ---
@@ -51,19 +53,27 @@ Keep field-level controls, default values, validations, visibility rules, detail
 
 ### Business Acceptance Criteria
 
-**AC01** `<Descriptive acceptance criterion title>`
+<!-- Tier 1: Happy Path / Core Value Scenario -->
+**AC01.1** [Happy Path] `<Descriptive title for primary success scenario>`
 
    **Given** `<initial context or precondition>`  
    **When** `<user action or system event>`  
    **Then** `<expected business outcome>`  
    **And** `<additional expected outcome, if applicable>`
 
-**AC02** `<Descriptive acceptance criterion title>`
+<!-- Tier 2: Validation Summary (Do NOT list individual field rules; reference GUI spec) -->
+**AC02.1** [Validation] Form Input Validation
 
-   **Given** `<shared initial context>`  
-   **When** `<shared action or event>`  
-   **Then** `<expected outcome 1>`  
-   **Then** `<expected outcome 2>`
+   **Given** the user is submitting the form with invalid or missing required inputs  
+   **When** the user clicks submit  
+   **Then** the system blocks submission and displays field validation errors per the linked [GUI Specification](./gui-screen-name.md)
+
+<!-- Tier 3: Security, Permissions & State Error Handling -->
+**AC03.1** [Security / State] `<Descriptive title for unauthorized access or invalid state transition>`
+
+   **Given** `<unauthorized role or invalid lifecycle state>`  
+   **When** `<user action or system event>`  
+   **Then** `<expected security restriction or transition error>`
 
 ---
 

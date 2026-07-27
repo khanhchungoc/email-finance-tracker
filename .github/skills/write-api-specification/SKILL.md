@@ -1,6 +1,6 @@
 ---
 name: write-api-specification
-description: Use when creating or updating BA-oriented API specifications, endpoint contracts, request/response schemas, field data dictionaries, mapping rules, processing rules, error responses, or sample payloads for custom software projects.
+description: Use when creating or updating API specifications, endpoint contracts, request/response schemas, field data dictionaries, mapping rules, or sample payloads.
 ---
 
 # API Specification Writing Skill

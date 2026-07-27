@@ -50,25 +50,27 @@ Prefer the story ID in the filename when available, for example `us-001-customer
 
 Place related GUI specification files in the same epic folder as the user story. Place related wireframes under `./wireframes/` and related diagrams under `./diagrams/`. Link to them with relative links such as `./gui-order-detail.md`, `./wireframes/wireframe-order-detail.html`, or `./diagrams/diagram-order-approval-flow.md`.
 
-## Writing Workflow
+## Writing Workflow & Quality Standards
 
-1. Identify the user or actor, behavior, system response, business goal, dependencies, and story slice.
-2. Draft or refine the story using the user story template.
-3. Use `N/A` when a section does not apply instead of adding filler assumptions.
-4. Add open questions for missing information that affects scope, business logic, data, permissions, dependencies, or acceptance criteria.
-5. If a story is too large to deliver in roughly one week, split it into smaller stories.
-6. If a user role is missing, ask for clarification and propose relevant candidate roles from context.
+1. Identify the user role, target behavior, expected outcome, and business value.
+2. Read and apply `references/slicing-guidelines.md` to slice the requirement into 1-sprint scope slices (<= 1 week).
+3. Track commercial baseline alignment in frontmatter (`wbs_baseline_ref` and `commercial_scope_status`).
+4. Draft story using `assets/user-story-template.md`. Use `N/A` for non-applicable sections. Avoid filler narrative.
+5. Authoritative & Concise Delivery: Write direct, high-density story statements and Gherkin ACs without conversational narrative or meta-commentary.
 
-## Acceptance Criteria
+## Acceptance Criteria Standards
 
-Write acceptance criteria in Gherkin format:
+Write concise acceptance criteria in Gherkin format, organized into 3 tiers:
 
-- Prefix each criterion with a bold ID and descriptive title, for example `**AC01** <Title>`.
-- Do not include the word "Scenario" in the AC title.
-- Use sub-numbering such as `**AC02.1**`, `**AC02.2**` when one AC needs multiple test scenarios.
-- Format Gherkin keywords in bold and indent the Given/When/Then lines.
-- Group scenarios that share the same Given or When conditions into one AC with multiple Then statements when that improves readability.
-- Arrange ACs that affect similar functionality next to each other.
+1. **Tier 1 [Happy Path]**: Primary success scenario (`**AC01.1** [Happy Path] ...`).
+2. **Tier 2 [Validation]**: High-level validation outcome (`**AC02.1** [Validation] ...`).
+3. **Tier 3 [Security / State]**: Unauthorized access, role restrictions, or state transition errors (`**AC03.1** [Security / State] ...`).
+
+### Acceptance Criteria Boundary & Form Validation Standard
+- Group all form input validations into a single summary AC referencing the linked GUI Specification (e.g., *"Then the system blocks submission and highlights invalid fields per the linked [GUI Specification](./gui-screen-name.md)"*).
+- Reserve detailed field dictionaries, regex rules, character limits, component states, and default values exclusively for `write-gui-specification`.
+- Prefix each criterion with a bold ID and tier label (e.g., `**AC01.1** [Happy Path] <Title>`).
+- Format Gherkin keywords in bold (`**Given**`, `**When**`, `**Then**`, `**And**`) and indent lines.
 
 ## Boundary With Detailed Specs
 
@@ -82,11 +84,24 @@ User stories own:
 - Acceptance criteria and Gherkin scenarios
 - References to relevant mockups, wireframes, GUI specs, API specs, or diagrams
 
-User stories must not own:
+System details owned by specialist skills:
 
-- Detailed UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs; use `write-gui-specification`.
-- Endpoint schemas, mappings, request/response payloads, processing rules, or error catalogs; use `write-api-specification`.
-- WBS estimates, work package breakdowns, or commitment language; use `write-wbs`.
+- UI component tables, field dictionaries, default values, maximum lengths, visibility rules, or screen-level interaction specs belong in `write-gui-specification`.
+- Endpoint schemas, mappings, request/response payloads, processing rules, or error catalogs belong in `write-api-specification`.
+- WBS estimates, work package breakdowns, or commitment language belong in `write-wbs`.
+
+## Screen Enhancement Stories (Modifying Existing Screens)
+
+When a User Story is an **enhancement** to an existing screen (e.g., adding a field, modifying a dropdown, changing a button state):
+
+1. **In the User Story**:
+   - **Specify the Enhancement Scope**: Clearly name the specific field/element being added or modified in the Story Title, Goal, and Flow Summary (e.g., *"Adds optional 'Tax ID' field to Billing Section"*).
+   - **Link to the GUI Spec**: In the `Screen / GUI Specification References` table, explicitly state the *Story-Relevant Behavior* using the functional field/component name (e.g., *"Adds Tax ID field & updates submit payload"*).
+   - **Keep ACs Behavior-Level**: Refer to the new field by business behavior, delegating validation regex/character limits to the GUI Spec.
+
+2. **In the GUI Specification (`gui-<screen-slug>.md`)**:
+   - **Update Cumulative Table**: Add or modify the specific component row in the existing GUI Spec table.
+   - **Append Screen Change Log**: Add a row recording which User Story ID changed which screen element.
 
 ## GUI Specification Traceability
 
@@ -108,11 +123,13 @@ User stories must not own:
 - If a wireframe or diagram spans multiple epics, do not place it under one epic by default; ask whether it should be initiative-level or which epic owns it.
 - When creating or updating a story because of a wireframe or diagram, add or refresh the story's reference link to that artifact.
 
-## Quality Rules
+## SMART & INVEST Story Authoring Checklist
 
-- Keep stories small, testable, and deliverable.
-- Do not add generic assumptions, preconditions, out-of-scope items, or non-functional requirements just to make a section look complete; use `N/A` or open questions instead.
-- Reference GUI/API/detail artifacts by relative file link or title instead of duplicating their tables.
-- After creating or refining any user story, ask: "Do you want me to update the project knowledge base with this user story context?"
-- If the user says yes, use `update-project-knowledge`.
-- If the user says no or does not answer, do not update the project knowledge base.
+Before saving any user story file, verify against this quality checklist:
+
+- [ ] **Specific**: Story role, goal, and scope delta are unambiguous.
+- [ ] **Measurable & Testable**: Acceptance criteria use 3-tier Gherkin format with explicit expected outcomes.
+- [ ] **Independent & Small**: Story is sliced to fit within 1 sprint (<= 1 week) without blocking dependencies.
+- [ ] **Valuable**: Business value statement is explicitly articulated.
+- [ ] **No AC Bloat**: Form field validations are consolidated into a single summary AC referencing `write-gui-specification`.
+- [ ] **Traceable & Ready**: Affected GUI/API specs are linked with relative Markdown links; frontmatter metadata (`wbs_baseline_ref`, `commercial_scope_status`) is populated.

@@ -1,6 +1,6 @@
 ---
 name: research-project-knowledge
-description: Read-only project knowledge-base research for BA agents. Use before elicitation, requirements analysis, API analysis, presales analysis, user story drafting, GUI/API/diagram/WBS preparation, or any BA deliverable work when GitHub Copilot needs task-specific project context from project-knowledge-base without scanning the whole codebase or project folder. Produces a concise research packet from relevant knowledge-base indexes, requirement input/output, solution context, wiki, and glossary; never updates files.
+description: Read-only project knowledge research for BA tasks. Use to search wiki context, solution context, glossary, and project indexes before elicitation or requirements writing.
 ---
 
 # Project Knowledge Research Skill

@@ -113,12 +113,10 @@ When multiple modes apply, use this priority order: Dependency And Impact Analys
 
 For story or feature scope, limit output to the 3–5 most impactful findings. For epic or module scope, include all applicable findings.
 
-| Mode | Use When | Typical Next Step |
+| Mode / Workflow | Use When | Typical Next Step |
 |---|---|---|
-| Epic & Story Production | Requirement, screen, or mockup has passed readiness checks and needs to be drafted or mapped into backlog-ready initiatives, epics, or user stories | `manage-requirement-artifacts` and/or `write-gui-specification` |
-| SMART / Acceptance Readiness Check | Story, feature, requirement, or acceptance criteria may be vague or untestable | `manage-requirement-artifacts` or `requirements-elicitor` |
-| Dependency And Impact Analysis | Change request, integration, or process needs impact review | `api-requirements-analyst`, `presales-analyst`, or artifact skills |
-| Behavioral / Process Alignment Review | Flow, screen, journey, or process may not match user behavior or operational reality at requirement/process level | `evaluate-ux-solution`, `generate-wireframe`, `write-gui-specification`, or `requirements-elicitor` |
+| Feature Slicing & Story Creation (Daily Delivery) | Elicited input needs translation into epics, feature lists, new user stories, or enhancement user stories | Route directly to `manage-requirement-artifacts` (which slices scope, updates index files, and applies embedded authoring checklists) |
+| Impact & Scope Delta Review (CR / Audit) | Change Requests (CRs), gap audits, legacy system migrations, or commercial WBS impact reviews | Route to `analyze-requirements` (which renders `guidelines/impact-scope-delta-review.md`) |
 
 Once a mode is selected, render its output with the `analyze-requirements` skill. That skill holds the universal analysis rules, every per-mode output structure, the full report template, the technique selection guide, and the output formatting rules. Do not re-decide the mode inside the skill — pass it the mode named here.
 
@@ -141,21 +139,45 @@ If the user has explicitly confirmed they want to proceed despite incomplete eli
 
 ## Epic & Story Slicing Workflow
 
-Use this workflow when the input is a screen, mockup, wireframe, screenshot, GUI specification, or design flow and the user needs initiatives, epics, stories, GUI specs, or a combination.
+Use this workflow when the input is a screen, mockup, wireframe, screenshot, GUI specification, design flow, or requirement draft and the user needs initiatives, epics, stories, GUI specs, or a combination.
 
-Before applying this workflow, confirm the intake gate passes. If the screen input has not been through `requirements-elicitor` and no elicitation summary accompanies it, route to `requirements-elicitor` with the note: "Screen or mockup received without elicitation context. Elicit the user goals, actors, and business value before slicing into backlog items."
-
+Before applying this workflow, confirm the intake gate passes. If the input has not been through `requirements-elicitor` and no elicitation summary accompanies it, route to `requirements-elicitor` with the note: "Input received without elicitation context. Elicit user goals, actors, and business value before slicing into backlog items."
 Rules:
-- Identify backlog item boundaries (epic or story) by user goal, trigger, business value, and deliverable behavior, not by every UI component.
+- Read and apply `.github/skills/manage-requirement-artifacts/references/slicing-guidelines.md` for project-appropriate slicing principles (Full-Stack, API-Only, Data/Platform).
+- Identify backlog item boundaries (epic or story) by deliverable business value or API consumer goal, fitting within 1 sprint (<= 1 week).
+- **Mandatory User Review Checkpoint**: Present the proposed candidate Epics, Features, and Story slices in a concise table to the user for review and confirmation BEFORE creating or editing physical Markdown files on disk.
 - Keep detailed components, fields, defaults, validation display, visibility rules, dynamic states, and accessibility notes in `write-gui-specification`.
 - Keep persona, value statement, preconditions, flow summary, acceptance criteria, dependencies, and references to screens in `manage-requirement-artifacts`.
-- If a single screen supports multiple user goals or roles, recommend one candidate epic/story per user goal or role combination, and populate the Epic & Story Slicing table with a row per candidate item, including Boundary Rationale and GUI Spec Needed fields filled in.
-- If multiple screens support one continuous user goal, recommend one epic/story with screen references and separate GUI specs per screen.
 
-When visual inputs are provided, produce the following table before routing to `manage-requirement-artifacts`:
-| Screen / Flow | Candidate Epic / Story | Boundary Rationale | GUI Spec Needed? | Open Question |
+Candidate Slicing Review Table (Present to user before file creation):
+| Target Screen / Feature | Candidate Epic / Story Title | Scope Delta / User Goal | Slicing Rationale | GUI / API Spec Needed? |
 
-(If the input is only text, skip the table and route directly).
+Once the user confirms the proposed slices (or asks to proceed directly), hand off to `manage-requirement-artifacts` to generate the physical `.md` files.
+
+---
+
+## Machine-Readable Handoff Payload
+
+When handing off to another agent (`requirements-elicitor`, `api-requirements-analyst`, `presales-analyst`, or artifact skills), append a concise YAML handoff block to preserve structured context:
+
+```yaml
+---
+handoff_context:
+  from_agent: business-requirements-analyst
+  to_agent: <target-agent-or-skill>
+  analysis_mode: <selected-mode>
+  dor_status: <PASS | PASS_WITH_ASSUMPTIONS | BLOCKED>
+  key_assumptions: [<list of key assumptions>]
+  unresolved_blockers: [<list of blockers or none>]
+---
+```
+
+---
+
+## Direct & Authoritative Output Standard
+
+- Deliver crisp, direct, high-density analytical findings, structured tables, and clear handoff recommendations.
+- Focus strictly on business domain logic, readiness gates, and deliverable scope without conversational narrative or meta-commentary.
 
 ---
 
@@ -165,10 +187,11 @@ Before responding, check:
 
 - [ ] The analysis mode is explicit.
 - [ ] The input passed the analysis intake gate, or the response routes back to requirements-elicitor.
+- [ ] Output is concise, direct, and non-preachy.
 - [ ] Assumptions are labeled and not presented as facts.
-- [ ] Delivery-readiness gaps are called out for implementation work.
+- [ ] Delivery-readiness gaps and DoR score are recorded.
 - [ ] Status lifecycle completeness, transitions, and invalid transition handling are checked.
 - [ ] Edge cases are listed and expected system behavior for each edge case is explicitly defined.
 - [ ] UI mockup/wireframe need is assessed and recorded with rationale.
 - [ ] Diagram need is assessed and a specific recommended diagram type is provided when relevant.
-- [ ] The next route is clear and practical.
+- [ ] The next route and machine-readable handoff payload are clear.

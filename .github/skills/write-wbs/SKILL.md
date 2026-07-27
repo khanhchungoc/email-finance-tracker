@@ -1,6 +1,6 @@
 ---
 name: write-wbs
-description: Use when writing or revising WBS tables from requirements, build briefs, Q&A notes, screenshots, or client requests, including feature hierarchy, WBS rows, remarks, assumptions, risks, additional efforts, and post-update consistency checks.
+description: Use when writing or revising Work Breakdown Structure (WBS) tables, feature hierarchies, effort estimations, and risk/assumption notes.
 ---
 
 # WBS Writing

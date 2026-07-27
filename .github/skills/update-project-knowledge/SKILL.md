@@ -1,6 +1,6 @@
 ---
 name: update-project-knowledge
-description: Update, maintain, normalize, or review durable outsourcing project knowledge using OKF-style Markdown bundles with YAML frontmatter, progressive index files, logs, citations, and cross-links. Use when GitHub Copilot needs to update wiki, solution-context, glossary, project summaries, client/vendor delivery context, scope, assumptions, risks, decisions, source-linked context, or other reusable project context for outsourced software delivery projects. Never use this skill to update the requirements folder.
+description: Use when updating, maintaining, or normalizing durable project knowledge (wiki, solution context, glossary, scope, decisions, assumptions) under project-knowledge-base/.
 ---
 
 # Project Knowledge Updating Skill

@@ -1,6 +1,6 @@
 ---
 name: evaluate-ux-solution
-description: Use when reviewing proposed UX solutions, UI mockups, screenshots, feature flows, component choices, or BA design questions for usability, accessibility, responsiveness, technical feasibility, edge cases, and evidence-based recommendations; also use when a BA requirements analysis needs UX solution judgement.
+description: Use when reviewing proposed UX solutions, UI mockups, screenshots, feature flows, or BA design questions for usability, accessibility, technical feasibility, and recommendations.
 ---
 
 # UX Solution Evaluation

@@ -1,6 +1,6 @@
 ---
 name: sync-backlog
-description: Procedural field mapping, templates, output formats, file placement, and attachment handling for syncing BA workspace artifacts to Jira or Azure DevOps via MCP. Used by the backlog-manager agent. Read references/jira-field-mapping.md or references/ado-field-mapping.md for tool-specific mapping tables.
+description: Use when syncing BA requirement artifacts, user stories, and epics to Jira or Azure DevOps via MCP integrations.
 ---
 
 # Backlog Sync Skill

@@ -1,6 +1,6 @@
 ---
 name: manage-requirement-artifacts
-description: Create, refine, place, and re-index requirement delivery artifacts under requirements/. Use for initiatives, epics, user stories, acceptance criteria, backlog-ready story files, requirement input references, output indexes, GUI/API spec placement, diagrams, WBS, analysis artifacts, and handoff outputs. Do not update durable project wiki context; use update-project-knowledge for that.
+description: Use when creating, refining, placing, and indexing requirement artifacts (initiatives, epics, user stories, acceptance criteria, output indexes) under requirements/.
 ---
 
 # Requirement Artifact Management Skill
@@ -65,6 +65,7 @@ Use `assets/initiative-index-template.md` for initiative folder indexes and `ass
 
 For artifact-specific placement and minimum content expectations, read `references/artifact-guidelines.md` when creating or re-indexing an artifact type.
 
+When slicing scope into epics and stories, read `references/slicing-guidelines.md`.
 When creating or refining a user story, read `references/user-story-guidelines.md` and use `assets/user-story-template.md`.
 
 This skill must not update:
@@ -76,6 +77,8 @@ This skill must not update:
 If a generated artifact contains stable reusable project knowledge, ask the user whether to update the project knowledge base. If yes, use `update-project-knowledge`.
 
 ## Workflow
+
+0. **Slicing Review Checkpoint**: Confirm that the proposed candidate Epics, Features, and Story slices have been presented to the user for review and confirmation before creating or editing physical Markdown files on disk (unless the user explicitly requested immediate file generation).
 
 1. Identify the target artifact type and target hierarchy.
    - Initiative only: update `requirements/output/initiatives/index.md` and the initiative folder `index.md`.

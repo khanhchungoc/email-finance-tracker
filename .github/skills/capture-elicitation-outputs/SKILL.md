@@ -1,6 +1,6 @@
 ---
 name: capture-elicitation-outputs
-description: Produces structured BA output documents for elicitation wrap-up, checkpoints, and handoffs. Use when the elicitor has answered, assumed, or parked all material questions for the current mode and needs to produce the applicable output structure.
+description: Use when capturing BA elicitation outputs, Q&A summaries, session checkpoints, requirement decisions, and handoff documents.
 ---
 
 # Elicitation Outputs

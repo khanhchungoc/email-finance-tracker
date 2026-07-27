@@ -1,47 +1,34 @@
 ---
 name: analyze-requirements
-description: Produces structured BA analyze-requirements output documents — gap scans, delivery readiness checks, SMART/acceptance reviews, dependency/impact analysis, behavioral/process alignment, screen-to-story mapping, and full analysis reports. Use when the business-requirements-analyst has selected an analysis mode and needs to render its output structure.
+description: Use when performing Change Request (CR) impact analysis, gap audits, legacy system migration reviews, or cross-module scope delta analysis.
 ---
 
-# Requirements Analysis Outputs
+# Requirements Impact & Scope Delta Analysis
 
 ## Purpose
 
-Produce the correct structured output for the analysis mode the agent has already selected. The agent owns mode selection, the intake gate, and routing. This skill owns the output structures only.
+Produce high-density Impact Matrices and Gap Audit structures for Change Requests (CRs), commercial baseline reviews, and legacy system audits.
 
-Render the structure named by the agent. Do not re-decide the mode. If no mode was named, default to **SMART / Acceptance Readiness Check**.
+For daily feature breakdown, epic indexing, and user story slicing/drafting, route directly to `manage-requirement-artifacts`.
 
-If there are no open questions at the point of output, write `Open Questions: None`.
+Render the output structure defined in `guidelines/impact-scope-delta-review.md`.
 
 ---
 
 ## Universal Analysis Rules
 
-- Separate facts, assumptions, risks, dependencies, exclusions, gaps, and open questions.
-- Call out whether each gap affects estimation, delivery, testing, compliance, support, or stakeholder approval.
-- Do not push avoidable internal unknowns to the client; convert an unknown to an internal assumption only when the worst-case impact if wrong is limited to internal rework and does not affect client scope, cost, compliance, or external-system ownership. Otherwise, flag it as a client-validation question.
-- For delivery, prioritize acceptance readiness, testability, data/rules, edge cases, NFRs, dependencies, and change impact.
-- For user story and feature reviews, explicitly verify that all relevant statuses, transitions, and invalid transition handling are defined.
-- For each identified edge case, require explicit expected system behavior (response path, user/system message, recovery/fallback, and logging/audit expectation when relevant).
-- Explicitly assess whether a UI artifact is needed and state `UI Artifact Needed: Yes/No` with reason; if yes, route to `write-gui-specification` and/or `generate-wireframe`.
-- Explicitly assess whether a diagram is required or recommended and name the type (state, sequence, process/BPMN, or wireflow) with rationale.
-- Use concise tables. Do not produce every table unless the mode requires it.
-- For story or feature scope, limit output to the 3–5 most impactful findings. For epic or module scope, include all applicable table sections.
+- Separate confirmed facts, assumptions, risks, dependencies, exclusions, gaps, and open questions.
+- Flag commercial baseline status (`IN_BASELINE` vs `SCOPE_CREEP_CR_CANDIDATE`).
+- Convert unknowns to internal assumptions only when the worst-case impact if wrong is limited to internal rework; flag all other unknowns as client-validation questions.
+- Call out timeline, cost, WBS, and 3rd-party integration SLA impacts.
+- Use concise tables. Keep outputs high-density without conversational narrative.
 
 ---
 
+## Mode Guideline
 
-
----
-
-## Mode-Specific Guidelines
-
-The output structures for each analysis mode have been divided into separate guideline files.
-When rendering an output structure, you must read the corresponding file from the `guidelines/` directory to get the correct format:
-
-- `guidelines/smart-acceptance-readiness-check.md` (SMART / Acceptance Readiness Check)
-- `guidelines/dependency-impact-analysis.md` (Dependency And Impact Analysis)
-- `guidelines/behavioral-process-alignment.md` (Behavioral / Process Alignment Review)
+The output structure is located in:
+- `guidelines/impact-scope-delta-review.md` (Impact & Scope Delta Review — Change Requests, gap audits, legacy migrations, and cross-module impact)
 
 ---
 

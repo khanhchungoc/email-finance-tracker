@@ -1,6 +1,6 @@
 ---
 name: generate-wireframe
-description: Use when creating or revising HTML wireframes, text-based wireframes, UI layouts, screen flows, responsive page mockups, form layouts, dashboard mockups, mobile/desktop wireframes, PRD wireframe descriptions, or BA screen visualization artifacts.
+description: Use when creating or revising HTML wireframes, text wireframes, screen flows, page layouts, form mockups, or screen visualization artifacts.
 ---
 
 # Wireframe Generation Skill

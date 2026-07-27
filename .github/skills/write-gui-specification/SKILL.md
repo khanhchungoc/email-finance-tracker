@@ -1,6 +1,6 @@
 ---
-name: write-write-gui-specification
-description: Use when converting screen images, wireframes, design exports, product screenshots, HTML/text wireframes, or screen descriptions into OKF-formatted GUI specification Markdown files and UI specification tables for web, mobile, desktop, admin, customer portal, or internal-tool handoff; write generated specs into the project knowledge-base requirement output hierarchy when the target initiative/epic is known.
+name: write-gui-specification
+description: Use when creating or updating GUI specification Markdown files and UI tables from screen images, wireframes, screenshots, or screen descriptions.
 ---
 
 # GUI Specification Generator Skill
