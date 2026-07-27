@@ -25,6 +25,10 @@ handoffs:
     send: false
 skills:
   - ../skills/write-wbs
+  - ../skills/pptx
+  - ../skills/xlsx
+  - ../skills/docx
+  - ../skills/pdf
 ---
 
 # Presales BA Agent

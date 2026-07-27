@@ -30,6 +30,10 @@ handoffs:
 skills:
   - ../skills/research-project-knowledge
   - ../skills/elicitation-outputs
+  - ../skills/pdf
+  - ../skills/pptx
+  - ../skills/xlsx
+  - ../skills/docx
 ---
 
 # Requirements Elicitor Agent

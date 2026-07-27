@@ -22,6 +22,10 @@ skills:
   - ../skills/update-project-knowledge
   - ../skills/write-gui-specification
   - ../skills/generate-wireframe
+  - ../skills/pdf
+  - ../skills/pptx
+  - ../skills/xlsx
+  - ../skills/docx
 handoffs:
   - label: Run More Elicitation
     agent: requirements-elicitor

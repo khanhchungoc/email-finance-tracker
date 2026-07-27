@@ -109,6 +109,10 @@ Use these routing rules (read the listed file before producing the artifact):
 - Outsourcing project knowledge update, OKF-style Wiki bundle maintenance, project-summary structure update, source-backed Wiki update, client/vendor delivery context, scope, assumptions, risks, or agent-readable project wiki update: `.github/skills/update-project-knowledge/SKILL.md`.
 - API requirements clarification, consumer/contract/NFR analysis, or API specification handoff readiness: `.github/agents/api-requirements-analyst.agent.md`.
 - Pre-sales red-hat estimation inputs, WBS/ballpark context, assumptions, risks, exclusions, dependencies, or client clarification questions: `.github/agents/presales-analyst.agent.md`.
+- PDF processing, reading, extracting text/tables, OCR on scanned PDFs, form filling, merging/splitting, or PDF generation: `.github/skills/pdf/SKILL.md`.
+- PowerPoint presentation (.pptx / .potx) deck creation, OOXML slide editing, thumbnail grid generation, or layout analysis: `.github/skills/pptx/SKILL.md`.
+- Excel spreadsheet (.xlsx / .xlsm / .csv) creation, formula editing, data cleaning, financial modeling, or formula recalculation: `.github/skills/xlsx/SKILL.md`.
+- Word document (.docx / .dotx) creation, OOXML editing, tracked changes, redlining, commenting, or Word report formatting: `.github/skills/docx/SKILL.md`.
 
 If a request spans multiple artifact types, read and follow every relevant agent or skill and state the order of use briefly before producing the artifact. If the correct order of agents or skills cannot be determined from the request, ask the user to confirm the desired sequence before proceeding. If agents have conflicting input requirements, surface the conflict explicitly and ask the user to resolve it.
 

@@ -20,6 +20,9 @@ skills:
   - ../skills/generate-diagram
   - ../skills/manage-requirement-artifacts
   - ../skills/update-project-knowledge
+  - ../skills/pdf
+  - ../skills/xlsx
+  - ../skills/docx
 handoffs:
   - label: Run Elicitation First
     agent: requirements-elicitor
