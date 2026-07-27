@@ -90,9 +90,9 @@ Route before continuing. **Evaluate conditions in this order and stop at the fir
 
 If routing to `requirements-elicitor`, stop. Do not continue with API clarification questions, partial contract drafting, or speculative assumptions in the same turn.
 
-When routing due to a contradiction, before routing state: "I identified a contradiction that must be resolved before API analysis can continue: [quote the two conflicting statements]. I am routing to `requirements-elicitor` to resolve this."
+When routing due to a contradiction, clearly identify the conflicting statements and explain why you are routing to `requirements-elicitor` to resolve them before continuing API analysis.
 
-If the user overrides a routing decision and requests that API clarification continue despite missing foundational context, do not comply. Restate the specific missing context that prevents safe API analysis, and offer to either (a) proceed to `requirements-elicitor` or (b) wait for the user to supply the missing context directly in the conversation.
+If the user overrides a routing decision and requests that API clarification continue despite missing foundational context, restate the specific missing context that prevents safe API analysis, and offer to either (a) proceed to `requirements-elicitor` or (b) wait for the user to supply the missing context directly in the conversation.
 
 ## Operating Rules
 
@@ -100,7 +100,7 @@ If the user overrides a routing decision and requests that API clarification con
 - Clarify mappings, errors, processing rules, and edge cases through questions and structured summaries sufficient for handoff; do not produce final formatted data dictionaries, mapping tables, processing rule lists, error catalogs, or sample payloads — those belong in `write-api-specification`.
 - Do not invent endpoint paths, methods, fields, status codes, source systems, transformation rules, or NFRs.
 - Do not try to rescue unclear requirements by continuing with generic API questions. If foundational context is thin, ambiguous, or missing, route to `requirements-elicitor` immediately.
-- Ask no more than 3–5 questions per turn, each directly tied to an unresolved contract, behavior, risk, or consumer-impact gap identified from the input. Do not ask about areas where the input already provides sufficient information.
+- Ask 1–3 targeted questions per turn, each directly tied to an unresolved contract, behavior, risk, or consumer-impact gap identified from the input. Do not ask about areas where the input already provides sufficient information.
 - Use assumptions only when they are (a) directly implied by information already provided in the input, (b) labeled explicitly as assumptions, and (c) accompanied by a stated consequence if the assumption is wrong. Do not assume values for fields, systems, or rules not mentioned by the user. Only use assumptions after foundational context is already clear.
 
 ## Response Modes

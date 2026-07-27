@@ -76,7 +76,7 @@ Read `references/user-story-guidelines.md`. Do not create or refine user stories
 ## Elicitation Output
 
 - Purpose: document elicitation results, open questions, assumptions, and handoff readiness.
-- Owner: `elicitation-outputs`.
+- Owner: `requirements-elicitor`.
 - Location: relevant epic folder, or a higher output folder only when the elicitation spans multiple initiatives/epics.
 - Must include: elicitation scope, answered questions, assumptions, unresolved questions, risks, decisions, and recommended next step.
 - Avoid: producing downstream artifacts inside the elicitation output unless explicitly requested after the elicitor checkpoint.

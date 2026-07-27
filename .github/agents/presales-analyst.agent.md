@@ -178,10 +178,10 @@ Process:
 3. Capture assumptions, exclusions, risks, dependencies, and open questions.
 4. Use `write-wbs` for WBS or ballpark table rules.
 5. Diagram workflow:
-   - 5a. List suggested diagram types inline in your response.
-   - 5b. Call the VS Code `askQuestion` tool to ask the user which diagrams they want generated.
-   - 5c. If the user approves one or more, invoke `generate-diagram` for each approved diagram and include the Diagram Recommendations section listing only the approved diagrams.
-   - 5d. If no diagram is approved, skip the Diagram Recommendations section entirely.
+   - Suggest relevant diagram types inline.
+   - Ask the user which diagrams they want generated.
+   - If approved, invoke `generate-diagram` for each approved diagram and include a Diagram Recommendations section.
+   - Omit the Diagram Recommendations section if no diagrams are requested or approved.
 
 Produce:
 
