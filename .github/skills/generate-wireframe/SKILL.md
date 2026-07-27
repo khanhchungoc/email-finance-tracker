@@ -28,19 +28,9 @@ Create stakeholder-readable wireframes as static HTML/CSS files or structured te
 
 ## Requirement Output Placement
 
-When writing wireframes for a project requirement output folder, place files by scope:
-
-```text
-requirements/output/initiatives/<initiative-slug>/
-|-- wireframe-<cross-epic-flow-slug>.html
-|-- wireframe-<cross-epic-flow-slug>.md
-`-- epics/
-    `-- <epic-slug>/
-        |-- <user-story-id-or-slug>.md
-        `-- wireframes/
-            |-- wireframe-<screen-or-flow-slug>.html
-            `-- wireframe-<screen-or-flow-slug>.md
-```
+Follow the deliverable folder placement and index update rules owned by `manage-requirement-artifacts`:
+- Put user-story-related wireframes in `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/wireframes/`.
+- Put cross-epic or initiative-level wireframes in `requirements/output/initiatives/<initiative-slug>/`.
 
 Placement rules:
 

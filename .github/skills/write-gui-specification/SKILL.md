@@ -77,17 +77,8 @@ Rules:
 
 ## Requirement Output Folder
 
-When creating a GUI specification file and the requirements output path is available, place the file in the same epic folder as the related user story or stories:
-
-```text
-requirements/
-`-- output/
-    `-- initiatives/
-        `-- <initiative-slug>/
-            `-- epics/
-                `-- <epic-slug>/
-                    `-- gui-<screen-slug>.md
-```
+Follow the deliverable folder placement and index update rules owned by `manage-requirement-artifacts`:
+- Place GUI specification files (`gui-<screen-slug>.md`) in `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`.
 
 Folder rules:
 - Default to creating Markdown GUI specification files in this hierarchy when the user asks to generate GUI specs for a project. Do not only return the full spec inline unless the user requests inline-only output or the target hierarchy is unavailable.

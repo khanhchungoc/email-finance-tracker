@@ -98,21 +98,9 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 ## Output Placement
 
-Place diagram files in the project workspace by scope:
-
-```text
-requirements/output/initiatives/<initiative-slug>/
-|-- diagram-<cross-epic-flow-slug>.md
-|-- diagram-<cross-epic-flow-slug>.bpmn
-|-- diagram-<cross-epic-flow-slug>.drawio
-`-- epics/
-    `-- <epic-slug>/
-        |-- <user-story-id-or-slug>.md
-        `-- diagrams/
-            |-- diagram-<diagram-slug>.md
-            |-- diagram-<diagram-slug>.bpmn
-            `-- diagram-<diagram-slug>.drawio
-```
+Follow the deliverable folder placement and index update rules owned by `manage-requirement-artifacts`:
+- Place user-story or epic-level diagram files in `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/diagrams/`.
+- Place cross-epic initiative diagram files directly in `requirements/output/initiatives/<initiative-slug>/`.
 
 ---
 

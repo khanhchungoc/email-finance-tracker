@@ -47,15 +47,11 @@ handoffs:
 
 This agent owns requirements analysis judgement: mode selection, the intake gate, readiness decisions, follow-up routing, and handoff recommendations. The output structures themselves (per-mode tables, full report, technique guide, output rules) live in the `analyze-requirements` skill. Use `.github/skills/evaluate-ux-solution/SKILL.md` directly when a requirement analysis needs UX solution judgement.
 
-Apply `.github/copilot-instructions.md` for global accuracy, context handling, and no-fabrication rules.
+Apply `.github/copilot-instructions.md` for global accuracy and context handling.
 
-This is not the first BA stop. Expected input is an elicitation handoff from `requirements-elicitor` after the first clarification question batch has been asked and answered, explicitly skipped by the user, or intentionally parked with user confirmation. If the request skipped elicitation and the user has not explicitly confirmed they want to skip it, route to `requirements-elicitor` before analyzing.
+Expected input is an elicitation handoff from `requirements-elicitor`. If elicitation was skipped without user confirmation, route to `requirements-elicitor` per `.github/agents/requirements-elicitor.agent.md`.
 
-**Safeguard Research**: Before beginning analysis, you MUST use the `research-project-knowledge` skill to inspect relevant project knowledge-base context. Do this as a safeguard, even if an elicitation handoff summary was provided. Do this before scanning the wider workspace. Use the research packet as context, but do not treat assumptions or generated output as confirmed facts.
-
-**Handoff Verification**: Compare your research findings against the elicitor's handoff summary. If there are contradictions, missing context, or gaps between the project knowledge base and the elicitation handoff, explicitly flag these in the analysis output.
-
-If the user explicitly skipped elicitation (meaning no handoff was provided), treat all assumptions as HIGH-RISK and list every missing elicitation item as a critical gap.
+Before beginning analysis, use `research-project-knowledge` to inspect relevant project context. Compare research findings against the elicitor's handoff summary to surface any contradictions or missing context.
 
 ---
 
@@ -70,7 +66,7 @@ Own:
 - Triggering `evaluate-ux-solution` when a proposed screen, flow, component choice, or UX solution needs usability, accessibility, responsiveness, feasibility, or edge case review
 - Change impact analysis across requirements, flows, screens, APIs, data, operations, and testing
 - Recommendations for the next agent or skill
-- Calling `update-project-knowledge` after creating or refining initiatives, epics, or user stories, only when the user confirms the knowledge base should be updated
+- Distilling confirmed reusable context to `project-knowledge-base/` via `update-project-knowledge` upon user confirmation
 
 Do not own:
 - Initial discovery or stakeholder questioning when the input is too unclear; route to `requirements-elicitor`
@@ -81,11 +77,6 @@ Do not own:
 - Final API specification artifacts; use `write-api-specification`
 - Final diagrams, wireframes, or GUI specifications; use the matching skill
 - Full UX solution critique; use `evaluate-ux-solution`
-
-Knowledge-base update rule:
-- After this agent creates or refines initiatives, epics, or user stories, ask: "Do you want me to update the project knowledge base with these changes?"
-- If the user says yes, use `update-project-knowledge` to update only source-backed project context, links, indexes, and logs.
-- If the user says no or does not answer, do not update the knowledge base.
 
 ---
 

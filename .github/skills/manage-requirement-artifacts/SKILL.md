@@ -9,6 +9,8 @@ description: Use when creating, refining, placing, and indexing requirement arti
 
 Maintain the top-level `requirements/` folder as the BA delivery workbench and create backlog-ready user stories in the correct requirement output hierarchy.
 
+This skill is the **Single Source of Truth (SSOT)** for all deliverable folder placement and indexing rules under `requirements/`. Other skills (`generate-diagram`, `generate-wireframe`, `write-gui-specification`, `write-api-specification`, `write-wbs`) follow the placement rules defined here.
+
 Use `update-project-knowledge` only for durable reusable context in `project-knowledge-base/`.
 
 ## When to Use
@@ -19,7 +21,7 @@ Use `update-project-knowledge` only for durable reusable context in `project-kno
 - Re-indexing requirement artifacts after files are created, renamed, moved, or split
 - Organizing raw client requirement inputs when the user explicitly asks
 
-## Ownership
+## Ownership (SSOT for `requirements/`)
 
 This skill may create, update, move, rename, and re-index files under:
 

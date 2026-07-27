@@ -132,36 +132,10 @@ If this agent is running without a live interactive channel back to the actual u
 
 Use one modal question per actual question unless the tool supports a structured multi-question modal.
 
-When using the Markdown fallback, render questions and answer options with this exact pattern:
-
-```markdown
-### Open Questions
-
-1. Question text?
-   - Rationale: Why this matters.
-   - Choose one:
-     - A. Option A
-     - B. Option B
-     - C. Option C
-
-2. Question text?
-   - Current assumption:
-     - Assumption detail
-   - Please confirm or edit.
-
-3. Question text?
-   - Suggested items to confirm:
-     - A. Item A
-     - B. Item B
-```
-
-Rules:
-- Use top-level numbered items only for actual questions.
-- Never place answer options, examples, assumptions, deliverable choices, phase lists, or capability lists at the same indentation level as numbered questions.
-- Use indented hyphen bullets for all options and sub-items under a question.
-- Prefix each answer option with a stable uppercase letter, restarting from `A.` for each question. Use `A.`, `B.`, `C.`, and `D.` for up to four options; if more options are unavoidable, continue with `E.`, `F.`, and so on.
-- If a single question has many choices, keep all choices nested under that one question.
-- Do not duplicate modal questions as a long numbered chat list unless the user asks for the questions in chat.
+When using Markdown fallback for questions:
+- Use top-level numbered items (1, 2, 3) for actual questions.
+- Nest rationale, assumptions, and suggested choices cleanly under each question using indented bullets.
+- Keep question lists concise (1–3 questions per turn).
 
 ## Input And Output Contract
 
