@@ -27,6 +27,22 @@ Each tool auto-loads a different filename. Keep the same rules in sync across th
 - Set up the project knowledge base by populating the `project-knowledge-base/` folder with your project's specific Wiki, domain model, and existing documentation, using the `update-project-knowledge` skill.
 - **IMPORTANT**: Customize all custom agents and skills (as well as `AGENTS.md`, `GEMINI.md`, or `.github/copilot-instructions.md`) as needed to align with your project's specific BA workflow, terminology, and communication style.
 
+### Sharing The Repository
+
+Commit these files so other users receive the document-skill setup:
+
+- `README.md`, which contains the installation and verification instructions.
+- `package.json`, which lists the Node.js dependencies for the DOCX and PPTX skills.
+- `package-lock.json`, which locks the dependency versions for reproducible installation.
+
+Do not commit `node_modules/`. It is excluded by `.gitignore` and must be recreated by each user. After cloning or downloading the repository, run the following from the repository root:
+
+```powershell
+npm install
+```
+
+Python packages, LibreOffice, Pandoc, and Poppler are installed separately using the commands in [Document Skill Dependencies](#document-skill-dependencies). The root `README.md` is already part of the repository and release ZIP packages. If this project is later published as an npm package, npm includes the root README automatically.
+
 ## Multi-Repo Workspace Setup
 
 To manage requirements across interconnected systems, structure your workspace as follows:
@@ -121,7 +137,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 
 - MarkItDown: https://marketplace.visualstudio.com/items?itemName=bioinfo.markitdown-vscode
 - Markdown Paste Image: https://marketplace.visualstudio.com/items?itemName=telesoho.vscode-markdown-paste-image
-- Markdown Editor: https://marketplace.visualstudio.com/items?itemName=zaaack.markdown-editor
+- Markdown & Office Editor: https://github.com/cweijan/vscode-office
 
 ## Suggested MCPs
 
@@ -130,3 +146,129 @@ In Codex, go to `Plugins`, then search for `@mcp <mcp-name>`.
 - `@mcp atlassian`
 - `@mcp Azure DevOps`
 - `@mcp figma` if you have a premium Figma account
+
+## Document Skill Dependencies
+
+The `pdf`, `pptx`, `docx`, and `xlsx` skills use a few supporting applications and libraries. You only need to install these once on each computer.
+
+The instructions below are written for a non-technical Windows user. Run the steps in order. When a command is shown in a grey box, copy the complete line, paste it into the VS Code PowerShell terminal, and press `Enter`. Do not copy the prompt text such as `PS C:\>`.
+
+### Before You Start
+
+1. Open this repository in VS Code.
+2. Open the terminal with **Terminal > New Terminal**. Confirm that the terminal location ends in the repository folder, for example `Documents\BA Agents`.
+3. If Windows asks for permission while installing an application, choose **Yes**.
+
+### Prerequisites
+
+Install these applications first. Run one command at a time and wait for it to finish before running the next one:
+
+- Python, which runs the document-processing scripts.
+- Node.js, which runs the DOCX and PPTX generation scripts.
+- LibreOffice, which converts DOCX/PPTX files and recalculates XLSX formulas.
+- Poppler, which provides PDF text extraction and page rendering tools.
+- Pandoc, which extracts DOCX text as Markdown.
+
+Install LibreOffice through your company-managed **Company Portal**:
+
+1. Open the Windows Start menu and search for **Company Portal**.
+2. Open **Company Portal** and search for **LibreOffice**.
+3. Select LibreOffice and choose **Install**.
+4. Wait for the installation to finish before continuing.
+
+```powershell
+winget install Python.Python.3.12
+```
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+```
+
+```powershell
+winget install oschwartz10612.Poppler
+```
+
+```powershell
+winget install JohnMacFarlane.Pandoc
+```
+
+If Windows says that an application is already installed, that is fine; continue to the next step. After LibreOffice and the other applications are installed, close VS Code completely and open it again. This allows VS Code to find the newly installed applications.
+
+### Python Libraries
+
+Python libraries are installed from the VS Code terminal. Run these commands one at a time:
+
+```powershell
+python -m pip install --upgrade pip
+```
+
+```powershell
+python -m pip install pypdf pdfplumber reportlab pandas openpyxl markitdown Pillow defusedxml lxml
+```
+
+The command may print many lines while it works. This is normal. Wait until the terminal prompt appears again.
+
+These additional libraries are optional. Install them only if you need scanned-PDF OCR or advanced PDF processing:
+
+```powershell
+python -m pip install pytesseract pdf2image pypdfium2
+```
+
+`pytesseract` also needs the separate Tesseract OCR application. You do not need it for ordinary PDF reading, merging, or summarising.
+
+### Node.js Libraries
+
+Make sure the VS Code terminal is open in the repository root, then run:
+
+```powershell
+npm install
+```
+
+This reads `package.json` and installs the exact dependencies recorded in `package-lock.json`. It creates the local `node_modules` folder. Do not upload or commit that folder.
+
+If this repository does not contain `package.json`, run the following instead:
+
+```powershell
+npm install pptxgenjs docx
+```
+
+The optional PDF JavaScript library and PPTX icon packages can be installed with:
+
+```powershell
+npm install pdf-lib react-icons react react-dom sharp
+```
+
+The shared repository already includes these Node dependencies in `package.json`; normally `npm install` is all that is needed.
+
+### Optional PDF Command-Line Tools
+
+The PDF skill documents `qpdf`, `pdftk`, and Poppler utilities such as `pdftotext` and `pdfimages`. Poppler is included above; install the other utilities only when those workflows are required:
+
+```powershell
+winget install QPDF.QPDF
+winget install PDFtk.PDFtk
+```
+
+### Verification
+
+After installation, run the following checks from the repository root. Each line should complete without a `ModuleNotFoundError`, `command not found`, or `not recognized` error:
+
+```powershell
+python -c "import pypdf, pdfplumber, reportlab, pandas, openpyxl, markitdown, PIL, defusedxml, lxml; print('Python document libraries available')"
+node -e "console.log(require('pptxgenjs') && require('docx') ? 'Node document libraries available' : 'Missing Node library')"
+pandoc --version
+soffice --headless --version
+pdftoppm -h
+```
+
+The first check should print `Python document libraries available`. The second should print `Node document libraries available`. The remaining commands should print version or help information.
+
+### If A Command Is Not Recognised
+
+This usually means VS Code was open while the application was installed. Close all VS Code windows, reopen VS Code, open a new terminal, and run the check again. If `soffice` still fails, add this folder to the Windows user `PATH`:
+
+```text
+C:\Program Files\LibreOffice\program
+```
+
+If `npm install` fails, confirm that `node --version` prints a version number. If the Python check fails, confirm that `python --version` prints a version number. Copy the complete error message when asking for help.

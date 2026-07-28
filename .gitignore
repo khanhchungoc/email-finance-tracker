@@ -1,5 +1,6 @@
 
 dist/
+node_modules/
 package-stage/
 .github/memory/
 .codex/memory/
