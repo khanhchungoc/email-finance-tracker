@@ -64,7 +64,8 @@ jobs:
           $stageRoot = Join-Path $PWD "package-stage"
           $sharedProjectPaths = @(
             "project-knowledge-base",
-            "requirements"
+            "requirements",
+            ".vscode"
           )
 
           Remove-Item -LiteralPath $dist, $stageRoot -Recurse -Force -ErrorAction SilentlyContinue
@@ -120,7 +121,8 @@ jobs:
           New-ReleasePackage -Name "github-copilot" -Paths @(
             ".github/copilot-instructions.md",
             ".github/agents",
-            ".github/skills"
+            ".github/skills",
+            ".github/hooks"
           )
 
       - name: Upload workflow artifacts
