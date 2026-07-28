@@ -1,5 +1,6 @@
 ---
 type: Requirement Story
+status: "draft"
 description: <One-sentence behavior/value summary>
 tags: [requirement, user-story, requirement-hierarchy, story-slice]
 timestamp: <ISO-8601 timestamp>
