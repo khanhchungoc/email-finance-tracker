@@ -108,16 +108,6 @@ jobs:
             }
           }
 
-          New-ReleasePackage -Name "codex" -Paths @(
-            "AGENTS.md",
-            ".codex"
-          )
-
-          New-ReleasePackage -Name "gemini" -Paths @(
-            "GEMINI.md",
-            ".gemini"
-          )
-
           New-ReleasePackage -Name "github-copilot" -Paths @(
             ".github/copilot-instructions.md",
             ".github/agents",
