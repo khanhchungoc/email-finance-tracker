@@ -63,6 +63,9 @@ jobs:
           $dist = Join-Path $PWD "dist"
           $stageRoot = Join-Path $PWD "package-stage"
           $sharedProjectPaths = @(
+            "README.md",
+            "package.json",
+            "package-lock.json",
             "project-knowledge-base",
             "requirements",
             ".vscode"
