@@ -5,14 +5,7 @@ description: Use when creating or updating GUI specification Markdown files and 
 
 # GUI Specification Generator Skill
 
-Create OKF-formatted screen-level UI specifications for BA, QA, design, and development handoff.
-
-## Inputs And Related Skills
-
-Primary inputs:
-- Screen images, screenshots, design exports, Figma frames, HTML wireframes, text-based wireframes, or detailed screen descriptions.
-- Parent initiative and epic, related story IDs, user roles, business goals, workflow notes, and known project templates.
-- Existing user story files and GUI specification files in the target epic folder when the screen may already be documented.
+## Related Skills
 
 Useful upstream skills:
 - `generate-wireframe`: use its HTML or text wireframes as the main screen layout input.
@@ -20,7 +13,6 @@ Useful upstream skills:
 - `generate-diagram`: use process or screen-flow diagrams to understand navigation and state transitions.
 - `write-api-specification`: use API/data details only when field data source, payload, or validation behavior is relevant.
 
-No separate agent is required. If another BA, UX, design, or delivery agent provides notes, treat those notes as source material and verify them against the visible screen or supplied requirements.
 
 ## Scope Boundary
 
@@ -41,39 +33,22 @@ This skill does not own:
 
 1. Identify each distinct screen, state, modal, or step.
 2. Confirm platform, screen purpose, user role, and primary action when missing and not inferable from source material.
-3. Read `assets/write-gui-specification-template.md` using your file-reading tools for the output structure. If unavailable, notify the user and proceed using the structure rules in this skill.
-4. Describe only meaningful UI components. Ignore decorative elements unless they affect usability, state, or behavior.
-5. Add assumptions only when needed; add open questions when missing information affects rules, data, permissions, or behavior.
-6. When writing files, place each generated GUI specification in the same requirement output epic folder as the related user story or stories.
-7. Before creating a new GUI spec, check the target epic folder for an existing `gui-<screen-slug>.md` for the same screen.
-   - If the same screen already exists, update the existing screen-centric GUI spec and append a screen change log row.
-   - Create a new GUI spec only for a meaningfully separate screen, state, modal, step, or variant.
-8. Maintain bidirectional traceability: update `related_user_stories` in the GUI spec, and make sure the related user story links back to the GUI spec.
+3. Read assets/gui-specification-template.md for the exact output structure and YAML frontmatter format.
+4. Read `assets/write-gui-specification-template.md` using your file-reading tools for the output structure. If unavailable, notify the user and proceed using the structure rules in this skill.
+5. Describe only meaningful UI components. Ignore decorative elements unless they affect usability, state, or behavior.
+6. Add assumptions only when needed; add open questions when missing information affects rules, data, permissions, or behavior.
+7. Maintain bidirectional traceability: update `related_user_stories` in the GUI spec, and make sure the related user story links back to the GUI spec.
 
-## OKF Output Contract
+## Output Metadata Rules
 
-Every generated GUI specification Markdown file must begin with YAML frontmatter:
-
-```yaml
----
-type: GUI Specification
-title: <Screen or specification title>
-description: <One-sentence screen purpose and handoff summary>
-tags: [requirement, write-gui-specification, screen]
-timestamp: <ISO-8601 timestamp>
-parent_initiative: <Initiative title/path or TBD>
-parent_epic: <Epic title/path or TBD>
-related_user_stories: []
-source_refs: []
----
-```
+Every generated GUI specification Markdown file must begin with the YAML frontmatter defined in the template.
 
 Rules:
 - Keep `type: GUI Specification`.
 - Always include `requirement`, `write-gui-specification`, and `screen` tags; add only relevant controlled tags such as `workflow`, `frontend`, `backend`, `validation`, `permission`, `data`, `api`, `integration`, `reporting`, `notification`, `needs-clarification`, or `ready-for-refinement`.
 - Populate `related_user_stories` with relative links to every user story that affects this screen, for example `./us-001-create-order.md`.
 - Populate `source_refs` when the specification is derived from screenshots, wireframes, design exports, client notes, tickets, or other cited artifacts. Do not fabricate citations.
-- Keep the full UI specification table and behavior notes in the Markdown body. OKF frontmatter is metadata, not a replacement for the specification.
+- Keep the full UI specification table and behavior notes in the Markdown body. The YAML frontmatter is metadata, not a replacement for the specification.
 
 ## Requirement Output Folder
 
@@ -94,7 +69,6 @@ Folder rules:
 ## Output Rules
 
 For each screen, output:
-- OKF YAML frontmatter
 - `### Screen Title`
 - UI Specification Table
 - Behavior Notes

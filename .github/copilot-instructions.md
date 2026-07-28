@@ -75,7 +75,6 @@ Always read and follow the matching `.github/agents/*.agent.md` or `.github/skil
 - Requirement folder structure, initiative/epic indexing, user story authoring, or deliverable placement: `.github/skills/manage-requirement-artifacts/SKILL.md`.
 - WBS, ballpark estimate table, or scope breakdown: `.github/skills/write-wbs/SKILL.md`.
 - Requirement gap scan, SMART check, dependency/impact review, or analysis report: `.github/agents/business-requirements-analyst.agent.md`.
-- UX solution review, usability review, or component pattern comparison: `.github/skills/evaluate-ux-solution/SKILL.md`.
 - Sprint scope email or backlog push/pull sync via MCP: `.github/agents/backlog-manager.agent.md` and `.github/skills/sync-backlog/SKILL.md`.
 - Project wiki update, durable facts distillation, or OKF maintenance: `.github/skills/update-project-knowledge/SKILL.md`.
 - API requirements clarification or contract readiness: `.github/agents/api-requirements-analyst.agent.md`.

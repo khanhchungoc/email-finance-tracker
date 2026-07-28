@@ -21,6 +21,7 @@ skills:
   - ../skills/pdf
   - ../skills/xlsx
   - ../skills/docx
+  - ../skills/pptx
 handoffs:
   - label: Run Elicitation First
     agent: requirements-elicitor

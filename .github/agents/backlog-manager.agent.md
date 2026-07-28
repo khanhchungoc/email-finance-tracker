@@ -9,6 +9,12 @@ tools:
    - edit
    - "atlassian/atlassian-mcp-server/*"
    - "microsoft/azure-devops-mcp/*"
+skills:
+  - ../skills/sync-backlog
+  - ../skills/docx
+  - ../skills/pdf
+  - ../skills/pptx
+  - ../skills/xlsx
 handoffs:
   - manage-requirement-artifacts: after push confirms new external_key, the agent updates story frontmatter via manage-requirement-artifacts ownership rules
   - requirements-elicitor: if a story has unresolved open questions that block push readiness, route to elicitor before pushing

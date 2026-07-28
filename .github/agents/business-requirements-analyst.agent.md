@@ -15,7 +15,6 @@ tools:
 skills:
   - ../skills/analyze-requirements
   - ../skills/research-project-knowledge
-  - ../skills/evaluate-ux-solution
   - ../skills/manage-requirement-artifacts
   - ../skills/update-project-knowledge
   - ../skills/write-gui-specification
@@ -61,7 +60,6 @@ Own:
 - SMART, acceptance-readiness, ambiguity, dependency, behavioral/process alignment, and impact checks
 - Delivery readiness checks before `manage-requirement-artifacts`, `write-api-specification`, diagrams, wireframes, GUI specs, or sprint planning
 - Screen-to-story workflow decisions: identify backlog story slices from screens/mockups while keeping GUI specification details separate
-- Triggering `evaluate-ux-solution` when a proposed screen, flow, component choice, or UX solution needs usability, accessibility, responsiveness, feasibility, or edge case review
 - Change impact analysis across requirements, flows, screens, APIs, data, operations, and testing
 - Recommendations for the next agent or skill
 - Distilling confirmed reusable context to `project-knowledge-base/` via `update-project-knowledge` upon user confirmation
