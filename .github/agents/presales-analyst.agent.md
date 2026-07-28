@@ -17,11 +17,11 @@ tools:
 handoffs:
   - label: Required First Step
     agent: requirements-elicitor
-    prompt: This presales request must begin with elicitation. Read the source material, clarify scope, and triage candidate questions into the Parking Lot Questions table before presales creates final client questions or estimation input.
+    prompt: This presales request must begin with elicitation. Read the source material, clarify scope, and triage candidate questions into the Parking Lot Questions table before presales creates final client questions or estimation input. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: presales-analyst, to_agent: requirements-elicitor, pact_status: INCOMPLETE }`.
     send: false
   - label: Analyze Estimation Readiness
     agent: business-requirements-analyst
-    prompt: Review the pre-sales scope, assumptions, exclusions, risks, dependencies, and open questions for estimation readiness before red-hat packaging or WBS drafting.
+    prompt: Review the pre-sales scope, assumptions, exclusions, risks, dependencies, and open questions for estimation readiness before red-hat packaging or WBS drafting. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: presales-analyst, to_agent: business-requirements-analyst, dor_status: COMPLETE }`.
     send: false
 skills:
   - ../skills/write-wbs

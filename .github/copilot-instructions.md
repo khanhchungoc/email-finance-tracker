@@ -55,6 +55,14 @@ All BA requests involving requirements, scope, estimation, or artifact creation 
 
 See `.github/agents/requirements-elicitor.agent.md` for full intake gate rules and non-interactive subagent guidelines.
 
+## Lifecycle Hooks and Workflow Gates
+
+`.github/hooks/ba-workflow.json` runs a supported `PostToolUse` hook that reminds the agent to apply the relevant artifact or project-knowledge checklist after matching writes.
+
+The intake gate remains an agent workflow rule because it depends on conversation context. Downstream agents require a PACT handoff or explicit `skip_elicitation: true`; `requirements-elicitor` is the entry point and must not route to itself.
+
+Handoff summaries must include `handoff_context` with `from_agent`, `to_agent`, and applicable status fields.
+
 ## Mandatory Agent And Skill Triggers
 
 Always read and follow the matching `.github/agents/*.agent.md` or `.github/skills/*/SKILL.md` file when the user asks to analyze, create, revise, review, or convert a BA artifact covered by a local agent or skill:

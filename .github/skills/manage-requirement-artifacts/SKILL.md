@@ -11,6 +11,12 @@ Maintain the top-level `requirements/` folder as the BA delivery workbench and c
 
 This skill is the **Single Source of Truth (SSOT)** for all deliverable folder placement and indexing rules under `requirements/`. Other skills (`generate-diagram`, `generate-wireframe`, `write-gui-specification`, `write-api-specification`, `write-wbs`) follow the placement rules defined here.
 
+## Post-Artifact Indexing Checklist
+
+After changing an artifact under `requirements/output/`:
+1. **Parent Index Sync**: Update the nearest parent `index.md` (epic or initiative index) with the artifact link and concise description.
+2. **Traceability Link Sync**: Verify and align relative back-links between user stories and associated detailed specs/diagrams (`related_user_stories` $\leftrightarrow$ `./gui-<slug>.md`, `./diagrams/<slug>.md`, etc.).
+
 Use `update-project-knowledge` only for durable reusable context in `project-knowledge-base/`.
 
 ## When to Use

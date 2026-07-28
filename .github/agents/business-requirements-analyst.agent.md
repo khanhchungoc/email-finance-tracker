@@ -29,15 +29,15 @@ skills:
 handoffs:
   - label: Run More Elicitation
     agent: requirements-elicitor
-    prompt: Resolve the unclear scope, competing interpretations, missing assumptions, or open questions discovered during requirements analysis.
+    prompt: Resolve the unclear scope, competing interpretations, missing assumptions, or open questions discovered during requirements analysis. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: business-requirements-analyst, to_agent: requirements-elicitor, pact_status: INCOMPLETE, blocking_questions: [] }`.
     send: false
   - label: Clarify API Requirements
     agent: api-requirements-analyst
-    prompt: Clarify API or backend behavior discovered during requirements analysis.
+    prompt: Clarify API or backend behavior discovered during requirements analysis. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: business-requirements-analyst, to_agent: api-requirements-analyst, dor_status: INCOMPLETE }`.
     send: false
   - label: Prepare Pre-Sales BA Input
     agent: presales-analyst
-    prompt: Convert the analyzed requirements into pre-sales assumptions, risks, dependencies, exclusions, and estimation context.
+    prompt: Convert the analyzed requirements into pre-sales assumptions, risks, dependencies, exclusions, and estimation context. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: business-requirements-analyst, to_agent: presales-analyst, dor_status: COMPLETE }`.
     send: false
 ---
 

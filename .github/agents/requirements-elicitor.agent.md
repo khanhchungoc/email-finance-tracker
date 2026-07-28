@@ -14,25 +14,25 @@ tools:
   - edit
   - "atlassian/atlassian-mcp-server/*"
   - "microsoft/azure-devops-mcp/*"
-handoffs:
-  - label: Clarify API Requirements
-    agent: api-requirements-analyst
-    prompt: Clarify API or backend implications identified during elicitation and prepare them for API specification or diagramming.
-    send: false
-  - label: Analyze Requirements
-    agent: business-requirements-analyst
-    prompt: Analyze the elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next downstream route.
-    send: false
-  - label: Prepare Pre-Sales Context
-    agent: presales-analyst
-    prompt: Convert elicitation outputs into pre-sales clarification questions, WBS framing, assumptions, risks, dependencies, and exclusions.
-    send: false
 skills:
   - ../skills/research-project-knowledge
   - ../skills/pdf
   - ../skills/pptx
   - ../skills/xlsx
   - ../skills/docx
+handoffs:
+  - label: Clarify API Requirements
+    agent: api-requirements-analyst
+    prompt: Clarify API or backend implications identified during elicitation and prepare them for API specification or diagramming. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: requirements-elicitor, to_agent: api-requirements-analyst, pact_status: COMPLETE }`.
+    send: false
+  - label: Analyze Requirements
+    agent: business-requirements-analyst
+    prompt: Analyze the elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next downstream route. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: requirements-elicitor, to_agent: business-requirements-analyst, pact_status: COMPLETE }`.
+    send: false
+  - label: Prepare Pre-Sales Context
+    agent: presales-analyst
+    prompt: Convert elicitation outputs into pre-sales clarification questions, WBS framing, assumptions, risks, dependencies, and exclusions. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: requirements-elicitor, to_agent: presales-analyst, pact_status: COMPLETE }`.
+    send: false
 ---
 
 # Requirements Elicitor Agent

@@ -26,11 +26,11 @@ skills:
 handoffs:
   - label: Run Elicitation First
     agent: requirements-elicitor
-    prompt: Stop API-specific analysis and clarify the business goal, scope, actors, trigger, expected outcome, system ownership/context, assumptions, and parking-lot questions before API-specific requirement analysis resumes.
+    prompt: Stop API-specific analysis and clarify the business goal, scope, actors, trigger, expected outcome, system ownership/context, assumptions, and parking-lot questions before API-specific requirement analysis resumes. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: api-requirements-analyst, to_agent: requirements-elicitor, pact_status: INCOMPLETE }`.
     send: false
   - label: Analyze API Requirement Readiness
     agent: business-requirements-analyst
-    prompt: Review the clarified API requirement for gaps, dependencies, impact, delivery readiness, and downstream specification readiness.
+    prompt: Review the clarified API requirement for gaps, dependencies, impact, delivery readiness, and downstream specification readiness. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: api-requirements-analyst, to_agent: business-requirements-analyst, dor_status: COMPLETE }`.
     send: false
 ---
 

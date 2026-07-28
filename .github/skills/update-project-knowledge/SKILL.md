@@ -13,6 +13,14 @@ Use `references/okf-project-knowledge-base.md` for the reusable folder contract,
 
 Top-level `requirements/` is the delivery workbench for raw intake and generated BA deliverables. This skill may read it as source evidence, but must not modify it.
 
+## Post-Update Indexing and Log Checklist
+
+After changing project knowledge under `wiki/`, `solution-context/`, or `glossary/`:
+1. **Nearest Index Sync**: Update the nearest parent `index.md` with the page link and concise description.
+2. **Log Maintenance**: Append a newest-first entry to `project-knowledge-base/log.md` recording the timestamp, action (`created`, `updated`, `deprecated`), concept path, and change summary.
+3. **Root Index Sync**: Update `project-knowledge-base/index.md` only when adding a new top-level section or core business entrypoint.
+4. Require explicit user confirmation before making durable project-knowledge updates.
+
 ## Use When
 
 - The user asks to update project wiki, solution context, glossary, project summary, client/vendor delivery context, scope, assumptions, risks, decisions, source-linked context, or other reusable project knowledge.
