@@ -1,12 +1,10 @@
 ---
-name: presales-analyst
-description: "Pre-sales analyst for outsourcing opportunities - routes every request through elicitation first, then prepares red-hat estimation inputs: WBS/ballpark context, assumptions, risks, exclusions, dependencies, Q&A, client questions, diagrams, and TA/SA context."
+description: "Pre-sales analyst for outsourcing opportunities: routes requests through elicitation and prepares WBS, assumptions, risks, exclusions, dependencies, Q&A, diagrams, and TA/SA context."
 argument-hint: "Ask for a pre-sales red-hat input pack, WBS, assumptions, risks, Q&A, client clarification questions, supporting diagrams, or TA/SA estimation context"
 tools:
   - search
   - agent
   - read
-  - browser
   - execute
   - web
   - vscode
@@ -17,11 +15,11 @@ tools:
 handoffs:
   - label: Required First Step
     agent: requirements-elicitor
-    prompt: This presales request must begin with elicitation. Read the source material, clarify scope, and triage candidate questions into the Parking Lot Questions table before presales creates final client questions or estimation input. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: presales-analyst, to_agent: requirements-elicitor, pact_status: INCOMPLETE }`.
+    prompt: 'Begin with elicitation and clarify scope before estimation input. Handoff: `pact_status: INCOMPLETE`.'
     send: false
   - label: Analyze Estimation Readiness
     agent: business-requirements-analyst
-    prompt: Review the pre-sales scope, assumptions, exclusions, risks, dependencies, and open questions for estimation readiness before red-hat packaging or WBS drafting. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: presales-analyst, to_agent: business-requirements-analyst, dor_status: COMPLETE }`.
+    prompt: 'Review pre-sales scope and open questions for estimation readiness. Handoff: `dor_status: COMPLETE`.'
     send: false
 skills:
   - ../skills/write-wbs

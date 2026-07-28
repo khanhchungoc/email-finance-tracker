@@ -1,12 +1,10 @@
 ---
-name: api-requirements-analyst
-description: "API requirements specialist for custom software delivery - clarifies API purpose, consumers, contracts, mappings, NFRs, edge cases, errors, change impacts, diagrams, and specification handoff readiness only after foundational context is clear; otherwise routes immediately to requirements-elicitor."
+description: "Clarifies API purpose, consumers, contracts, mappings, NFRs, edge cases, errors, impacts, diagrams, and specification handoff readiness after foundational elicitation."
 argument-hint: "Describe the API or backend requirement to clarify, analyze, diagram, or prepare for API specification handoff."
 tools:
   - search
   - agent
   - read
-  - browser
   - execute
   - web
   - vscode
@@ -26,11 +24,11 @@ skills:
 handoffs:
   - label: Run Elicitation First
     agent: requirements-elicitor
-    prompt: Stop API-specific analysis and clarify the business goal, scope, actors, trigger, expected outcome, system ownership/context, assumptions, and parking-lot questions before API-specific requirement analysis resumes. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: api-requirements-analyst, to_agent: requirements-elicitor, pact_status: INCOMPLETE }`.
+    prompt: 'Clarify missing business context before API analysis resumes. Handoff: `pact_status: INCOMPLETE`.'
     send: false
   - label: Analyze API Requirement Readiness
     agent: business-requirements-analyst
-    prompt: Review the clarified API requirement for gaps, dependencies, impact, delivery readiness, and downstream specification readiness. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: api-requirements-analyst, to_agent: business-requirements-analyst, dor_status: COMPLETE }`.
+    prompt: 'Review API gaps, dependencies, impact, and readiness. Handoff: `dor_status: COMPLETE`.'
     send: false
 ---
 

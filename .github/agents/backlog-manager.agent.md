@@ -1,18 +1,14 @@
 ---
-name: backlog-manager
-description: Manages push/pull sync between BA workspace requirement artifacts and Jira/ADO backlogs via MCP. Owns readiness judgement, push/pull decisions, conflict reconciliation, cascade ordering, sprint scope tracking, sprint goal synthesis, and sprint scope email generation. Uses sync-backlog skill for procedural field mapping, templates, and file placement. Assumes either Atlassian MCP or Azure DevOps MCP is available.
-triggers:
-  - push stories to Jira
-  - push stories to ADO
-  - sync backlog
-  - create work items
-  - pull sprint scope
-  - sprint scope email
-  - draft sprint commitment email
-  - backlog status check
-  - reconcile backlog
-  - what stories haven't been pushed
-  - attach spec to work item
+description: "Manages Jira/ADO backlog sync, readiness, push/pull decisions, conflict reconciliation, sprint scope, sprint goals, commitment emails, work-item creation, and spec attachments. Uses the sync-backlog skill for procedural details."
+tools:
+   - search
+   - agent
+   - read
+   - execute
+   - todo
+   - edit
+   - "atlassian/atlassian-mcp-server/*"
+   - "microsoft/azure-devops-mcp/*"
 handoffs:
   - manage-requirement-artifacts: after push confirms new external_key, the agent updates story frontmatter via manage-requirement-artifacts ownership rules
   - requirements-elicitor: if a story has unresolved open questions that block push readiness, route to elicitor before pushing

@@ -1,12 +1,10 @@
 ---
-name: business-requirements-analyst
-description: You are a Business Requirements Analyst agent. Your job is to actively assess whether requirements are ready for downstream work, produce structured analysis findings, and recommend or trigger the appropriate next step.
+description: "Assesses requirement readiness, produces structured analysis findings, and recommends the appropriate downstream route."
 argument-hint: "Describe the requirement, brief, epic, feature, user story, API, WBS input, or change request to analyze."
 tools:
   - search
   - agent
   - read
-  - browser
   - execute
   - web
   - vscode
@@ -29,15 +27,15 @@ skills:
 handoffs:
   - label: Run More Elicitation
     agent: requirements-elicitor
-    prompt: Resolve the unclear scope, competing interpretations, missing assumptions, or open questions discovered during requirements analysis. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: business-requirements-analyst, to_agent: requirements-elicitor, pact_status: INCOMPLETE, blocking_questions: [] }`.
+    prompt: 'Resolve unclear scope, interpretations, assumptions, or blocking questions. Handoff: `pact_status: INCOMPLETE`.'
     send: false
   - label: Clarify API Requirements
     agent: api-requirements-analyst
-    prompt: Clarify API or backend behavior discovered during requirements analysis. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: business-requirements-analyst, to_agent: api-requirements-analyst, dor_status: INCOMPLETE }`.
+    prompt: 'Clarify API or backend behavior found during analysis. Handoff: `dor_status: INCOMPLETE`.'
     send: false
   - label: Prepare Pre-Sales BA Input
     agent: presales-analyst
-    prompt: Convert the analyzed requirements into pre-sales assumptions, risks, dependencies, exclusions, and estimation context. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: business-requirements-analyst, to_agent: presales-analyst, dor_status: COMPLETE }`.
+    prompt: 'Convert analyzed requirements into pre-sales estimation context. Handoff: `dor_status: COMPLETE`.'
     send: false
 ---
 

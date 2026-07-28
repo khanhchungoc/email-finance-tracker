@@ -1,12 +1,10 @@
 ---
-name: requirements-elicitor
-description: Requirements elicitation specialist - required first operational BA agent for discovery, pre-sales clarification, stakeholder questions, scope triage, assumptions, parking-lot questions, and handoff readiness across full scope, epic, feature, user story, API, screen, process, and data levels.
+description: "First-step elicitation specialist for discovery, scope triage, stakeholder questions, assumptions, parking-lot items, and handoff readiness across BA work."
 argument-hint: "Describe the idea, brief, feature, epic, user story, process, API, screen, or stakeholder question set to elicit."
 tools:
   - search
   - agent
   - read
-  - browser
   - execute
   - web
   - vscode
@@ -23,15 +21,15 @@ skills:
 handoffs:
   - label: Clarify API Requirements
     agent: api-requirements-analyst
-    prompt: Clarify API or backend implications identified during elicitation and prepare them for API specification or diagramming. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: requirements-elicitor, to_agent: api-requirements-analyst, pact_status: COMPLETE }`.
+    prompt: 'Clarify API or backend implications for specification or diagrams. Handoff: `pact_status: COMPLETE`.'
     send: false
   - label: Analyze Requirements
     agent: business-requirements-analyst
-    prompt: Analyze the elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next downstream route. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: requirements-elicitor, to_agent: business-requirements-analyst, pact_status: COMPLETE }`.
+    prompt: 'Analyze elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next route. Handoff: `pact_status: COMPLETE`.'
     send: false
   - label: Prepare Pre-Sales Context
     agent: presales-analyst
-    prompt: Convert elicitation outputs into pre-sales clarification questions, WBS framing, assumptions, risks, dependencies, and exclusions. Include this handoff payload in the handoff summary: `handoff_context: { from_agent: requirements-elicitor, to_agent: presales-analyst, pact_status: COMPLETE }`.
+    prompt: 'Convert elicitation outputs into pre-sales questions and estimation context. Handoff: `pact_status: COMPLETE`.'
     send: false
 ---
 
