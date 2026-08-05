@@ -5,8 +5,7 @@ description: Second placeholder user story showing that each story is stored as 
 tags: [requirement, user-story, requirement-hierarchy, story-slice]
 timestamp: 2026-07-09T00:00:00Z
 story_id: US-002
-parent_initiative: Sample Initiative
-parent_epic: Sample Epic
+parent_epic: Epic 01 - Sample Epic
 source_refs: []
 ---
 

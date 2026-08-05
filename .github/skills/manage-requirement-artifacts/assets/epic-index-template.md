@@ -1,12 +1,10 @@
 ---
 type: Requirement Epic
-title: Epic Template
-description: Template for the canonical epic folder index under an initiative.
-tags: [requirement, epic, requirement-hierarchy]
-timestamp: 2026-07-09T00:00:00Z
-source_refs: []
-external_key: ""
-last_pushed: ""
+initiative: "<Initiative Name or TBD>"
+status: draft
+description: "Template for the canonical epic folder index under an initiative."
+tags: [requirement, epic]
+timestamp: "<ISO-8601 timestamp>"
 ---
 
 # Epic

@@ -17,11 +17,11 @@ Every generated user story Markdown file must begin with OKF-compatible YAML fro
 ```yaml
 ---
 type: Requirement Story
+epic: <Epic title/path or TBD>
+status: draft
 description: <One-sentence behavior/value summary>
-tags: [requirement, user-story, requirement-hierarchy, story-slice]
+tags: [requirement, user-story]
 timestamp: <ISO-8601 timestamp>
-story_id: <User story ID or TBD>
-parent_epic: <Epic title/path or TBD>
 ---
 ```
 
@@ -31,8 +31,9 @@ Rules:
 - Do not include frontmatter `title`; use the H1/body story title as the single visible title.
 - Do not include `parent_initiative`; initiative ownership is implied by the folder path.
 - Do not include `source_refs`; keep source evidence in the body `### Citations` section when needed.
-- Always include `requirement`, `user-story`, `requirement-hierarchy`, and `story-slice`.
-- Add only relevant controlled tags such as `api`, `screen`, `frontend`, `backend`, `workflow`, `validation`, `permission`, `data`, `integration`, `reporting`, `notification`, or `acceptance-criteria`.
+- Always include `requirement` and `user-story` in tags.
+- Use hyphen separators for epic names and story titles (e.g., `Epic 1 - Epic Name` and `US-001 - Story Name`) instead of colons (`:`).
+- Add only relevant optional technical/domain tags such as `api`, `screen`, `frontend`, `backend`, `workflow`, `validation`, `permission`, `data`, `integration`, `reporting`, or `notification`.
 - Keep the full user story content in the Markdown body. OKF frontmatter is metadata, not a replacement for story sections.
 - Include a `### Citations` section in the body when source-backed references are available.
 
@@ -54,9 +55,8 @@ Place related GUI specification files in the same epic folder as the user story.
 
 1. Identify the user role, target behavior, expected outcome, and business value.
 2. Read and apply `references/slicing-guidelines.md` to slice the requirement into 1-sprint scope slices (<= 1 week).
-3. Track commercial baseline alignment in frontmatter (`wbs_baseline_ref` and `commercial_scope_status`).
-4. Draft story using `assets/user-story-template.md`. Use `N/A` for non-applicable sections. Avoid filler narrative.
-5. Authoritative & Concise Delivery: Write direct, high-density story statements and Gherkin ACs without conversational narrative or meta-commentary.
+3. Draft story using `assets/user-story-template.md`. Use `N/A` for non-applicable sections. Avoid filler narrative.
+4. Authoritative & Concise Delivery: Write direct, high-density story statements and Gherkin ACs without conversational narrative or meta-commentary.
 
 ## Acceptance Criteria Standards
 
@@ -132,4 +132,4 @@ Before saving any user story file, verify against this quality checklist:
 - [ ] **Independent & Small**: Story is sliced to fit within 1 sprint (<= 1 week) without blocking dependencies.
 - [ ] **Valuable**: Business value statement is explicitly articulated.
 - [ ] **No AC Bloat**: Form field validations are consolidated into a single summary AC referencing `write-gui-specification`.
-- [ ] **Traceable & Ready**: Affected GUI/API specs are linked with relative Markdown links; frontmatter metadata (`wbs_baseline_ref`, `commercial_scope_status`) is populated.
+- [ ] **Traceable & Ready**: Affected GUI/API specs are linked with relative Markdown links; story metadata (`id`, `epic`, `status`) is populated.

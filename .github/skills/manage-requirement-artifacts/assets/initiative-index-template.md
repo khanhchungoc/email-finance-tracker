@@ -1,12 +1,9 @@
 ---
 type: Requirement Initiative
-title: Initiative Template
-description: Template for the canonical initiative folder index under requirements/output/initiatives.
-tags: [requirement, initiative, requirement-hierarchy]
-timestamp: 2026-07-09T00:00:00Z
-source_refs: []
-external_key: ""
-last_pushed: ""
+status: draft
+description: "Template for the canonical initiative folder index under requirements/output/initiatives."
+tags: [requirement, initiative]
+timestamp: "<ISO-8601 timestamp>"
 ---
 
 # Initiative

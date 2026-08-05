@@ -2,7 +2,7 @@
 type: Wiki Topic
 title: <Topic Title>
 description: <One-sentence summary of the business rule, behavior, issue, limitation, or important note.>
-tags: [project]
+tags: [wiki]
 timestamp: <YYYY-MM-DDTHH:MM:SSZ>
 source_refs: []
 ---

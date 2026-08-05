@@ -1,20 +1,15 @@
 ---
 type: Requirement Story
-status: "draft"
-description: <One-sentence behavior/value summary>
-tags: [requirement, user-story, requirement-hierarchy, story-slice]
-timestamp: <ISO-8601 timestamp>
-story_id: <User Story ID or TBD>
-parent_epic: <Epic title/path or TBD>
-wbs_baseline_ref: "<WBS item ID or N/A>"
-commercial_scope_status: "IN_BASELINE"
-external_key: ""
-last_pushed: ""
+epic: "<Epic Name or TBD>"
+status: draft
+description: "<One-sentence behavior/value summary>"
+tags: [requirement, user-story]
+timestamp: "<ISO-8601 timestamp>"
 ---
 
 # User Story Sample Template
 
-### Epic: `<Epic Name>`
+### Epic - `<Epic Name>`
 
 ### `<User Story ID>` - `<User Story Name>`
 

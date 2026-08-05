@@ -1,16 +1,13 @@
 ---
 type: Requirement Story
-title: US-001 Sample User Story
-description: Placeholder user story showing the required file location and OKF metadata.
-tags: [requirement, user-story, requirement-hierarchy, story-slice]
-timestamp: 2026-07-09T00:00:00Z
-story_id: US-001
-parent_initiative: Sample Initiative
-parent_epic: Sample Epic
-source_refs: []
+epic: Epic 01 - Sample Epic
+status: Ready for Development
+description: CSV Scenario Engine & Updater Utility
+tags: [requirement, user-story]
+timestamp: 2026-08-05T14:56:00Z
 ---
 
-# US-001 Sample User Story
+# US-001 - Sample User Story
 
 ## User Story
 
