@@ -28,14 +28,20 @@ async function main() {
 
   try {
     const xml = fs.readFileSync(filePath, 'utf-8');
-    const result = await layoutProcess(xml);
-    let layoutedXml = typeof result === 'string' ? result : (result.xml || result);
-    
-    if (!layoutedXml || typeof layoutedXml !== 'string') {
-      throw new Error('layoutProcess returned empty or invalid XML result');
+    let layoutedXml = xml;
+
+    // If XML does not yet contain visual Participant/Lane DI shapes, run auto-layout engine
+    if (!xml.includes('Participant_') && !xml.includes('lane_')) {
+      const result = await layoutProcess(xml);
+      layoutedXml = typeof result === 'string' ? result : (result.xml || result);
+      if (!layoutedXml || typeof layoutedXml !== 'string') {
+        throw new Error('layoutProcess returned empty or invalid XML result');
+      }
+    } else {
+      console.log('[Lane Preservation] Preserving pre-existing visual Swimlane & Pool DI layout bounds.');
     }
 
-    // Run Automated Guide Checks & Enhancements
+    // Run Automated Guide Checks & Enhancements (Multilane Alignment, Competing Anchors, Default Attributes, Label Offsets)
     const enhancedXml = postProcessBpmn(layoutedXml);
 
     fs.writeFileSync(filePath, enhancedXml, 'utf-8');
@@ -130,7 +136,9 @@ function auditLineShapeCollisions(xml) {
   const shapeRegex = /<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>[\s\S]*?<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g;
   let sMatch;
   while ((sMatch = shapeRegex.exec(xml)) !== null) {
-    if (sMatch[1].includes('Participant') || sMatch[1].includes('Lane')) continue;
+    const sId = sMatch[1].toLowerCase();
+    const eId = sMatch[2].toLowerCase();
+    if (sId.includes('participant') || sId.includes('lane') || eId.includes('participant') || eId.includes('lane')) continue;
     shapes.push({
       shapeId: sMatch[1],
       elementId: sMatch[2],

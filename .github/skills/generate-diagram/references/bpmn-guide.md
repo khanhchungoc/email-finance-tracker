@@ -30,11 +30,12 @@ Use this reference guide when creating, reviewing, or revising `.bpmn` files wit
 ### B. Grid & Alignment Principles
 1. **Same-Lane Progression:** Sequential nodes within the same swimlane keep moving horizontally to the right along the lane's main center spine (`(X1, Y) ➡️ (X2, Y)`).
 2. **Lane-Change Continuation:**
-   - **Direct Vertical Alignment (0-Turn):** When transitioning across swimlanes (up or down), if the vertical corridor is clear and unblocked, place the target node on the target lane vertically aligned on the exact same `Center-X` column.
-   - **Right-Up / Right-Down Staggering:** If direct vertical placement overlaps any arrow or existing node, stagger the target node to the right (`Right-Up` or `Right-Down`). The sequence flow exits the source node's Right port, steps vertically through an open corridor, and enters the target node's Left port.
-3. **Horizontal Row Alignment & Secondary Rows:** All nodes and gateways on the same line MUST be horizontally aligned (`Center-Y`). If adding a node or gateway on the main line causes an overlap with an existing arrow or node, create a secondary parallel horizontal line (row) within the same swimlane (e.g. `Y = Row1_Center + 90px`).
-4. **Converging Gateway Alignment:** Align converging join gateways on the exact same Y-axis as the diverging split gateway that initiated the path.
-5. **Inline Vertical Decision Stacking:** Place decision splits, rejection tasks, and rejection join gateways in the exact same vertical column (`Center-X`) to produce **0-turn straight vertical lines** (`(X, Y1) ➡️ (X, Y2)`).
+   - **Direct Vertical Alignment (0-Turn):** When transitioning across swimlanes (up or down), if the vertical corridor is clear and unblocked by arrows or existing nodes, place the target node on the target lane vertically aligned on the exact same `Center-X` column.
+   - **Right-Up / Right-Down Staggering:** If direct vertical placement overlaps any arrow or existing node, stagger the target node to the right (`Right-Up` or `Right-Down`). The sequence flow exits the source node's Right/Top/Bottom port, steps vertically through an open corridor, and enters the target node's Left port.
+3. **Minimal Competing Anchors:** Avoid routing multiple incoming or outgoing sequence flows into the exact same pixel anchor port (`Top`, `Bottom`, `Left`, `Right`) on a single shape.
+4. **Horizontal Row Alignment & Secondary Rows:** All nodes and gateways on the same line MUST be horizontally aligned (`Center-Y`). If adding a node or gateway on the main line causes an overlap with an existing arrow or node, create a secondary parallel horizontal line (row) within the same swimlane (e.g. `Y = Row1_Center + 90px`).
+5. **Converging Gateway Alignment:** Align converging join gateways on the exact same Y-axis as the diverging split gateway that initiated the path.
+6. **Inline Vertical Decision Stacking:** Place decision splits, rejection tasks, and rejection join gateways in the exact same vertical column (`Center-X`) to produce **0-turn straight vertical lines** (`(X, Y1) ➡️ (X, Y2)`).
 
 ---
 

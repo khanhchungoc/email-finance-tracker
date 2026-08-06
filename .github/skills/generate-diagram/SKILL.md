@@ -42,6 +42,14 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 ---
 
+## 🏊 Mandatory Actors & Swimlanes Definition Step
+
+**Before creating any process or business analyst diagram file:**
+1. **Always define and list all Actors and Swimlanes first** (roles, systems, departments, external entities) and map their responsibilities before generating the diagram artifact.
+2. Ensure every process node, gateway, and event is assigned to an explicit swimlane owner.
+
+---
+
 ## ❓ Mandatory Format Confirmation Step
 
 **If the prompt or incoming handoff context does NOT specify an output format (`.drawio`, `.md` [Mermaid], or `.bpmn`):**
@@ -55,6 +63,7 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 ## Before Generating
 
+- **Define actors and swimlanes first** before creating the diagram file.
 - Identify actors, systems, roles, start/end points, decisions, loops, and exception paths.
 - Choose one focused diagram; split broad scope into happy path plus exceptions if needed.
 - Use plain business labels unless the audience is technical.
@@ -108,6 +117,7 @@ Follow the deliverable folder placement and index update rules owned by `manage-
 ## Validation Checklist
 
 Before presenting the completed diagram:
+- [ ] Explicitly defined actors and swimlanes first before creating the diagram file.
 - [ ] Confirmed output format preference with the user if unspecified (`.drawio`, `.md`, or `.bpmn`).
 - [ ] Scope matches requirements, user stories, or architecture context.
 - [ ] Correct file extension used (`.drawio`, `.bpmn`, or `.md`).
