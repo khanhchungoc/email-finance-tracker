@@ -2,11 +2,13 @@ import fs from 'node:fs';
 
 /**
  * Enhanced BPMN 2.0 Auto-Layout & Post-Processing Utility
- * Enforces 4 Core Layout Rules from bpmn-guide.md:
+ * Enforces 6 Core Layout Rules from bpmn-guide.md:
  * 1. Same-Lane Progression: Keep going horizontally right along main center spine.
  * 2. Lane-Change Continuation: Direct 0-turn vertical alignment if clear; Right-Up / Right-Down staggering if overlapping arrows/nodes.
  * 3. Minimal Competing Anchors: Clean port distribution (Left=in, Right=out, Top/Bottom=rejection/loop) to prevent arrowhead collisions.
  * 4. Horizontal Row Alignment & Secondary Rows: Nodes on the same line are aligned on Center-Y; create secondary parallel rows in the swimlane if overlapping.
+ * 5. Leftward / Loopback Flow Routing: Choose the port with fewest turns and least overlap; never force Right-exit for leftward flows.
+ * 6. Node Nudge-to-Align: If nudging a node by ≤35px makes a connecting flow straight (0 turns), move the node and collapse the edge to 2 waypoints (no sibling overlap check first).
  * - Dynamic Node-Based Spacing: Canvas scales dynamically based on column count (no hardcoded limits).
  * - Enforces Exclusive Gateway default attributes & 15px label offsets.
  */
@@ -31,7 +33,7 @@ async function main() {
     let layoutedXml = xml;
 
     // If XML does not yet contain visual Participant/Lane DI shapes, run auto-layout engine
-    if (!xml.includes('Participant_') && !xml.includes('lane_')) {
+    if (!xml.includes('bpmndi:BPMNShape id="Lane_') && !xml.includes('bpmndi:BPMNShape id="Participant_')) {
       const result = await layoutProcess(xml);
       layoutedXml = typeof result === 'string' ? result : (result.xml || result);
       if (!layoutedXml || typeof layoutedXml !== 'string') {
@@ -61,7 +63,16 @@ function postProcessBpmn(xml) {
   // Rule 0: Compress excessive horizontal spacing from default auto-layout grid
   processed = compressHorizontalSpacing(processed);
 
-  // Rule 1: Ensure Exclusive Gateways with multiple outgoing flows declare a default attribute
+  // Rule 1: Vertical Swimlane & Pool Shrink-Wrapping
+  processed = shrinkWrapSwimlanesAndPools(processed);
+
+  // Rule 2: Dock Boundary Events onto host activity shape perimeters
+  processed = dockBoundaryEvents(processed);
+
+  // Rule 3: Apply BPMN-in-Color standard visual palette
+  processed = applyBpmnInColor(processed);
+
+  // Rule 4: Ensure Exclusive Gateways with multiple outgoing flows declare a default attribute
   processed = processed.replace(/<bpmn:exclusiveGateway\s+([^>]+)>/g, (match, attrs) => {
     if (!attrs.includes('default=')) {
       const idMatch = attrs.match(/id="([^"]+)"/);
@@ -78,7 +89,7 @@ function postProcessBpmn(xml) {
     return match;
   });
 
-  // Rule 2: Ensure Sequence Flow labels sit at least 15px above horizontal edge waypoints
+  // Rule 5: Ensure Sequence Flow labels sit at least 15px above horizontal edge waypoints
   processed = processed.replace(/<bpmndi:BPMNEdge\s+([^>]+)>([\s\S]*?)<\/bpmndi:BPMNEdge>/g, (match, edgeAttrs, content) => {
     const waypoints = [];
     const wpRegex = /<di:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
@@ -119,11 +130,22 @@ function postProcessBpmn(xml) {
     return `<bpmndi:BPMNEdge ${edgeAttrs}>${content}</bpmndi:BPMNEdge>`;
   });
 
-  // Rule 3: Line-Through-Shape Collision Audit Inspector
-  auditLineShapeCollisions(processed);
+  // Rule 6: Active Auto-Repair of Competing Anchor Port Distribution
+  processed = repairAnchorPortDistribution(processed);
 
-  // Rule 4: Competing Anchor Port Distribution Audit
+  // Rule 7: Active Rerouting of Leftward / Loopback Flows
+  processed = rerouteLeftwardFlows(processed);
+
+  // Rule 8: Nudge nodes to align with connecting flows (reduces turns to 0 where possible)
+  processed = nudgeNodesToStraightenFlows(processed);
+
+  // Rule 9: Enforce 100% Orthogonal Edge Routing & Shape Perimeter Touch
+  processed = enforceOrthogonalAndTouchingWaypoints(processed);
+
+  // Final Audits & Sanity Inspectors
+  auditLineShapeCollisions(processed);
   auditAnchorPortDistribution(processed);
+  auditLeftwardFlowRouting(processed);
 
   return processed;
 }
@@ -151,10 +173,16 @@ function auditLineShapeCollisions(xml) {
 
   const edgeRegex = /<bpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>([\s\S]*?)<\/bpmndi:BPMNEdge>/g;
   const flowSourceTargetMap = {};
-  const flowRegex = /<bpmn:sequenceFlow\s+id="([^"]+)"\s+sourceRef="([^"]+)"\s+targetRef="([^"]+)"/g;
+  const flowRegex = /<bpmn:sequenceFlow\s+([^>]+)>/g;
   let fMatch;
   while ((fMatch = flowRegex.exec(xml)) !== null) {
-    flowSourceTargetMap[fMatch[1]] = { sourceRef: fMatch[2], targetRef: fMatch[3] };
+    const attrs = fMatch[1];
+    const idM = attrs.match(/id="([^"]+)"/);
+    const srcM = attrs.match(/sourceRef="([^"]+)"/);
+    const tgtM = attrs.match(/targetRef="([^"]+)"/);
+    if (idM && srcM && tgtM) {
+      flowSourceTargetMap[idM[1]] = { sourceRef: srcM[1], targetRef: tgtM[1] };
+    }
   }
 
   let eMatch;
@@ -353,4 +381,787 @@ function compressHorizontalSpacing(xml) {
   return res;
 }
 
+/**
+ * Rule 5 — Leftward / Loopback Flow Routing Audit (bpmn-guide.md §3B)
+ *
+ * For every sequence flow whose end waypoint X < start waypoint X (i.e. the flow
+ * goes back to the left), checks whether the first segment moves RIGHTWARD first.
+ * A right-then-left route has at least 2 unnecessary extra turns and should instead
+ * exit via the Top, Bottom, or Left port for the fewest turns and least overlap.
+ *
+ * Logs a [Leftward-Route Warning] for each offending flow so the author knows to
+ * manually reroute via an above/below-lane open channel instead.
+ */
+function auditLeftwardFlowRouting(xml) {
+  const edgeRegex = /\u003cbpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^\u003e]*\u003e([\s\S]*?)\u003c\/bpmndi:BPMNEdge\u003e/g;
+  let eMatch;
+  let leftwardIssues = 0;
+
+  while ((eMatch = edgeRegex.exec(xml)) !== null) {
+    const flowId = eMatch[2];
+    const content = eMatch[3];
+    const waypoints = [];
+    const wpRegex = /\u003cdi:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
+    let wpMatch;
+    while ((wpMatch = wpRegex.exec(content)) !== null) {
+      waypoints.push({ x: parseFloat(wpMatch[1]), y: parseFloat(wpMatch[2]) });
+    }
+
+    if (waypoints.length < 2) continue;
+
+    const startX = waypoints[0].x;
+    const endX = waypoints[waypoints.length - 1].x;
+
+    // Only inspect flows that travel leftward overall
+    if (endX >= startX) continue;
+
+    // Check if the first segment moves rightward (bad: unnecessary extra turns)
+    const firstSegDeltaX = waypoints[1].x - waypoints[0].x;
+    if (firstSegDeltaX > 5) {
+      leftwardIssues++;
+      const turns = waypoints.length - 2;
+      console.warn(
+        `[Leftward-Route Warning] Flow '${flowId}' goes LEFT (startX=${startX} → endX=${endX}) ` +
+        `but first exits RIGHTWARD by ${firstSegDeltaX.toFixed(0)}px with ${turns} turn(s). ` +
+        `Consider exiting via Top/Bottom/Left port through a clear above/below-lane channel for fewer turns and less overlap.`
+      );
+    }
+  }
+
+  if (leftwardIssues === 0) {
+    console.log('[Leftward-Route Audit] Clean! All leftward/loopback flows use optimal exit ports.');
+  }
+}
+
+/**
+ * Rule 6 — Node Nudge-to-Align (bpmn-guide.md §2B Rule 7)
+ *
+ * For each sequence flow edge, if the source node's center-Y and the target node's
+ * center-Y differ by at most NUDGE_THRESHOLD pixels, nudging the target node to
+ * align its center-Y with the source would make the entire flow straight (0 turns,
+ * 2 waypoints).
+ *
+ * Algorithm (multi-pass until stable):
+ *  1. Parse all shape bounds into a map keyed by bpmnElement id.
+ *  2. Parse all edges with their source/target bpmnElement ids.
+ *  3. For each edge with 3+ waypoints (i.e. has at least 1 turn):
+ *     a. Look up source center-Y and target center-Y.
+ *     b. If |sourceCY - targetCY| <= NUDGE_THRESHOLD:
+ *        - Compute deltaY = sourceCY - targetCY (how much to shift target).
+ *        - Check that shifting target node by deltaY doesn't overlap any sibling
+ *          shape in the same horizontal band (same lane, similar x range).
+ *        - If safe: update target node Bounds y in the XML, update all edges
+ *          connected to that node (adjust their start/end waypoint y-values),
+ *          and collapse the triggering edge to 2 straight waypoints.
+ *        - Log the nudge action.
+ *  4. Repeat until no changes in a pass (stable).
+ *
+ * NUDGE_THRESHOLD: 35px — small enough to avoid major re-layouts but large enough
+ * to capture near-aligned nodes that just need minor vertical correction.
+ */
+function nudgeNodesToStraightenFlows(xml) {
+  const NUDGE_THRESHOLD = 35;
+  let current = xml;
+  let totalNudges = 0;
+  let passNudges;
+
+  do {
+    passNudges = 0;
+
+    // --- 1. Parse all shapes ---
+    const shapes = new Map(); // bpmnElement id -> {x, y, w, h, diId, raw}
+    const shapeRegex = /(<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>[\s\S]*?<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"[^/]*\/>[\s\S]*?<\/bpmndi:BPMNShape>)/g;
+    let sm;
+    while ((sm = shapeRegex.exec(current)) !== null) {
+      const [full, , diId, elemId, sx, sy, sw, sh] = sm;
+      shapes.set(elemId, {
+        x: parseFloat(sx), y: parseFloat(sy),
+        w: parseFloat(sw), h: parseFloat(sh),
+        diId, raw: full
+      });
+    }
+
+    // --- 2. Parse all edges ---
+    const edges = [];
+    const semanticFlowRegex = /<bpmn:sequenceFlow\s+([^>]+)>/g;
+    let ef;
+    while ((ef = semanticFlowRegex.exec(current)) !== null) {
+      const attrs = ef[1];
+      const idM = attrs.match(/id="([^"]+)"/);
+      const srcM = attrs.match(/sourceRef="([^"]+)"/);
+      const tgtM = attrs.match(/targetRef="([^"]+)"/);
+      if (idM && srcM && tgtM) {
+        edges.push({ id: idM[1], src: srcM[1], tgt: tgtM[1] });
+      }
+    }
+
+    // --- 3. For each edge, check nudge eligibility ---
+    for (const edge of edges) {
+      const src = shapes.get(edge.src);
+      const tgt = shapes.get(edge.tgt);
+      if (!src || !tgt) continue;
+
+      // Find the DI edge to count waypoints
+      const diEdgeRegex = new RegExp(
+        `(<bpmndi:BPMNEdge[^>]+bpmnElement="${edge.id}"[^>]*>)([\\s\\S]*?)(</bpmndi:BPMNEdge>)`
+      );
+      const diMatch = diEdgeRegex.exec(current);
+      if (!diMatch) continue;
+
+      const wpRegex = /<di:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
+      const waypoints = [];
+      let wm;
+      while ((wm = wpRegex.exec(diMatch[2])) !== null) {
+        waypoints.push({ x: parseFloat(wm[1]), y: parseFloat(wm[2]) });
+      }
+      if (waypoints.length < 3) continue; // Already straight or only 2 pts
+
+      const srcCY = src.y + src.h / 2;
+      const tgtCY = tgt.y + tgt.h / 2;
+      const deltaY = srcCY - tgtCY;
+
+      if (Math.abs(deltaY) > NUDGE_THRESHOLD) continue;
+      if (Math.abs(deltaY) < 1) continue; // Already aligned
+
+      // --- 3b. Sibling overlap check ---
+      const newTgtY = tgt.y + deltaY;
+      let overlaps = false;
+      for (const [otherId, other] of shapes) {
+        if (otherId === edge.tgt) continue;
+        // Only check shapes near the same x column (within 2 node widths)
+        if (Math.abs(other.x - tgt.x) > tgt.w * 2) continue;
+        const overlapX = other.x < tgt.x + tgt.w && other.x + other.w > tgt.x;
+        const overlapY = other.y < newTgtY + tgt.h + 10 && other.y + other.h + 10 > newTgtY;
+        if (overlapX && overlapY) { overlaps = true; break; }
+      }
+      if (overlaps) continue;
+
+      // --- 3c. Apply nudge: update target node Bounds y ---
+      const oldBoundsStr = `<dc:Bounds x="${tgt.x}" y="${tgt.y}" width="${tgt.w}" height="${tgt.h}"`;
+      const newBoundsStr = `<dc:Bounds x="${tgt.x}" y="${newTgtY.toFixed(0)}" width="${tgt.w}" height="${tgt.h}"`;
+      if (!current.includes(oldBoundsStr)) continue; // safety guard
+      current = current.replace(oldBoundsStr, newBoundsStr);
+
+      // Update the shape map so subsequent passes see the new y
+      tgt.y = newTgtY;
+
+      // --- 3d. Collapse the triggering edge to 2 straight waypoints ---
+      // Source exit: right port of src → target left port of tgt (or reversed)
+      const srcRight = src.x + src.w;
+      const tgtLeft = tgt.x;
+      const straightY = Math.round(srcCY);
+
+      let newWaypoints;
+      if (srcRight <= tgtLeft) {
+        // Forward flow: src right → tgt left (horizontal straight)
+        newWaypoints = `        <di:waypoint x="${srcRight}" y="${straightY}" />\n        <di:waypoint x="${tgtLeft}" y="${straightY}" />`;
+      } else {
+        // Backward or cross flow: use centers
+        newWaypoints = `        <di:waypoint x="${Math.round(src.x + src.w / 2)}" y="${straightY}" />\n        <di:waypoint x="${Math.round(tgt.x + tgt.w / 2)}" y="${straightY}" />`;
+      }
+
+      // Replace all waypoints in the DI edge
+      current = current.replace(diEdgeRegex, (fullEdge, open, content, close) => {
+        return `${open}\n${newWaypoints}\n      ${close}`;
+      });
+
+      // --- 3e. Also nudge all other edges anchored to the target node ---
+      // Adjust their first or last waypoint y to match the new center
+      const newTgtCY = Math.round(newTgtY + tgt.h / 2);
+      const edgeAnchorRegex = new RegExp(
+        `(<bpmndi:BPMNEdge[^>]+bpmnElement="([^"]+)"[^>]*>)([\\s\\S]*?)(</bpmndi:BPMNEdge>)`,
+        'g'
+      );
+      current = current.replace(edgeAnchorRegex, (fullEdge, open, flowId, content, close) => {
+        if (flowId === edge.id) return fullEdge; // already fixed above
+        const isConnectedToTarget = (() => {
+          const sfMatch = new RegExp(
+            `<bpmn:sequenceFlow[^>]+id="${flowId}"[^>]*(sourceRef|targetRef)="${edge.tgt}"`
+          ).test(current);
+          return sfMatch;
+        })();
+        if (!isConnectedToTarget) return fullEdge;
+
+        const wps = [];
+        const rx = /<di:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
+        let m2;
+        while ((m2 = rx.exec(content)) !== null) {
+          wps.push({ x: parseFloat(m2[1]), y: parseFloat(m2[2]), raw: m2[0] });
+        }
+        if (wps.length < 2) return fullEdge;
+
+        // Check if first or last waypoint was the tgt node's old center
+        const oldTgtCY = Math.round(srcCY - deltaY + tgt.h / 2 - tgt.h / 2 + tgt.y - deltaY + tgt.h / 2);
+        // Simplified: nudge first wp if it's near old tgt bounds, or last wp
+        let newContent = content;
+        const firstWp = wps[0];
+        const lastWp = wps[wps.length - 1];
+
+        // Nudge last waypoint if it's the entry into the target node
+        if (lastWp.x >= tgt.x - 5 && lastWp.x <= tgt.x + tgt.w + 5) {
+          newContent = newContent.replace(
+            lastWp.raw,
+            `<di:waypoint x="${lastWp.x}" y="${newTgtCY}"`
+          );
+        }
+        // Nudge first waypoint if it's the exit from the target node
+        if (firstWp.x >= tgt.x - 5 && firstWp.x <= tgt.x + tgt.w + 5) {
+          newContent = newContent.replace(
+            firstWp.raw,
+            `<di:waypoint x="${firstWp.x}" y="${newTgtCY}"`
+          );
+        }
+        return `${open}${newContent}${close}`;
+      });
+
+      console.log(
+        `[Nudge-to-Align] Shifted '${edge.tgt}' by ${deltaY > 0 ? '+' : ''}${Math.round(deltaY)}px Y ` +
+        `to align with flow '${edge.id}' from '${edge.src}' — straightened to 2 waypoints.`
+      );
+      passNudges++;
+      totalNudges++;
+      break; // Restart pass after each nudge for accuracy
+    }
+  } while (passNudges > 0);
+
+  if (totalNudges === 0) {
+    console.log('[Nudge-to-Align] No nudge opportunities found — all flows already optimally routed.');
+  } else {
+    console.log(`[Nudge-to-Align] Complete. ${totalNudges} node(s) nudged to straighten flows.`);
+  }
+
+  return current;
+}
+
+/**
+ * Rule 1 — Vertical Swimlane & Pool Shrink-Wrapping
+ * Dynamically adjusts height and y-bounds of Swimlanes and Pools to fit contained nodes cleanly with vertical padding.
+ */
+function shrinkWrapSwimlanesAndPools(xml) {
+  let res = xml;
+
+  const laneNodes = new Map();
+  const laneRegex = /<bpmn:lane\s+id="([^"]+)"[^>]*>([\s\S]*?)<\/bpmn:lane>/g;
+  let lm;
+  while ((lm = laneRegex.exec(xml)) !== null) {
+    const laneId = lm[1];
+    const content = lm[2];
+    const nodes = new Set();
+    const fnRegex = /<bpmn:flowNodeRef>([^<]+)<\/bpmn:flowNodeRef>/g;
+    let fnm;
+    while ((fnm = fnRegex.exec(content)) !== null) {
+      nodes.add(fnm[1]);
+    }
+    laneNodes.set(laneId, nodes);
+  }
+
+  if (laneNodes.size === 0) return xml;
+
+  const shapeMap = new Map();
+  const sRegex = /<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g;
+  let sm;
+  while ((sm = sRegex.exec(xml)) !== null) {
+    shapeMap.set(sm[2], { diId: sm[1], x: parseFloat(sm[3]), y: parseFloat(sm[4]), w: parseFloat(sm[5]), h: parseFloat(sm[6]) });
+  }
+
+  const V_PADDING = 25;
+  let totalLaneHeight = 0;
+  let currentY = null;
+  const laneNewBounds = new Map();
+
+  for (const [laneId, nodes] of laneNodes.entries()) {
+    const laneShape = shapeMap.get(laneId);
+    if (!laneShape) continue;
+
+    if (currentY === null) currentY = laneShape.y;
+
+    let minY = Infinity;
+    let maxY = -Infinity;
+    let maxW = laneShape.w;
+
+    // Detect unique vertical rows/bands in swimlane
+    const yBands = [];
+    for (const nodeRef of nodes) {
+      const nodeShape = shapeMap.get(nodeRef);
+      if (nodeShape) {
+        if (nodeShape.y < minY) minY = nodeShape.y;
+        if (nodeShape.y + nodeShape.h > maxY) maxY = nodeShape.y + nodeShape.h;
+
+        const nodeCY = nodeShape.y + nodeShape.h / 2;
+        let matchedBand = yBands.find(b => Math.abs(b.cy - nodeCY) < 35);
+        if (matchedBand) {
+          matchedBand.nodes.push(nodeShape);
+        } else {
+          yBands.push({ cy: nodeCY, nodes: [nodeShape] });
+        }
+      }
+    }
+
+    const rowCount = yBands.length;
+    let calculatedHeight = laneShape.h;
+    if (minY !== Infinity && maxY !== -Infinity) {
+      // If 2+ nodes are aligned vertically in swimlane, expand height to fit multi-row layout
+      const minMultiRowHeight = rowCount >= 2 ? (rowCount * 80 + (rowCount - 1) * 40 + 60) : 120;
+      const requiredHeight = Math.max(minMultiRowHeight, (maxY - minY) + V_PADDING * 2);
+      calculatedHeight = Math.round(requiredHeight);
+
+      const targetMinY = currentY + V_PADDING;
+      const shiftY = Math.round(targetMinY - minY);
+      if (Math.abs(shiftY) > 5) {
+        for (const nodeRef of nodes) {
+          const ns = shapeMap.get(nodeRef);
+          if (ns) {
+            const oldNodeBounds = `<dc:Bounds x="${ns.x}" y="${ns.y}" width="${ns.w}" height="${ns.h}"`;
+            ns.y += shiftY;
+            const newNodeBounds = `<dc:Bounds x="${ns.x}" y="${ns.y}" width="${ns.w}" height="${ns.h}"`;
+            res = res.replace(oldNodeBounds, newNodeBounds);
+          }
+        }
+      }
+    }
+
+    laneNewBounds.set(laneId, { x: laneShape.x, y: currentY, w: maxW, h: calculatedHeight });
+
+    const oldLaneBounds = new RegExp(`(<bpmndi:BPMNShape\\s+[^>]*bpmnElement="${laneId}"[\\s\\S]*?<dc:Bounds\\s+x=")([^"]+)("\\s+y=")([^"]+)("\\s+width=")([^"]+)("\\s+height=")([^"]+)(")`);
+    res = res.replace(oldLaneBounds, `$1${laneShape.x}$3${currentY}$5${maxW}$7${calculatedHeight}$9`);
+
+    currentY += calculatedHeight;
+    totalLaneHeight += calculatedHeight;
+  }
+
+  const pMatch = res.match(/<bpmn:participant\s+id="([^"]+)"/);
+  if (pMatch) {
+    const poolId = pMatch[1];
+    const poolShape = shapeMap.get(poolId);
+    if (poolShape && laneNewBounds.size > 0) {
+      const firstLane = Array.from(laneNewBounds.values())[0];
+      const poolY = firstLane.y;
+      const oldPoolBounds = new RegExp(`(<bpmndi:BPMNShape\\s+[^>]*bpmnElement="${poolId}"[\\s\\S]*?<dc:Bounds\\s+x=")([^"]+)("\\s+y=")([^"]+)("\\s+width=")([^"]+)("\\s+height=")([^"]+)(")`);
+      res = res.replace(oldPoolBounds, `$1${poolShape.x}$3${poolY}$5${poolShape.w}$7${totalLaneHeight}$9`);
+      console.log(`[Vertical-ShrinkWrap] Fit ${laneNewBounds.size} Swimlanes & Pool vertically (Total Height: ${totalLaneHeight}px).`);
+    }
+  }
+
+  return res;
+}
+
+/**
+ * Rule 2 — Boundary Event Perimeter Alignment & Docking
+ * Automatically positions <bpmn:boundaryEvent> shapes onto bottom-right perimeter of their host task.
+ */
+function dockBoundaryEvents(xml) {
+  let res = xml;
+  const boundaryMap = new Map();
+  const beRegex = /<bpmn:boundaryEvent\s+id="([^"]+)"[^>]*attachedToRef="([^"]+)"/g;
+  let bm;
+  while ((bm = beRegex.exec(xml)) !== null) {
+    boundaryMap.set(bm[1], bm[2]);
+  }
+
+  if (boundaryMap.size === 0) return xml;
+
+  const shapes = new Map();
+  const sRegex = /<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g;
+  let sm;
+  while ((sm = sRegex.exec(xml)) !== null) {
+    shapes.set(sm[2], { x: parseFloat(sm[3]), y: parseFloat(sm[4]), w: parseFloat(sm[5]), h: parseFloat(sm[6]) });
+  }
+
+  let dockedCount = 0;
+  for (const [beId, hostId] of boundaryMap.entries()) {
+    const hostBounds = shapes.get(hostId);
+    if (!hostBounds) continue;
+
+    const targetX = Math.round(hostBounds.x + hostBounds.w - 20);
+    const targetY = Math.round(hostBounds.y + hostBounds.h - 18);
+
+    const oldBoundsRegex = new RegExp(`(<bpmndi:BPMNShape\\s+[^>]*bpmnElement="${beId}"[\\s\\S]*?<dc:Bounds\\s+x=")([^"]+)("\\s+y=")([^"]+)("\\s+width=")([^"]+)("\\s+height=")([^"]+)(")`);
+    if (oldBoundsRegex.test(res)) {
+      res = res.replace(oldBoundsRegex, `$1${targetX}$3${targetY}$536$736$9`);
+      dockedCount++;
+    }
+  }
+
+  if (dockedCount > 0) {
+    console.log(`[Boundary-Event Docking] Successfully docked ${dockedCount} boundary event(s) to host shape perimeter.`);
+  }
+
+  return res;
+}
+
+/**
+ * Rule 3 — BPMN-in-Color Standard Visual Palette
+ * Applies standard OMG BPMN-in-Color attributes to shapes for visual hierarchy.
+ */
+function applyBpmnInColor(xml) {
+  let res = xml;
+
+  if (!res.includes('xmlns:bioc=')) {
+    res = res.replace(/<bpmn:definitions\s+/, '<bpmn:definitions xmlns:bioc="http://bpmn.io/schema/bpmn/bioc/1.0" xmlns:color="http://www.omg.org/spec/BPMN/20100524/DI/color" ');
+  }
+
+  const elemTypes = new Map();
+  
+  const startRegex = /<bpmn:startEvent\s+id="([^"]+)"/g;
+  let m;
+  while ((m = startRegex.exec(xml)) !== null) elemTypes.set(m[1], 'start');
+
+  const endRegex = /<bpmn:endEvent\s+id="([^"]+)"/g;
+  while ((m = endRegex.exec(xml)) !== null) elemTypes.set(m[1], 'end');
+
+  const gwRegex = /<bpmn:(exclusiveGateway|inclusiveGateway|parallelGateway|eventBasedGateway)\s+id="([^"]+)"/g;
+  while ((m = gwRegex.exec(xml)) !== null) elemTypes.set(m[2], 'gateway');
+
+  const taskRegex = /<bpmn:(userTask|serviceTask|sendTask|receiveTask|scriptTask|manualTask|businessRuleTask|task|subProcess|callActivity)\s+id="([^"]+)"/g;
+  while ((m = taskRegex.exec(xml)) !== null) elemTypes.set(m[2], 'task');
+
+  const palettes = {
+    start: 'bioc:stroke="#2E7D32" bioc:fill="#E8F5E9" color:background-color="#E8F5E9" color:border-color="#2E7D32"',
+    end: 'bioc:stroke="#C62828" bioc:fill="#FFEBEE" color:background-color="#FFEBEE" color:border-color="#C62828"',
+    gateway: 'bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17"',
+    task: 'bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0"'
+  };
+
+  let coloredCount = 0;
+  res = res.replace(/<bpmndi:BPMNShape\s+([^>]+)>/g, (match, attrs) => {
+    const bpmnElemMatch = attrs.match(/bpmnElement="([^"]+)"/);
+    if (bpmnElemMatch && !attrs.includes('bioc:stroke')) {
+      const elemId = bpmnElemMatch[1];
+      const type = elemTypes.get(elemId);
+      if (type && palettes[type]) {
+        coloredCount++;
+        return `<bpmndi:BPMNShape ${attrs} ${palettes[type]}>`;
+      }
+    }
+    return match;
+  });
+
+  if (coloredCount > 0) {
+    console.log(`[BPMN-in-Color] Applied standard visual color palette to ${coloredCount} diagram shapes.`);
+  }
+
+  return res;
+}
+
+/**
+ * Rule 6 — Active Auto-Repair of Competing & Misaligned Gateway Anchor Ports
+ * Snaps all Gateway sequence flow start/end waypoints to the exact outer perimeter diamond vertices (Left, Right, Top, Bottom).
+ */
+function repairAnchorPortDistribution(xml) {
+  let res = xml;
+
+  const shapeMap = new Map();
+  const sRegex = /<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g;
+  let sm;
+  while ((sm = sRegex.exec(xml)) !== null) {
+    const isGw = sm[1].includes('gw_') || sm[2].includes('gw_') || sm[2].includes('gateway') || sm[2].includes('Gateway');
+    shapeMap.set(sm[2], { x: parseFloat(sm[3]), y: parseFloat(sm[4]), w: parseFloat(sm[5]), h: parseFloat(sm[6]), isGateway: isGw });
+  }
+
+  const flowMap = new Map();
+  const fRegex = /<bpmn:sequenceFlow\s+([^>]+)>/g;
+  let fm;
+  while ((fm = fRegex.exec(xml)) !== null) {
+    const attrs = fm[1];
+    const idM = attrs.match(/id="([^"]+)"/);
+    const srcM = attrs.match(/sourceRef="([^"]+)"/);
+    const tgtM = attrs.match(/targetRef="([^"]+)"/);
+    if (idM && srcM && tgtM) {
+      flowMap.set(idM[1], { src: srcM[1], tgt: tgtM[1] });
+    }
+  }
+
+  let gwFixed = 0;
+  const edgeRegex = /(<bpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>)([\s\S]*?)(<\/bpmndi:BPMNEdge>)/g;
+
+  res = res.replace(edgeRegex, (match, openTag, edgeId, flowId, content, closeTag) => {
+    const flow = flowMap.get(flowId);
+    if (!flow) return match;
+
+    const waypoints = [];
+    const wpRegex = /<di:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
+    let wpm;
+    while ((wpm = wpRegex.exec(content)) !== null) {
+      waypoints.push({ x: parseFloat(wpm[1]), y: parseFloat(wpm[2]) });
+    }
+    if (waypoints.length < 2) return match;
+
+    let modified = false;
+
+    // Check Source Gateway (Start Waypoint)
+    const srcShape = shapeMap.get(flow.src);
+    if (srcShape && srcShape.isGateway) {
+      const gwX = srcShape.x;
+      const gwY = srcShape.y;
+      const gwW = srcShape.w;
+      const gwH = srcShape.h;
+
+      const p1 = waypoints[0];
+      const p2 = waypoints[1];
+      const dx = p2.x - (gwX + gwW / 2);
+      const dy = p2.y - (gwY + gwH / 2);
+
+      let targetWp = null;
+      if (Math.abs(p1.x - p2.x) <= 2) {
+        // Vertical flow
+        if (dy > 0) targetWp = { x: Math.round(gwX + gwW / 2), y: Math.round(gwY + gwH) };
+        else targetWp = { x: Math.round(gwX + gwW / 2), y: Math.round(gwY) };
+      } else if (Math.abs(p1.y - p2.y) <= 2) {
+        // Horizontal flow
+        if (dx > 0) targetWp = { x: Math.round(gwX + gwW), y: Math.round(gwY + gwH / 2) };
+        else targetWp = { x: Math.round(gwX), y: Math.round(gwY + gwH / 2) };
+      }
+
+      if (targetWp && (Math.abs(p1.x - targetWp.x) > 1 || Math.abs(p1.y - targetWp.y) > 1)) {
+        waypoints[0].x = targetWp.x;
+        waypoints[0].y = targetWp.y;
+        modified = true;
+      }
+    }
+
+    // Check Target Gateway (End Waypoint)
+    const tgtShape = shapeMap.get(flow.tgt);
+    if (tgtShape && tgtShape.isGateway) {
+      const gwX = tgtShape.x;
+      const gwY = tgtShape.y;
+      const gwW = tgtShape.w;
+      const gwH = tgtShape.h;
+
+      const lastIdx = waypoints.length - 1;
+      const pLast = waypoints[lastIdx];
+      const pPrev = waypoints[lastIdx - 1];
+      const dx = pPrev.x - (gwX + gwW / 2);
+      const dy = pPrev.y - (gwY + gwH / 2);
+
+      let targetWp = null;
+      if (Math.abs(pLast.x - pPrev.x) <= 2) {
+        // Vertical entry
+        if (dy > 0) targetWp = { x: Math.round(gwX + gwW / 2), y: Math.round(gwY + gwH) };
+        else targetWp = { x: Math.round(gwX + gwW / 2), y: Math.round(gwY) };
+      } else if (Math.abs(pLast.y - pPrev.y) <= 2) {
+        // Horizontal entry
+        if (dx > 0) targetWp = { x: Math.round(gwX + gwW), y: Math.round(gwY + gwH / 2) };
+        else targetWp = { x: Math.round(gwX), y: Math.round(gwY + gwH / 2) };
+      }
+
+      if (targetWp && (Math.abs(pLast.x - targetWp.x) > 1 || Math.abs(pLast.y - targetWp.y) > 1)) {
+        waypoints[lastIdx].x = targetWp.x;
+        waypoints[lastIdx].y = targetWp.y;
+        modified = true;
+      }
+    }
+
+    if (modified) {
+      gwFixed++;
+      const newWpContent = waypoints.map(wp => `        <di:waypoint x="${Math.round(wp.x)}" y="${Math.round(wp.y)}" />`).join('\n');
+      return `${openTag}\n${newWpContent}\n      ${closeTag}`;
+    }
+
+    return match;
+  });
+
+  if (gwFixed > 0) {
+    console.log(`[Gateway-Anchor Auto-Fix] Aligned ${gwFixed} gateway sequence flow waypoint(s) to exact perimeter diamond vertices.`);
+  }
+
+  return res;
+}
+
+/**
+ * Rule 7 — Active Rerouting of Leftward / Loopback Flows
+ * Reroutes leftward flows via clear dedicated above-lane channels for 0 shape collisions and fewer turns.
+ */
+function rerouteLeftwardFlows(xml) {
+  let res = xml;
+  const shapes = new Map();
+  const sRegex = /<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g;
+  let sm;
+  while ((sm = sRegex.exec(xml)) !== null) {
+    shapes.set(sm[2], { x: parseFloat(sm[3]), y: parseFloat(sm[4]), w: parseFloat(sm[5]), h: parseFloat(sm[6]) });
+  }
+
+  const flowMap = new Map();
+  const fRegex = /<bpmn:sequenceFlow\s+id="([^"]+)"\s+sourceRef="([^"]+)"\s+targetRef="([^"]+)"/g;
+  let fm;
+  while ((fm = fRegex.exec(xml)) !== null) {
+    flowMap.set(fm[1], { src: fm[2], tgt: fm[3] });
+  }
+
+  let reroutedCount = 0;
+  const edgeRegex = /(<bpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>)([\s\S]*?)(<\/bpmndi:BPMNEdge>)/g;
+  
+  res = res.replace(edgeRegex, (match, openTag, edgeId, flowId, content, closeTag) => {
+    const flow = flowMap.get(flowId);
+    if (!flow) return match;
+
+    const srcShape = shapes.get(flow.src);
+    const tgtShape = shapes.get(flow.tgt);
+    if (!srcShape || !tgtShape) return match;
+
+    if (tgtShape.x >= srcShape.x) return match;
+
+    const waypoints = [];
+    const wpRegex = /<di:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
+    let wpm;
+    while ((wpm = wpRegex.exec(content)) !== null) {
+      waypoints.push({ x: parseFloat(wpm[1]), y: parseFloat(wpm[2]) });
+    }
+    if (waypoints.length < 2) return match;
+
+    const firstDeltaX = waypoints[1].x - waypoints[0].x;
+    if (firstDeltaX > 5 || waypoints.length > 4) {
+      const srcCenterX = Math.round(srcShape.x + srcShape.w / 2);
+      const tgtCenterX = Math.round(tgtShape.x + tgtShape.w / 2);
+      const channelY = Math.round(Math.min(srcShape.y, tgtShape.y) - 30);
+      
+      const newWaypoints = [
+        `        <di:waypoint x="${srcCenterX}" y="${Math.round(srcShape.y)}" />`,
+        `        <di:waypoint x="${srcCenterX}" y="${channelY}" />`,
+        `        <di:waypoint x="${tgtCenterX}" y="${channelY}" />`,
+        `        <di:waypoint x="${tgtCenterX}" y="${Math.round(tgtShape.y)}" />`
+      ].join('\n');
+
+      reroutedCount++;
+      return `${openTag}\n${newWaypoints}\n      ${closeTag}`;
+    }
+
+    return match;
+  });
+
+  if (reroutedCount > 0) {
+    console.log(`[Leftward-Route Auto-Fix] Rerouted ${reroutedCount} loopback/leftward flow(s) via clear dedicated above-lane channels.`);
+  }
+
+  return res;
+}
+
+/**
+ * Rule 9 — Enforce 100% Orthogonal Edge Routing & Shape Perimeter Touch
+ * Re-calculates and snaps all edge waypoints so that start/end points touch exact shape perimeters and all segments are 100% orthogonal (0 diagonals).
+ */
+function enforceOrthogonalAndTouchingWaypoints(xml) {
+  let res = xml;
+
+  const shapes = new Map();
+  const sRegex = /<bpmndi:BPMNShape\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"\s+width="([^"]+)"\s+height="([^"]+)"/g;
+  let sm;
+  while ((sm = sRegex.exec(res)) !== null) {
+    const isGw = sm[1].includes('gw_') || sm[2].includes('gw_') || sm[2].includes('gateway') || sm[2].includes('Gateway');
+    shapes.set(sm[2], { id: sm[1], elemId: sm[2], x: parseFloat(sm[3]), y: parseFloat(sm[4]), w: parseFloat(sm[5]), h: parseFloat(sm[6]), isGateway: isGw });
+  }
+
+  const flows = new Map();
+  const fRegex = /<bpmn:sequenceFlow\s+([^>]+)>/g;
+  let fm;
+  while ((fm = fRegex.exec(res)) !== null) {
+    const attrs = fm[1];
+    const idM = attrs.match(/id="([^"]+)"/);
+    const srcM = attrs.match(/sourceRef="([^"]+)"/);
+    const tgtM = attrs.match(/targetRef="([^"]+)"/);
+    if (idM && srcM && tgtM) {
+      flows.set(idM[1], { src: srcM[1], tgt: tgtM[1] });
+    }
+  }
+
+  function getPerimeterAnchor(shape, point) {
+    const cX = Math.round(shape.x + shape.w / 2);
+    const cY = Math.round(shape.y + shape.h / 2);
+    const dx = point.x - cX;
+    const dy = point.y - cY;
+
+    if (shape.isGateway) {
+      if (Math.abs(dx) >= Math.abs(dy)) {
+        return dx >= 0 ? { x: Math.round(shape.x + shape.w), y: cY } : { x: Math.round(shape.x), y: cY };
+      } else {
+        return dy >= 0 ? { x: cX, y: Math.round(shape.y + shape.h) } : { x: cX, y: Math.round(shape.y) };
+      }
+    } else {
+      if (Math.abs(dx) >= Math.abs(dy)) {
+        const x = dx >= 0 ? Math.round(shape.x + shape.w) : Math.round(shape.x);
+        return { x, y: cY };
+      } else {
+        const yVal = dy >= 0 ? Math.round(shape.y + shape.h) : Math.round(shape.y);
+        return { x: cX, y: yVal };
+      }
+    }
+  }
+
+  let fixedEdges = 0;
+  const edgeRegex = /(<bpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>)([\s\S]*?)(<\/bpmndi:BPMNEdge>)/g;
+
+  res = res.replace(edgeRegex, (match, openTag, edgeId, flowId, content, closeTag) => {
+    const flow = flows.get(flowId);
+    if (!flow) return match;
+
+    const srcShape = shapes.get(flow.src);
+    const tgtShape = shapes.get(flow.tgt);
+    if (!srcShape || !tgtShape) return match;
+
+    const waypoints = [];
+    const wpRegex = /<di:waypoint\s+x="([^"]+)"\s+y="([^"]+)"/g;
+    let wpm;
+    while ((wpm = wpRegex.exec(content)) !== null) {
+      waypoints.push({ x: parseFloat(wpm[1]), y: parseFloat(wpm[2]) });
+    }
+    if (waypoints.length < 2) return match;
+
+    waypoints[0] = getPerimeterAnchor(srcShape, waypoints[1]);
+    waypoints[waypoints.length - 1] = getPerimeterAnchor(tgtShape, waypoints[waypoints.length - 2]);
+
+    const orthogonalWaypoints = [waypoints[0]];
+    for (let i = 1; i < waypoints.length; i++) {
+      const pPrev = orthogonalWaypoints[orthogonalWaypoints.length - 1];
+      const pCurr = waypoints[i];
+
+      if (Math.abs(pPrev.x - pCurr.x) > 1 && Math.abs(pPrev.y - pCurr.y) > 1) {
+        if (i === waypoints.length - 1) {
+          if (pCurr.x === waypoints[waypoints.length - 1].x) {
+            orthogonalWaypoints.push({ x: Math.round(pCurr.x), y: Math.round(pPrev.y) });
+          } else {
+            orthogonalWaypoints.push({ x: Math.round(pPrev.x), y: Math.round(pCurr.y) });
+          }
+        } else {
+          orthogonalWaypoints.push({ x: Math.round(pCurr.x), y: Math.round(pPrev.y) });
+        }
+      }
+      orthogonalWaypoints.push({ x: Math.round(pCurr.x), y: Math.round(pCurr.y) });
+    }
+
+    const cleanWaypoints = [orthogonalWaypoints[0]];
+    for (let i = 1; i < orthogonalWaypoints.length; i++) {
+      const pLast = cleanWaypoints[cleanWaypoints.length - 1];
+      const pNext = orthogonalWaypoints[i];
+      if (Math.abs(pLast.x - pNext.x) <= 1 && Math.abs(pLast.y - pNext.y) <= 1) continue;
+
+      if (cleanWaypoints.length >= 2) {
+        const pSecondLast = cleanWaypoints[cleanWaypoints.length - 2];
+        if (Math.abs(pSecondLast.x - pLast.x) <= 1 && Math.abs(pLast.x - pNext.x) <= 1) {
+          cleanWaypoints.pop();
+        } else if (Math.abs(pSecondLast.y - pLast.y) <= 1 && Math.abs(pLast.y - pNext.y) <= 1) {
+          cleanWaypoints.pop();
+        }
+      }
+      cleanWaypoints.push(pNext);
+    }
+
+    cleanWaypoints[0] = getPerimeterAnchor(srcShape, cleanWaypoints[1]);
+    cleanWaypoints[cleanWaypoints.length - 1] = getPerimeterAnchor(tgtShape, cleanWaypoints[cleanWaypoints.length - 2]);
+
+    const newWpXml = cleanWaypoints.map(wp => `        <di:waypoint x="${Math.round(wp.x)}" y="${Math.round(wp.y)}" />`).join('\n');
+    fixedEdges++;
+    return `${openTag}\n${newWpXml}\n      ${closeTag}`;
+  });
+
+  if (fixedEdges > 0) {
+    console.log(`[Orthogonal & Perimeter Repair] Enforced strict 100% orthogonal routing and shape perimeter touching on ${fixedEdges} sequence flow edges.`);
+  }
+
+  return res;
+}
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 main();
+

@@ -3,567 +3,381 @@
                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
                   xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  id="Definitions_Supplier_Onboarding"
+                  xmlns:bioc="http://bpmn.io/schema/bpmn/bioc/1.0"
+                  xmlns:color="http://www.omg.org/spec/BPMN/20100524/DI/color"
+                  id="Definitions_SupplierOnboarding"
                   targetNamespace="http://bpmn.io/schema/bpmn">
-  <bpmn:collaboration id="Collaboration_Supplier_Onboarding">
-    <bpmn:participant id="Participant_Procurement_Org" name="End-to-End Supplier Onboarding Process" processRef="Process_Supplier_Onboarding" />
+  <bpmn:collaboration id="Collaboration_SupplierOnboarding">
+    <bpmn:participant id="Participant_ProcurementSystem" name="Supplier Onboarding Process" processRef="Process_SupplierOnboarding" />
   </bpmn:collaboration>
 
-  <bpmn:process id="Process_Supplier_Onboarding" isExecutable="true">
-    <bpmn:laneSet id="LaneSet_Supplier_Onboarding">
-      <bpmn:lane id="lane_procurement" name="Procurement Management">
-        <bpmn:flowNodeRef>start_onboarding</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_submit_request</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_update_resubmit_app</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_escalate_unsigned_contract</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>end_contract_escalated</bpmn:flowNodeRef>
+  <bpmn:process id="Process_SupplierOnboarding" name="Supplier Onboarding" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_ProcurementSystem">
+      <bpmn:lane id="Lane_ProcurementManager" name="Procurement Manager">
+        <bpmn:flowNodeRef>StartEvent_OnboardingInitiated</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_SubmitRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_ReceiveUpdatedDetails</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="lane_enterprise_system" name="Enterprise System">
-        <bpmn:flowNodeRef>task_triage_data</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_triage_check</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_procure_corrected_docs</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_issue_rejection</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>end_vendor_rejected</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_activate_mdm</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_parallel_setup_split</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_parallel_setup_join</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_inclusive_risk_split</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_inclusive_risk_join</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_send_contract</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_contract_event_split</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>event_signature_received</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>event_timer_expired</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_send_confirmation</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>end_onboarding_complete</bpmn:flowNodeRef>
+      <bpmn:lane id="Lane_ComplianceUser" name="Compliance User">
+        <bpmn:flowNodeRef>UserTask_SendMissingInfoRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ExclusiveGateway_AppCompleteMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_PerformComplianceReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ExclusiveGateway_ComplianceMet</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_RejectSupplier</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_VerifyCertificates</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ExclusiveGateway_CertificatesValid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_ReceiveCorrectedCertificates</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ExclusiveGateway_CertificatesValidMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_ApproveOnboarding</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="lane_compliance" name="Compliance Team">
-        <bpmn:flowNodeRef>task_request_missing_data</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_review_compliance</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_audit_certificates</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_cert_check</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>gw_final_decision</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_grant_approval</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_infosec_audit</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>task_trade_compliance_check</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="lane_finance" name="Finance Team">
-        <bpmn:flowNodeRef>task_setup_tax_payment</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="lane_it_ops" name="IT Operations Team">
-        <bpmn:flowNodeRef>task_provision_it_access</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="lane_vendor" name="Supplier / Vendor">
-        <bpmn:flowNodeRef>task_provide_corrected_docs</bpmn:flowNodeRef>
+      <bpmn:lane id="Lane_System" name="System">
+        <bpmn:flowNodeRef>ServiceTask_ValidateData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ExclusiveGateway_AppComplete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_SendCorrectionRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_SendRejectionNotification</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_SupplierRejected</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_ActivateMasterData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_SendApprovalNotification</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_SupplierOnboarded</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
 
-    <!-- Phase 1: Initial Application & Automated Triage -->
-    <bpmn:startEvent id="start_onboarding" name="Onboarding Needed">
-      <bpmn:outgoing>sf_1</bpmn:outgoing>
+    <!-- Start Event -->
+    <bpmn:startEvent id="StartEvent_OnboardingInitiated" name="Supplier onboarding request initiated">
+      <bpmn:outgoing>Flow_StartToSubmit</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="task_submit_request" name="Submit Onboarding Request">
-      <bpmn:incoming>sf_1</bpmn:incoming>
-      <bpmn:outgoing>sf_2</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="task_triage_data" name="Screen and Triage Baseline Data">
-      <bpmn:incoming>sf_2</bpmn:incoming>
-      <bpmn:incoming>sf_5</bpmn:incoming>
-      <bpmn:outgoing>sf_3</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="gw_triage_check" name="Baseline Data Complete?" default="sf_triage_pass">
-      <bpmn:incoming>sf_3</bpmn:incoming>
-      <bpmn:outgoing>sf_triage_pass</bpmn:outgoing>
-      <bpmn:outgoing>sf_triage_fail</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
 
-    <!-- Phase 2: Application Remediation -->
-    <bpmn:userTask id="task_request_missing_data" name="Request Missing Baseline Data">
-      <bpmn:incoming>sf_triage_fail</bpmn:incoming>
-      <bpmn:outgoing>sf_4</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="task_update_resubmit_app" name="Update and Resubmit Application">
-      <bpmn:incoming>sf_4</bpmn:incoming>
-      <bpmn:outgoing>sf_5</bpmn:outgoing>
+    <!-- Procurement Manager Tasks -->
+    <bpmn:userTask id="UserTask_SubmitRequest" name="Submit supplier onboarding request">
+      <bpmn:incoming>Flow_StartToSubmit</bpmn:incoming>
+      <bpmn:outgoing>Flow_SubmitToValidate</bpmn:outgoing>
     </bpmn:userTask>
 
-    <!-- Phase 3: Due Diligence & Risk Assessment -->
-    <bpmn:userTask id="task_review_compliance" name="Review Compliance and Regulatory Criteria">
-      <bpmn:incoming>sf_triage_pass</bpmn:incoming>
-      <bpmn:outgoing>sf_6</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="task_audit_certificates" name="Audit Certificates and Credentials">
-      <bpmn:incoming>sf_6</bpmn:incoming>
-      <bpmn:incoming>sf_9</bpmn:incoming>
-      <bpmn:outgoing>sf_7</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:exclusiveGateway id="gw_cert_check" name="Certificates Valid?" default="sf_cert_valid">
-      <bpmn:incoming>sf_7</bpmn:incoming>
-      <bpmn:outgoing>sf_cert_valid</bpmn:outgoing>
-      <bpmn:outgoing>sf_cert_minor_error</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="task_procure_corrected_docs" name="Request Corrected Documentation">
-      <bpmn:incoming>sf_cert_minor_error</bpmn:incoming>
-      <bpmn:outgoing>sf_8</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:userTask id="task_provide_corrected_docs" name="Provide Corrected Certificates">
-      <bpmn:incoming>sf_8</bpmn:incoming>
-      <bpmn:outgoing>sf_9</bpmn:outgoing>
+    <bpmn:userTask id="UserTask_ReceiveUpdatedDetails" name="Receive updated onboarding details">
+      <bpmn:incoming>Flow_SendMissingToReceiveUpdated</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveUpdatedToMerge</bpmn:outgoing>
     </bpmn:userTask>
 
-    <!-- Phase 4: Final Decision & MDM Activation -->
-    <bpmn:exclusiveGateway id="gw_final_decision" name="Compliance Approval?" default="sf_approve_vendor">
-      <bpmn:incoming>sf_cert_valid</bpmn:incoming>
-      <bpmn:outgoing>sf_approve_vendor</bpmn:outgoing>
-      <bpmn:outgoing>sf_reject_vendor</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="task_issue_rejection" name="Issue Automated Rejection Notice">
-      <bpmn:incoming>sf_reject_vendor</bpmn:incoming>
-      <bpmn:outgoing>sf_10</bpmn:outgoing>
+    <!-- System Tasks & Gateways -->
+    <bpmn:serviceTask id="ServiceTask_ValidateData" name="Validate mandatory onboarding data">
+      <bpmn:incoming>Flow_SubmitToValidate</bpmn:incoming>
+      <bpmn:outgoing>Flow_ValidateToAppCompleteGw</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="end_vendor_rejected" name="Vendor Rejected">
-      <bpmn:incoming>sf_10</bpmn:incoming>
+
+    <bpmn:exclusiveGateway id="ExclusiveGateway_AppComplete" name="Application complete?" default="Flow_AppComplete_Yes">
+      <bpmn:incoming>Flow_ValidateToAppCompleteGw</bpmn:incoming>
+      <bpmn:outgoing>Flow_AppComplete_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_AppComplete_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- Compliance User Tasks & Gateways -->
+    <bpmn:userTask id="UserTask_SendMissingInfoRequest" name="Send missing information request">
+      <bpmn:incoming>Flow_AppComplete_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendMissingToReceiveUpdated</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="ExclusiveGateway_AppCompleteMerge" name="Application complete merge">
+      <bpmn:incoming>Flow_AppComplete_Yes</bpmn:incoming>
+      <bpmn:incoming>Flow_ReceiveUpdatedToMerge</bpmn:incoming>
+      <bpmn:outgoing>Flow_MergeToComplianceReview</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="UserTask_PerformComplianceReview" name="Perform compliance review">
+      <bpmn:incoming>Flow_MergeToComplianceReview</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReviewToComplianceGw</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="ExclusiveGateway_ComplianceMet" name="Compliance criteria met?" default="Flow_Compliance_Yes">
+      <bpmn:incoming>Flow_ReviewToComplianceGw</bpmn:incoming>
+      <bpmn:outgoing>Flow_Compliance_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Compliance_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="UserTask_RejectSupplier" name="Reject supplier onboarding">
+      <bpmn:incoming>Flow_Compliance_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_RejectSupplierToNotification</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="UserTask_VerifyCertificates" name="Verify supplier certificates">
+      <bpmn:incoming>Flow_Compliance_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyToCertificatesGw</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="ExclusiveGateway_CertificatesValid" name="Certificates valid?" default="Flow_Certificates_Yes">
+      <bpmn:incoming>Flow_VerifyToCertificatesGw</bpmn:incoming>
+      <bpmn:outgoing>Flow_Certificates_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Certificates_Correction</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Certificates_Rejected</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:serviceTask id="ServiceTask_SendCorrectionRequest" name="Send certificate correction request">
+      <bpmn:incoming>Flow_Certificates_Correction</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendCorrectionToReceiveCorrected</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:userTask id="UserTask_ReceiveCorrectedCertificates" name="Receive corrected certificates">
+      <bpmn:incoming>Flow_SendCorrectionToReceiveCorrected</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveCorrectedToCertMerge</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="ExclusiveGateway_CertificatesValidMerge" name="Certificates valid merge">
+      <bpmn:incoming>Flow_Certificates_Yes</bpmn:incoming>
+      <bpmn:incoming>Flow_ReceiveCorrectedToCertMerge</bpmn:incoming>
+      <bpmn:outgoing>Flow_CertMergeToApprove</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="UserTask_ApproveOnboarding" name="Approve supplier onboarding">
+      <bpmn:incoming>Flow_CertMergeToApprove</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApproveToActivate</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:serviceTask id="ServiceTask_SendRejectionNotification" name="Send rejection notification">
+      <bpmn:incoming>Flow_RejectSupplierToNotification</bpmn:incoming>
+      <bpmn:incoming>Flow_Certificates_Rejected</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendRejectionToRejectedEnd</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:endEvent id="EndEvent_SupplierRejected" name="Supplier rejected">
+      <bpmn:incoming>Flow_SendRejectionToRejectedEnd</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="task_grant_approval" name="Grant Executive Approval">
-      <bpmn:incoming>sf_approve_vendor</bpmn:incoming>
-      <bpmn:outgoing>sf_11</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="task_activate_mdm" name="Create and Activate MDM Profile">
-      <bpmn:incoming>sf_11</bpmn:incoming>
-      <bpmn:outgoing>sf_12</bpmn:outgoing>
+
+    <bpmn:serviceTask id="ServiceTask_ActivateMasterData" name="Activate supplier in master data">
+      <bpmn:incoming>Flow_ApproveToActivate</bpmn:incoming>
+      <bpmn:outgoing>Flow_ActivateToApprovalNotif</bpmn:outgoing>
     </bpmn:serviceTask>
 
-    <!-- Phase 5: Concurrent Setup -->
-    <bpmn:parallelGateway id="gw_parallel_setup_split" name="Initiate Concurrent Setup">
-      <bpmn:incoming>sf_12</bpmn:incoming>
-      <bpmn:outgoing>sf_13</bpmn:outgoing>
-      <bpmn:outgoing>sf_14</bpmn:outgoing>
-    </bpmn:parallelGateway>
-    <bpmn:userTask id="task_setup_tax_payment" name="Setup Tax and Payment Routing">
-      <bpmn:incoming>sf_13</bpmn:incoming>
-      <bpmn:outgoing>sf_15</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="task_provision_it_access" name="Provision Portal Access and Credentials">
-      <bpmn:incoming>sf_14</bpmn:incoming>
-      <bpmn:outgoing>sf_16</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:parallelGateway id="gw_parallel_setup_join" name="Synchronize Setup Completion">
-      <bpmn:incoming>sf_15</bpmn:incoming>
-      <bpmn:incoming>sf_16</bpmn:incoming>
-      <bpmn:outgoing>sf_17</bpmn:outgoing>
-    </bpmn:parallelGateway>
-
-    <!-- Phase 6: Tailored Risk Profiling -->
-    <bpmn:inclusiveGateway id="gw_inclusive_risk_split" name="Evaluate Risk Characteristics" default="sf_skip_specialized_risk">
-      <bpmn:incoming>sf_17</bpmn:incoming>
-      <bpmn:outgoing>sf_sensitive_data</bpmn:outgoing>
-      <bpmn:outgoing>sf_international_trade</bpmn:outgoing>
-      <bpmn:outgoing>sf_skip_specialized_risk</bpmn:outgoing>
-    </bpmn:inclusiveGateway>
-    <bpmn:userTask id="task_infosec_audit" name="Conduct InfoSec Audit">
-      <bpmn:incoming>sf_sensitive_data</bpmn:incoming>
-      <bpmn:outgoing>sf_18</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="task_trade_compliance_check" name="Check Cross-Border Trade Compliance">
-      <bpmn:incoming>sf_international_trade</bpmn:incoming>
-      <bpmn:outgoing>sf_19</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:inclusiveGateway id="gw_inclusive_risk_join" name="Converge Risk Workflows">
-      <bpmn:incoming>sf_18</bpmn:incoming>
-      <bpmn:incoming>sf_19</bpmn:incoming>
-      <bpmn:incoming>sf_skip_specialized_risk</bpmn:incoming>
-      <bpmn:outgoing>sf_20</bpmn:outgoing>
-    </bpmn:inclusiveGateway>
-
-    <!-- Phase 7: Contract Execution & Event-Based Decision -->
-    <bpmn:sendTask id="task_send_contract" name="Send Contract via E-Signature Platform">
-      <bpmn:incoming>sf_20</bpmn:incoming>
-      <bpmn:outgoing>sf_21</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:eventBasedGateway id="gw_contract_event_split" name="Wait for Signature or Time Expiration">
-      <bpmn:incoming>sf_21</bpmn:incoming>
-      <bpmn:outgoing>sf_22</bpmn:outgoing>
-      <bpmn:outgoing>sf_23</bpmn:outgoing>
-    </bpmn:eventBasedGateway>
-    <bpmn:intermediateCatchEvent id="event_signature_received" name="Signature Received">
-      <bpmn:incoming>sf_22</bpmn:incoming>
-      <bpmn:outgoing>sf_24</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_Signature" />
-    </bpmn:intermediateCatchEvent>
-    <bpmn:intermediateCatchEvent id="event_timer_expired" name="4-Day Time Limit Expired">
-      <bpmn:incoming>sf_23</bpmn:incoming>
-      <bpmn:outgoing>sf_26</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_4Days">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P4D</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
-    </bpmn:intermediateCatchEvent>
-    <bpmn:serviceTask id="task_send_confirmation" name="Issue Automated Onboarding Confirmation">
-      <bpmn:incoming>sf_24</bpmn:incoming>
-      <bpmn:outgoing>sf_25</bpmn:outgoing>
+    <bpmn:serviceTask id="ServiceTask_SendApprovalNotification" name="Send approval notification">
+      <bpmn:incoming>Flow_ActivateToApprovalNotif</bpmn:incoming>
+      <bpmn:outgoing>Flow_ApprovalNotifToOnboardedEnd</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="end_onboarding_complete" name="Onboarding Complete">
-      <bpmn:incoming>sf_25</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:userTask id="task_escalate_unsigned_contract" name="Follow Up and Escalate Unsigned Contract">
-      <bpmn:incoming>sf_26</bpmn:incoming>
-      <bpmn:outgoing>sf_27</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:endEvent id="end_contract_escalated" name="Contract Escalated">
-      <bpmn:incoming>sf_27</bpmn:incoming>
+
+    <bpmn:endEvent id="EndEvent_SupplierOnboarded" name="Supplier onboarded">
+      <bpmn:incoming>Flow_ApprovalNotifToOnboardedEnd</bpmn:incoming>
     </bpmn:endEvent>
 
     <!-- Sequence Flows -->
-    <bpmn:sequenceFlow id="sf_1" sourceRef="start_onboarding" targetRef="task_submit_request" />
-    <bpmn:sequenceFlow id="sf_2" sourceRef="task_submit_request" targetRef="task_triage_data" />
-    <bpmn:sequenceFlow id="sf_3" sourceRef="task_triage_data" targetRef="gw_triage_check" />
-    <bpmn:sequenceFlow id="sf_triage_pass" name="Data Complete" sourceRef="gw_triage_check" targetRef="task_review_compliance" />
-    <bpmn:sequenceFlow id="sf_triage_fail" name="Missing Data" sourceRef="gw_triage_check" targetRef="task_request_missing_data" />
-    <bpmn:sequenceFlow id="sf_4" sourceRef="task_request_missing_data" targetRef="task_update_resubmit_app" />
-    <bpmn:sequenceFlow id="sf_5" name="Resubmitted" sourceRef="task_update_resubmit_app" targetRef="task_triage_data" />
-    <bpmn:sequenceFlow id="sf_6" sourceRef="task_review_compliance" targetRef="task_audit_certificates" />
-    <bpmn:sequenceFlow id="sf_7" sourceRef="task_audit_certificates" targetRef="gw_cert_check" />
-    <bpmn:sequenceFlow id="sf_cert_valid" name="Valid / Correct" sourceRef="gw_cert_check" targetRef="gw_final_decision" />
-    <bpmn:sequenceFlow id="sf_cert_minor_error" name="Minor Errors" sourceRef="gw_cert_check" targetRef="task_procure_corrected_docs" />
-    <bpmn:sequenceFlow id="sf_8" sourceRef="task_procure_corrected_docs" targetRef="task_provide_corrected_docs" />
-    <bpmn:sequenceFlow id="sf_9" name="Corrected Docs" sourceRef="task_provide_corrected_docs" targetRef="task_audit_certificates" />
-    <bpmn:sequenceFlow id="sf_approve_vendor" name="Passed Compliance" sourceRef="gw_final_decision" targetRef="task_grant_approval" />
-    <bpmn:sequenceFlow id="sf_reject_vendor" name="Failed / Invalid" sourceRef="gw_final_decision" targetRef="task_issue_rejection" />
-    <bpmn:sequenceFlow id="sf_10" sourceRef="task_issue_rejection" targetRef="end_vendor_rejected" />
-    <bpmn:sequenceFlow id="sf_11" sourceRef="task_grant_approval" targetRef="task_activate_mdm" />
-    <bpmn:sequenceFlow id="sf_12" sourceRef="task_activate_mdm" targetRef="gw_parallel_setup_split" />
-    <bpmn:sequenceFlow id="sf_13" sourceRef="gw_parallel_setup_split" targetRef="task_setup_tax_payment" />
-    <bpmn:sequenceFlow id="sf_14" sourceRef="gw_parallel_setup_split" targetRef="task_provision_it_access" />
-    <bpmn:sequenceFlow id="sf_15" sourceRef="task_setup_tax_payment" targetRef="gw_parallel_setup_join" />
-    <bpmn:sequenceFlow id="sf_16" sourceRef="task_provision_it_access" targetRef="gw_parallel_setup_join" />
-    <bpmn:sequenceFlow id="sf_17" sourceRef="gw_parallel_setup_join" targetRef="gw_inclusive_risk_split" />
-    <bpmn:sequenceFlow id="sf_sensitive_data" name="Handles Sensitive Data" sourceRef="gw_inclusive_risk_split" targetRef="task_infosec_audit" />
-    <bpmn:sequenceFlow id="sf_international_trade" name="International Vendor" sourceRef="gw_inclusive_risk_split" targetRef="task_trade_compliance_check" />
-    <bpmn:sequenceFlow id="sf_skip_specialized_risk" name="Standard Vendor" sourceRef="gw_inclusive_risk_split" targetRef="gw_inclusive_risk_join" />
-    <bpmn:sequenceFlow id="sf_18" sourceRef="task_infosec_audit" targetRef="gw_inclusive_risk_join" />
-    <bpmn:sequenceFlow id="sf_19" sourceRef="task_trade_compliance_check" targetRef="gw_inclusive_risk_join" />
-    <bpmn:sequenceFlow id="sf_20" sourceRef="gw_inclusive_risk_join" targetRef="task_send_contract" />
-    <bpmn:sequenceFlow id="sf_21" sourceRef="task_send_contract" targetRef="gw_contract_event_split" />
-    <bpmn:sequenceFlow id="sf_22" sourceRef="gw_contract_event_split" targetRef="event_signature_received" />
-    <bpmn:sequenceFlow id="sf_23" sourceRef="gw_contract_event_split" targetRef="event_timer_expired" />
-    <bpmn:sequenceFlow id="sf_24" sourceRef="event_signature_received" targetRef="task_send_confirmation" />
-    <bpmn:sequenceFlow id="sf_25" sourceRef="task_send_confirmation" targetRef="end_onboarding_complete" />
-    <bpmn:sequenceFlow id="sf_26" sourceRef="event_timer_expired" targetRef="task_escalate_unsigned_contract" />
-    <bpmn:sequenceFlow id="sf_27" sourceRef="task_escalate_unsigned_contract" targetRef="end_contract_escalated" />
+    <bpmn:sequenceFlow id="Flow_StartToSubmit" sourceRef="StartEvent_OnboardingInitiated" targetRef="UserTask_SubmitRequest" />
+    <bpmn:sequenceFlow id="Flow_SubmitToValidate" sourceRef="UserTask_SubmitRequest" targetRef="ServiceTask_ValidateData" />
+    <bpmn:sequenceFlow id="Flow_ValidateToAppCompleteGw" sourceRef="ServiceTask_ValidateData" targetRef="ExclusiveGateway_AppComplete" />
+    <bpmn:sequenceFlow id="Flow_AppComplete_Yes" name="Yes - complete" sourceRef="ExclusiveGateway_AppComplete" targetRef="ExclusiveGateway_AppCompleteMerge" />
+    <bpmn:sequenceFlow id="Flow_AppComplete_No" name="No - incomplete" sourceRef="ExclusiveGateway_AppComplete" targetRef="UserTask_SendMissingInfoRequest" />
+    <bpmn:sequenceFlow id="Flow_SendMissingToReceiveUpdated" sourceRef="UserTask_SendMissingInfoRequest" targetRef="UserTask_ReceiveUpdatedDetails" />
+    <bpmn:sequenceFlow id="Flow_ReceiveUpdatedToMerge" sourceRef="UserTask_ReceiveUpdatedDetails" targetRef="ExclusiveGateway_AppCompleteMerge" />
+    <bpmn:sequenceFlow id="Flow_MergeToComplianceReview" sourceRef="ExclusiveGateway_AppCompleteMerge" targetRef="UserTask_PerformComplianceReview" />
+    <bpmn:sequenceFlow id="Flow_ReviewToComplianceGw" sourceRef="UserTask_PerformComplianceReview" targetRef="ExclusiveGateway_ComplianceMet" />
+    <bpmn:sequenceFlow id="Flow_Compliance_Yes" name="Yes - compliant" sourceRef="ExclusiveGateway_ComplianceMet" targetRef="UserTask_VerifyCertificates" />
+    <bpmn:sequenceFlow id="Flow_Compliance_No" name="No - non compliant" sourceRef="ExclusiveGateway_ComplianceMet" targetRef="UserTask_RejectSupplier" />
+    <bpmn:sequenceFlow id="Flow_RejectSupplierToNotification" sourceRef="UserTask_RejectSupplier" targetRef="ServiceTask_SendRejectionNotification" />
+    <bpmn:sequenceFlow id="Flow_VerifyToCertificatesGw" sourceRef="UserTask_VerifyCertificates" targetRef="ExclusiveGateway_CertificatesValid" />
+    <bpmn:sequenceFlow id="Flow_Certificates_Yes" name="Yes - valid" sourceRef="ExclusiveGateway_CertificatesValid" targetRef="ExclusiveGateway_CertificatesValidMerge" />
+    <bpmn:sequenceFlow id="Flow_Certificates_Correction" name="No - correction needed" sourceRef="ExclusiveGateway_CertificatesValid" targetRef="ServiceTask_SendCorrectionRequest" />
+    <bpmn:sequenceFlow id="Flow_Certificates_Rejected" name="Rejected" sourceRef="ExclusiveGateway_CertificatesValid" targetRef="ServiceTask_SendRejectionNotification" />
+    <bpmn:sequenceFlow id="Flow_SendCorrectionToReceiveCorrected" sourceRef="ServiceTask_SendCorrectionRequest" targetRef="UserTask_ReceiveCorrectedCertificates" />
+    <bpmn:sequenceFlow id="Flow_ReceiveCorrectedToCertMerge" sourceRef="UserTask_ReceiveCorrectedCertificates" targetRef="ExclusiveGateway_CertificatesValidMerge" />
+    <bpmn:sequenceFlow id="Flow_SendRejectionToRejectedEnd" sourceRef="ServiceTask_SendRejectionNotification" targetRef="EndEvent_SupplierRejected" />
+    <bpmn:sequenceFlow id="Flow_CertMergeToApprove" sourceRef="ExclusiveGateway_CertificatesValidMerge" targetRef="UserTask_ApproveOnboarding" />
+    <bpmn:sequenceFlow id="Flow_ApproveToActivate" sourceRef="UserTask_ApproveOnboarding" targetRef="ServiceTask_ActivateMasterData" />
+    <bpmn:sequenceFlow id="Flow_ActivateToApprovalNotif" sourceRef="ServiceTask_ActivateMasterData" targetRef="ServiceTask_SendApprovalNotification" />
+    <bpmn:sequenceFlow id="Flow_ApprovalNotifToOnboardedEnd" sourceRef="ServiceTask_SendApprovalNotification" targetRef="EndEvent_SupplierOnboarded" />
   </bpmn:process>
 
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Process_Supplier_Onboarding">
-    <bpmndi:BPMNPlane id="BPMNPlane_Process_Supplier_Onboarding" bpmnElement="Collaboration_Supplier_Onboarding">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_SupplierOnboarding">
       <!-- Participant Pool Shape -->
-      <bpmndi:BPMNShape id="Participant_Procurement_Org_di" bpmnElement="Participant_Procurement_Org" isHorizontal="true">
-        <dc:Bounds x="30" y="0" width="3800" height="900" />
+      <bpmndi:BPMNShape id="Participant_ProcurementSystem_di" bpmnElement="Participant_ProcurementSystem" isHorizontal="true" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="20" y="20" width="2500" height="650" />
       </bpmndi:BPMNShape>
 
-      <!-- 6 Individual Swimlane Shapes -->
-      <bpmndi:BPMNShape id="lane_procurement_di" bpmnElement="lane_procurement" isHorizontal="true">
-        <dc:Bounds x="60" y="0" width="3770" height="150" />
+      <!-- Lane Shapes -->
+      <bpmndi:BPMNShape id="Lane_ProcurementManager_di" bpmnElement="Lane_ProcurementManager" isHorizontal="true">
+        <dc:Bounds x="50" y="20" width="2470" height="130" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="lane_enterprise_system_di" bpmnElement="lane_enterprise_system" isHorizontal="true">
-        <dc:Bounds x="60" y="150" width="3770" height="150" />
+      <bpmndi:BPMNShape id="Lane_ComplianceUser_di" bpmnElement="Lane_ComplianceUser" isHorizontal="true">
+        <dc:Bounds x="50" y="150" width="2470" height="260" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="lane_compliance_di" bpmnElement="lane_compliance" isHorizontal="true">
-        <dc:Bounds x="60" y="300" width="3770" height="150" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="lane_finance_di" bpmnElement="lane_finance" isHorizontal="true">
-        <dc:Bounds x="60" y="450" width="3770" height="150" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="lane_it_ops_di" bpmnElement="lane_it_ops" isHorizontal="true">
-        <dc:Bounds x="60" y="600" width="3770" height="150" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="lane_vendor_di" bpmnElement="lane_vendor" isHorizontal="true">
-        <dc:Bounds x="60" y="750" width="3770" height="150" />
+      <bpmndi:BPMNShape id="Lane_System_di" bpmnElement="Lane_System" isHorizontal="true">
+        <dc:Bounds x="50" y="410" width="2470" height="260" />
       </bpmndi:BPMNShape>
 
-      <!-- Lane 1: Procurement Management Nodes -->
-      <bpmndi:BPMNShape id="start_onboarding_di" bpmnElement="start_onboarding">
-        <dc:Bounds x="90" y="57" width="36" height="36" />
+      <!-- Node Shapes -->
+      <!-- Procurement Manager Lane (Y Center: 90) -->
+      <bpmndi:BPMNShape id="StartEvent_OnboardingInitiated_di" bpmnElement="StartEvent_OnboardingInitiated" bioc:stroke="#2E7D32" bioc:fill="#E8F5E9">
+        <dc:Bounds x="90" y="72" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_submit_request_di" bpmnElement="task_submit_request">
-        <dc:Bounds x="170" y="35" width="110" height="80" />
+      <bpmndi:BPMNShape id="UserTask_SubmitRequest_di" bpmnElement="UserTask_SubmitRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="180" y="50" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_update_resubmit_app_di" bpmnElement="task_update_resubmit_app">
-        <dc:Bounds x="600" y="35" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_escalate_unsigned_contract_di" bpmnElement="task_escalate_unsigned_contract">
-        <dc:Bounds x="3450" y="35" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="end_contract_escalated_di" bpmnElement="end_contract_escalated">
-        <dc:Bounds x="3630" y="57" width="36" height="36" />
+      <bpmndi:BPMNShape id="UserTask_ReceiveUpdatedDetails_di" bpmnElement="UserTask_ReceiveUpdatedDetails" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="740" y="50" width="110" height="80" />
       </bpmndi:BPMNShape>
 
-      <!-- Lane 2: Enterprise System Nodes -->
-      <bpmndi:BPMNShape id="task_triage_data_di" bpmnElement="task_triage_data">
-        <dc:Bounds x="330" y="185" width="110" height="80" />
+      <!-- Compliance User Lane (Y Center: 235) -->
+      <bpmndi:BPMNShape id="UserTask_SendMissingInfoRequest_di" bpmnElement="UserTask_SendMissingInfoRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="580" y="195" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_triage_check_di" bpmnElement="gw_triage_check" isMarkerVisible="true">
-        <dc:Bounds x="490" y="200" width="50" height="50" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_AppCompleteMerge_di" bpmnElement="ExclusiveGateway_AppCompleteMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
+        <dc:Bounds x="900" y="210" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_procure_corrected_docs_di" bpmnElement="task_procure_corrected_docs">
-        <dc:Bounds x="1150" y="185" width="110" height="80" />
+      <bpmndi:BPMNShape id="UserTask_PerformComplianceReview_di" bpmnElement="UserTask_PerformComplianceReview" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1000" y="195" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_issue_rejection_di" bpmnElement="task_issue_rejection">
-        <dc:Bounds x="1320" y="185" width="110" height="80" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_ComplianceMet_di" bpmnElement="ExclusiveGateway_ComplianceMet" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
+        <dc:Bounds x="1160" y="210" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="end_vendor_rejected_di" bpmnElement="end_vendor_rejected">
-        <dc:Bounds x="1480" y="207" width="36" height="36" />
+      <bpmndi:BPMNShape id="UserTask_RejectSupplier_di" bpmnElement="UserTask_RejectSupplier" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1270" y="260" width="110" height="55" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_activate_mdm_di" bpmnElement="task_activate_mdm">
-        <dc:Bounds x="1680" y="185" width="110" height="80" />
+      <bpmndi:BPMNShape id="UserTask_VerifyCertificates_di" bpmnElement="UserTask_VerifyCertificates" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1270" y="175" width="110" height="75" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_parallel_setup_split_di" bpmnElement="gw_parallel_setup_split">
-        <dc:Bounds x="1830" y="200" width="50" height="50" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_CertificatesValid_di" bpmnElement="ExclusiveGateway_CertificatesValid" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
+        <dc:Bounds x="1430" y="187.5" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_parallel_setup_join_di" bpmnElement="gw_parallel_setup_join">
-        <dc:Bounds x="2130" y="200" width="50" height="50" />
+      <bpmndi:BPMNShape id="UserTask_ReceiveCorrectedCertificates_di" bpmnElement="UserTask_ReceiveCorrectedCertificates" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1700" y="175" width="110" height="75" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_inclusive_risk_split_di" bpmnElement="gw_inclusive_risk_split">
-        <dc:Bounds x="2260" y="200" width="50" height="50" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_CertificatesValidMerge_di" bpmnElement="ExclusiveGateway_CertificatesValidMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
+        <dc:Bounds x="1860" y="187.5" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_inclusive_risk_join_di" bpmnElement="gw_inclusive_risk_join">
-        <dc:Bounds x="2580" y="200" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_send_contract_di" bpmnElement="task_send_contract">
-        <dc:Bounds x="2710" y="185" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_contract_event_split_di" bpmnElement="gw_contract_event_split">
-        <dc:Bounds x="2880" y="200" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="event_signature_received_di" bpmnElement="event_signature_received">
-        <dc:Bounds x="3010" y="175" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="event_timer_expired_di" bpmnElement="event_timer_expired">
-        <dc:Bounds x="3010" y="255" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_send_confirmation_di" bpmnElement="task_send_confirmation">
-        <dc:Bounds x="3110" y="155" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="end_onboarding_complete_di" bpmnElement="end_onboarding_complete">
-        <dc:Bounds x="3280" y="177" width="36" height="36" />
+      <bpmndi:BPMNShape id="UserTask_ApproveOnboarding_di" bpmnElement="UserTask_ApproveOnboarding" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1960" y="175" width="110" height="75" />
       </bpmndi:BPMNShape>
 
-      <!-- Lane 3: Compliance Team Nodes -->
-      <bpmndi:BPMNShape id="task_request_missing_data_di" bpmnElement="task_request_missing_data">
-        <dc:Bounds x="450" y="335" width="110" height="80" />
+      <!-- System Lane (Y Center: 475) -->
+      <bpmndi:BPMNShape id="ServiceTask_ValidateData_di" bpmnElement="ServiceTask_ValidateData" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="330" y="435" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_review_compliance_di" bpmnElement="task_review_compliance">
-        <dc:Bounds x="650" y="335" width="110" height="80" />
+      <bpmndi:BPMNShape id="ExclusiveGateway_AppComplete_di" bpmnElement="ExclusiveGateway_AppComplete" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
+        <dc:Bounds x="480" y="450" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_audit_certificates_di" bpmnElement="task_audit_certificates">
-        <dc:Bounds x="800" y="335" width="110" height="80" />
+      <bpmndi:BPMNShape id="ServiceTask_SendCorrectionRequest_di" bpmnElement="ServiceTask_SendCorrectionRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1540" y="435" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_cert_check_di" bpmnElement="gw_cert_check" isMarkerVisible="true">
-        <dc:Bounds x="970" y="350" width="50" height="50" />
+      <bpmndi:BPMNShape id="ServiceTask_SendRejectionNotification_di" bpmnElement="ServiceTask_SendRejectionNotification" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="1540" y="530" width="110" height="60" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="gw_final_decision_di" bpmnElement="gw_final_decision" isMarkerVisible="true">
-        <dc:Bounds x="1320" y="350" width="50" height="50" />
+      <bpmndi:BPMNShape id="EndEvent_SupplierRejected_di" bpmnElement="EndEvent_SupplierRejected" bioc:stroke="#C62828" bioc:fill="#FFEBEE">
+        <dc:Bounds x="1710" y="542" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_grant_approval_di" bpmnElement="task_grant_approval">
-        <dc:Bounds x="1480" y="335" width="110" height="80" />
+      <bpmndi:BPMNShape id="ServiceTask_ActivateMasterData_di" bpmnElement="ServiceTask_ActivateMasterData" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="2110" y="435" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_infosec_audit_di" bpmnElement="task_infosec_audit">
-        <dc:Bounds x="2400" y="315" width="110" height="60" />
+      <bpmndi:BPMNShape id="ServiceTask_SendApprovalNotification_di" bpmnElement="ServiceTask_SendApprovalNotification" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
+        <dc:Bounds x="2260" y="435" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="task_trade_compliance_check_di" bpmnElement="task_trade_compliance_check">
-        <dc:Bounds x="2400" y="385" width="110" height="60" />
-      </bpmndi:BPMNShape>
-
-      <!-- Lane 4: Finance Team Nodes -->
-      <bpmndi:BPMNShape id="task_setup_tax_payment_di" bpmnElement="task_setup_tax_payment">
-        <dc:Bounds x="1960" y="485" width="110" height="80" />
+      <bpmndi:BPMNShape id="EndEvent_SupplierOnboarded_di" bpmnElement="EndEvent_SupplierOnboarded" bioc:stroke="#C62828" bioc:fill="#FFEBEE">
+        <dc:Bounds x="2410" y="457" width="36" height="36" />
       </bpmndi:BPMNShape>
 
-      <!-- Lane 5: IT Operations Team Nodes -->
-      <bpmndi:BPMNShape id="task_provision_it_access_di" bpmnElement="task_provision_it_access">
-        <dc:Bounds x="1960" y="635" width="110" height="80" />
-      </bpmndi:BPMNShape>
-
-      <!-- Lane 6: Supplier / Vendor Nodes -->
-      <bpmndi:BPMNShape id="task_provide_corrected_docs_di" bpmnElement="task_provide_corrected_docs">
-        <dc:Bounds x="1150" y="785" width="110" height="80" />
-      </bpmndi:BPMNShape>
-
-      <!-- Edges -->
-      <bpmndi:BPMNEdge id="sf_1_di" bpmnElement="sf_1">
-        <di:waypoint x="126" y="75" />
-        <di:waypoint x="170" y="75" />
+      <!-- 100% Orthogonal Sequence Flow Edges -->
+      <bpmndi:BPMNEdge id="Flow_StartToSubmit_di" bpmnElement="Flow_StartToSubmit">
+        <di:waypoint x="126" y="90" />
+        <di:waypoint x="180" y="90" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_2_di" bpmnElement="sf_2">
-        <di:waypoint x="280" y="75" />
-        <di:waypoint x="305" y="75" />
-        <di:waypoint x="305" y="225" />
-        <di:waypoint x="330" y="225" />
+      <bpmndi:BPMNEdge id="Flow_SubmitToValidate_di" bpmnElement="Flow_SubmitToValidate">
+        <di:waypoint x="290" y="90" />
+        <di:waypoint x="385" y="90" />
+        <di:waypoint x="385" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_3_di" bpmnElement="sf_3">
-        <di:waypoint x="440" y="225" />
-        <di:waypoint x="490" y="225" />
+      <bpmndi:BPMNEdge id="Flow_ValidateToAppCompleteGw_di" bpmnElement="Flow_ValidateToAppCompleteGw">
+        <di:waypoint x="440" y="475" />
+        <di:waypoint x="480" y="475" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_triage_pass_di" bpmnElement="sf_triage_pass">
-        <di:waypoint x="540" y="225" />
-        <di:waypoint x="705" y="225" />
-        <di:waypoint x="705" y="335" />
+      <bpmndi:BPMNEdge id="Flow_AppComplete_Yes_di" bpmnElement="Flow_AppComplete_Yes">
+        <di:waypoint x="530" y="475" />
+        <di:waypoint x="925" y="475" />
+        <di:waypoint x="925" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_triage_fail_di" bpmnElement="sf_triage_fail">
-        <di:waypoint x="515" y="250" />
-        <di:waypoint x="505" y="250" />
-        <di:waypoint x="505" y="335" />
+      <bpmndi:BPMNEdge id="Flow_AppComplete_No_di" bpmnElement="Flow_AppComplete_No">
+        <di:waypoint x="505" y="450" />
+        <di:waypoint x="505" y="235" />
+        <di:waypoint x="580" y="235" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_4_di" bpmnElement="sf_4">
-        <di:waypoint x="560" y="375" />
-        <di:waypoint x="580" y="375" />
-        <di:waypoint x="580" y="75" />
-        <di:waypoint x="600" y="75" />
+      <bpmndi:BPMNEdge id="Flow_SendMissingToReceiveUpdated_di" bpmnElement="Flow_SendMissingToReceiveUpdated">
+        <di:waypoint x="635" y="195" />
+        <di:waypoint x="635" y="90" />
+        <di:waypoint x="740" y="90" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_5_di" bpmnElement="sf_5">
-        <di:waypoint x="710" y="75" />
-        <di:waypoint x="725" y="75" />
-        <di:waypoint x="725" y="30" />
-        <di:waypoint x="385" y="30" />
-        <di:waypoint x="385" y="185" />
+      <bpmndi:BPMNEdge id="Flow_ReceiveUpdatedToMerge_di" bpmnElement="Flow_ReceiveUpdatedToMerge">
+        <di:waypoint x="850" y="90" />
+        <di:waypoint x="925" y="90" />
+        <di:waypoint x="925" y="210" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_6_di" bpmnElement="sf_6">
-        <di:waypoint x="760" y="375" />
-        <di:waypoint x="800" y="375" />
+      <bpmndi:BPMNEdge id="Flow_MergeToComplianceReview_di" bpmnElement="Flow_MergeToComplianceReview">
+        <di:waypoint x="950" y="235" />
+        <di:waypoint x="1000" y="235" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_7_di" bpmnElement="sf_7">
-        <di:waypoint x="910" y="375" />
-        <di:waypoint x="970" y="375" />
+      <bpmndi:BPMNEdge id="Flow_ReviewToComplianceGw_di" bpmnElement="Flow_ReviewToComplianceGw">
+        <di:waypoint x="1110" y="235" />
+        <di:waypoint x="1160" y="235" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_cert_valid_di" bpmnElement="sf_cert_valid">
-        <di:waypoint x="1020" y="375" />
-        <di:waypoint x="1320" y="375" />
+      <bpmndi:BPMNEdge id="Flow_Compliance_Yes_di" bpmnElement="Flow_Compliance_Yes">
+        <di:waypoint x="1210" y="235" />
+        <di:waypoint x="1270" y="235" />
+        <di:waypoint x="1270" y="213" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_cert_minor_error_di" bpmnElement="sf_cert_minor_error">
-        <di:waypoint x="995" y="350" />
-        <di:waypoint x="995" y="225" />
-        <di:waypoint x="1150" y="225" />
+      <bpmndi:BPMNEdge id="Flow_Compliance_No_di" bpmnElement="Flow_Compliance_No">
+        <di:waypoint x="1185" y="260" />
+        <di:waypoint x="1185" y="288" />
+        <di:waypoint x="1270" y="288" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_8_di" bpmnElement="sf_8">
-        <di:waypoint x="1205" y="265" />
-        <di:waypoint x="1205" y="785" />
+      <bpmndi:BPMNEdge id="Flow_RejectSupplierToNotification_di" bpmnElement="Flow_RejectSupplierToNotification">
+        <di:waypoint x="1380" y="288" />
+        <di:waypoint x="1495" y="288" />
+        <di:waypoint x="1495" y="560" />
+        <di:waypoint x="1540" y="560" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_9_di" bpmnElement="sf_9">
-        <di:waypoint x="1260" y="825" />
-        <di:waypoint x="1275" y="825" />
-        <di:waypoint x="1275" y="870" />
-        <di:waypoint x="855" y="870" />
-        <di:waypoint x="855" y="415" />
+      <bpmndi:BPMNEdge id="Flow_VerifyToCertificatesGw_di" bpmnElement="Flow_VerifyToCertificatesGw">
+        <di:waypoint x="1380" y="213" />
+        <di:waypoint x="1430" y="213" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_approve_vendor_di" bpmnElement="sf_approve_vendor">
-        <di:waypoint x="1370" y="375" />
-        <di:waypoint x="1480" y="375" />
+      <bpmndi:BPMNEdge id="Flow_Certificates_Yes_di" bpmnElement="Flow_Certificates_Yes">
+        <di:waypoint x="1455" y="188" />
+        <di:waypoint x="1455" y="170" />
+        <di:waypoint x="1885" y="170" />
+        <di:waypoint x="1885" y="188" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_reject_vendor_di" bpmnElement="sf_reject_vendor">
-        <di:waypoint x="1345" y="350" />
-        <di:waypoint x="1345" y="290" />
-        <di:waypoint x="1375" y="290" />
-        <di:waypoint x="1375" y="265" />
+      <bpmndi:BPMNEdge id="Flow_Certificates_Correction_di" bpmnElement="Flow_Certificates_Correction">
+        <di:waypoint x="1455" y="238" />
+        <di:waypoint x="1455" y="390" />
+        <di:waypoint x="1595" y="390" />
+        <di:waypoint x="1595" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_10_di" bpmnElement="sf_10">
-        <di:waypoint x="1430" y="225" />
-        <di:waypoint x="1480" y="225" />
+      <bpmndi:BPMNEdge id="Flow_Certificates_Rejected_di" bpmnElement="Flow_Certificates_Rejected">
+        <di:waypoint x="1430" y="213" />
+        <di:waypoint x="1400" y="213" />
+        <di:waypoint x="1400" y="560" />
+        <di:waypoint x="1540" y="560" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_11_di" bpmnElement="sf_11">
-        <di:waypoint x="1590" y="375" />
-        <di:waypoint x="1635" y="375" />
-        <di:waypoint x="1635" y="225" />
-        <di:waypoint x="1680" y="225" />
+      <bpmndi:BPMNEdge id="Flow_SendCorrectionToReceiveCorrected_di" bpmnElement="Flow_SendCorrectionToReceiveCorrected">
+        <di:waypoint x="1650" y="475" />
+        <di:waypoint x="1755" y="475" />
+        <di:waypoint x="1755" y="250" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_12_di" bpmnElement="sf_12">
-        <di:waypoint x="1790" y="225" />
-        <di:waypoint x="1830" y="225" />
+      <bpmndi:BPMNEdge id="Flow_ReceiveCorrectedToCertMerge_di" bpmnElement="Flow_ReceiveCorrectedToCertMerge">
+        <di:waypoint x="1810" y="213" />
+        <di:waypoint x="1860" y="213" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_13_di" bpmnElement="sf_13">
-        <di:waypoint x="1855" y="250" />
-        <di:waypoint x="1855" y="525" />
-        <di:waypoint x="1960" y="525" />
+      <bpmndi:BPMNEdge id="Flow_SendRejectionToRejectedEnd_di" bpmnElement="Flow_SendRejectionToRejectedEnd">
+        <di:waypoint x="1650" y="560" />
+        <di:waypoint x="1710" y="560" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_14_di" bpmnElement="sf_14">
-        <di:waypoint x="1880" y="225" />
-        <di:waypoint x="1895" y="225" />
-        <di:waypoint x="1895" y="675" />
-        <di:waypoint x="1960" y="675" />
+      <bpmndi:BPMNEdge id="Flow_CertMergeToApprove_di" bpmnElement="Flow_CertMergeToApprove">
+        <di:waypoint x="1910" y="213" />
+        <di:waypoint x="1960" y="213" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_15_di" bpmnElement="sf_15">
-        <di:waypoint x="2070" y="525" />
-        <di:waypoint x="2145" y="525" />
-        <di:waypoint x="2145" y="250" />
+      <bpmndi:BPMNEdge id="Flow_ApproveToActivate_di" bpmnElement="Flow_ApproveToActivate">
+        <di:waypoint x="2070" y="213" />
+        <di:waypoint x="2165" y="213" />
+        <di:waypoint x="2165" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_16_di" bpmnElement="sf_16">
-        <di:waypoint x="2070" y="675" />
-        <di:waypoint x="2165" y="675" />
-        <di:waypoint x="2165" y="250" />
+      <bpmndi:BPMNEdge id="Flow_ActivateToApprovalNotif_di" bpmnElement="Flow_ActivateToApprovalNotif">
+        <di:waypoint x="2220" y="475" />
+        <di:waypoint x="2260" y="475" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_17_di" bpmnElement="sf_17">
-        <di:waypoint x="2180" y="225" />
-        <di:waypoint x="2260" y="225" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_sensitive_data_di" bpmnElement="sf_sensitive_data">
-        <di:waypoint x="2285" y="250" />
-        <di:waypoint x="2285" y="345" />
-        <di:waypoint x="2400" y="345" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_international_trade_di" bpmnElement="sf_international_trade">
-        <di:waypoint x="2310" y="225" />
-        <di:waypoint x="2325" y="225" />
-        <di:waypoint x="2325" y="415" />
-        <di:waypoint x="2400" y="415" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_skip_specialized_risk_di" bpmnElement="sf_skip_specialized_risk">
-        <di:waypoint x="2285" y="200" />
-        <di:waypoint x="2285" y="170" />
-        <di:waypoint x="2605" y="170" />
-        <di:waypoint x="2605" y="200" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_18_di" bpmnElement="sf_18">
-        <di:waypoint x="2510" y="345" />
-        <di:waypoint x="2595" y="345" />
-        <di:waypoint x="2595" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_19_di" bpmnElement="sf_19">
-        <di:waypoint x="2510" y="415" />
-        <di:waypoint x="2615" y="415" />
-        <di:waypoint x="2615" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_20_di" bpmnElement="sf_20">
-        <di:waypoint x="2630" y="225" />
-        <di:waypoint x="2710" y="225" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_21_di" bpmnElement="sf_21">
-        <di:waypoint x="2820" y="225" />
-        <di:waypoint x="2880" y="225" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_22_di" bpmnElement="sf_22">
-        <di:waypoint x="2905" y="200" />
-        <di:waypoint x="2905" y="193" />
-        <di:waypoint x="3010" y="193" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_23_di" bpmnElement="sf_23">
-        <di:waypoint x="2905" y="250" />
-        <di:waypoint x="2905" y="273" />
-        <di:waypoint x="3010" y="273" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_24_di" bpmnElement="sf_24">
-        <di:waypoint x="3046" y="193" />
-        <di:waypoint x="3110" y="193" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_25_di" bpmnElement="sf_25">
-        <di:waypoint x="3220" y="195" />
-        <di:waypoint x="3280" y="195" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_26_di" bpmnElement="sf_26">
-        <di:waypoint x="3028" y="291" />
-        <di:waypoint x="3028" y="295" />
-        <di:waypoint x="3380" y="295" />
-        <di:waypoint x="3380" y="75" />
-        <di:waypoint x="3450" y="75" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="sf_27_di" bpmnElement="sf_27">
-        <di:waypoint x="3560" y="75" />
-        <di:waypoint x="3630" y="75" />
+      <bpmndi:BPMNEdge id="Flow_ApprovalNotifToOnboardedEnd_di" bpmnElement="Flow_ApprovalNotifToOnboardedEnd">
+        <di:waypoint x="2370" y="475" />
+        <di:waypoint x="2410" y="475" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
