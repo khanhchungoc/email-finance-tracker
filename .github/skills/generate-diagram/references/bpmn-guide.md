@@ -1,43 +1,68 @@
-# BPMN 2.0 Generation Guide
+# BPMN 2.0 Generation & Layout Guide
 
-Use this guide when creating or revising `.bpmn` files with BPMN DI layout.
+Use this reference guide when creating, reviewing, or revising `.bpmn` files with BPMN DI visual layouts.
 
-## Model Semantics
+---
 
-- Add a short XML header comment with author, date, and diagram intent.
-- Assign every event, task, and gateway to the lane that owns the work or decision.
-- Ensure each node's visual `BPMNShape` is inside the same lane named in `flowNodeRef`.
-- Use gateways for actual control-flow meaning:
-  - Use an Exclusive Gateway for decisions where only one path may continue.
-  - Use a converging Exclusive Gateway to merge alternative paths when it clarifies the model, especially before a task that can be reached from multiple rejection, cancellation, or exception reasons.
-  - Use a Parallel Gateway only when the process must fork into concurrent paths or wait for all active incoming branches.
-  - Avoid adding a gateway before simple rework/resubmission loops unless it improves readability; multiple incoming flows to an activity are valid BPMN but are uncontrolled flow.
-- Keep labels concise and business-readable. Use decision labels such as `Yes` and `No` consistently.
+## 1. Model Semantics & BPMN 2.0 Correctness
 
-## Layout Rules
+- **Lane Assignment:** Assign every event, task, and gateway to its owning lane. Ensure visual `<bpmndi:BPMNShape>` bounds reside strictly inside the declared `<bpmn:lane>` container.
+- **Specific Task Typing:** Use `<bpmn:userTask>` for human steps, `<bpmn:serviceTask>` for automated steps, and `<bpmn:sendTask>`/`<bpmn:receiveTask>` for cross-boundary messaging.
+- **Exclusive Gateway Splits & Defaults:** Every `exclusiveGateway` split MUST specify a valid `default="<SF_ID>"` attribute pointing to the happy path or default branch.
+- **Explicit Converging Merges:** Use converging Exclusive Gateways (`exclusiveGateway`) to join alternate paths before shared tasks. Name join gateways explicitly (e.g. `Application complete join`).
+- **Loop Bounding & Timouts:** Any `receiveTask` or resubmittal wait state MUST have an attached Boundary Timer Event (`<bpmn:boundaryEvent>` with `attachedToRef`) leading to a timeout/escalation path to prevent infinite loops.
 
-- Lay out the process before writing connector waypoints.
-- Prefer moving nodes over routing arrows around nodes. If an arrow needs a large detour, reposition the source, target, or nearby nodes so the arrow can be straight or nearly straight.
-- Keep the main happy path visually dominant and mostly left-to-right or top-to-bottom.
-- Align related cross-lane handoffs in the same column or row so arrows can run straight across lanes.
-- Minimize connector bends. Use elbows only for branches, loops, or unavoidable lane changes.
-- Never let sequence flows pass through activity, event, or gateway shapes.
-- Avoid connector-to-connector overlaps and avoid crossings unless the model would become less clear without them.
-- Keep all nodes inside their pool/lane bounds. Widen or heighten lanes before placing nodes outside the swimlanes.
-- Leave enough whitespace between nodes for arrowheads, labels, and gateway markers.
-- Place merge gateways near the converging paths and before the merged activity, not on top of the activity.
+---
 
-## Validation Checklist
+## 2. Geometry & Grid Layout System
 
-Before presenting a BPMN file:
+### A. Element Dimensions & Spacing Base Constants
+| Element / Property | Dimensions / Value | Description |
+|---|---|---|
+| **Task Nodes** | `110px × 80px` | `<bpmn:userTask>`, `<bpmn:serviceTask>`, `<bpmn:sendTask>` |
+| **Exclusive Gateways** | `50px × 50px` | `<bpmn:exclusiveGateway>` (with `isMarkerVisible="true"`) |
+| **Start / End Events** | `36px × 36px` | `<bpmn:startEvent>`, `<bpmn:endEvent>` |
+| **Horizontal Node Gap** | `40px – 50px` | Balanced compact spacing between sequential shape columns |
+| **Vertical Lane Gap** | `60px – 80px` | Spacing between parallel lane rows |
+| **Dynamic Canvas Width** | `Dynamic` | Scaled dynamically based on node & column count (`X_Min + N_Cols * 110 + (N_Cols - 1) * 45 + Margins`) |
+| **Routing Margin** | `20px` | Clearance between parallel edge lines & shape borders |
 
-- Parse the XML as well-formed XML.
-- Check that every `sequenceFlow` source and target exists.
-- Check that every node declares matching `incoming` and `outgoing` flow IDs.
-- Check that IDs are unique.
-- Check that every lane `flowNodeRef` has a matching DI shape.
-- Check that every DI shape is visually contained in its assigned lane.
-- Check that no node shapes overlap.
-- Check that connector segments do not cross non-source/non-target node shapes.
-- Check that connector segments do not overlap or intersect other connectors unexpectedly.
-- If possible, open the file in a BPMN editor to confirm it renders as intended.
+### B. Grid & Alignment Principles
+1. **Same-Lane Progression:** Sequential nodes within the same swimlane keep moving horizontally to the right along the lane's main center spine (`(X1, Y) ➡️ (X2, Y)`).
+2. **Lane-Change Continuation:**
+   - **Direct Vertical Alignment (0-Turn):** When transitioning across swimlanes (up or down), if the vertical corridor is clear and unblocked, place the target node on the target lane vertically aligned on the exact same `Center-X` column.
+   - **Right-Up / Right-Down Staggering:** If direct vertical placement overlaps any arrow or existing node, stagger the target node to the right (`Right-Up` or `Right-Down`). The sequence flow exits the source node's Right port, steps vertically through an open corridor, and enters the target node's Left port.
+3. **Horizontal Row Alignment & Secondary Rows:** All nodes and gateways on the same line MUST be horizontally aligned (`Center-Y`). If adding a node or gateway on the main line causes an overlap with an existing arrow or node, create a secondary parallel horizontal line (row) within the same swimlane (e.g. `Y = Row1_Center + 90px`).
+4. **Converging Gateway Alignment:** Align converging join gateways on the exact same Y-axis as the diverging split gateway that initiated the path.
+5. **Inline Vertical Decision Stacking:** Place decision splits, rejection tasks, and rejection join gateways in the exact same vertical column (`Center-X`) to produce **0-turn straight vertical lines** (`(X, Y1) ➡️ (X, Y2)`).
+
+---
+
+## 3. Flow Routing, Channel Offsets & Port Distribution
+
+### A. Minimal Competing Anchor Distribution
+- **Minimal Competing Anchors:** Avoid routing multiple incoming or outgoing sequence flows into the exact same pixel anchor port (`Top`, `Bottom`, `Left`, `Right`) on a single shape.
+- **Facing Port Allocation:**
+  - Main Sequence: Enters **Left** port, exits **Right** port.
+  - Loopback / Resubmittal: Enters **Top** or **Bottom** port facing the loop corridor.
+  - Rejection / Exception: Exits **Bottom** or **Top** port facing the rejection corridor.
+
+### B. Collision Avoidance & Dedicated Channel Offsets
+- **Zero Arrow-Node Overlap:** No sequence flow line segment (`<di:waypoint>`) may intersect or strike across the bounding box (`<dc:Bounds>`) of any task, gateway, or event node.
+- **Dedicated Horizontal Channels:** Route horizontal cross-column segments through open, uncontained corridors (e.g. `Y = Lane_Top + 20px` or `Y = Task_Bottom + 40px`).
+- **Dedicated Vertical Channels:** Route vertical cross-row segments through open corridors between task columns (e.g. `X = Task_Right + 25px`).
+- **Strictly Orthogonal Waypoints:** All edge segments must route at right angles (100% horizontal or vertical). Never use diagonal lines.
+- **Label Offset Math:** Position `<bpmndi:BPMNLabel>` bounds at least `15px` above horizontal segments or `15px` offset from vertical segments to prevent line strike-throughs.
+
+---
+
+## 4. Tooling & Automation Checklist
+
+Running `node .github/skills/generate-diagram/scripts/autolayout_bpmn.js <file.bpmn>` automatically enforces and validates layout standards:
+
+- [ ] **XML & Namespace Validity:** Valid `bpmn`, `bpmndi`, `dc`, `di` declarations.
+- [ ] **Lane Containment:** All nodes reside visually within their declared `flowNodeRef` lane bounds (`Pool_di` and `Lane_di` shapes present).
+- [ ] **Gateway Default Attributes:** Every decision gateway split declares a valid `default` attribute.
+- [ ] **Zero Arrow-Node Collisions:** No line segment intersects intermediate task or gateway bounding boxes.
+- [ ] **Zero Anchor Port Competition:** No two flows share the exact same pixel anchor point.
+- [ ] **Zero Label Strike-Throughs:** Text labels sit `15px` clear of line geometry.

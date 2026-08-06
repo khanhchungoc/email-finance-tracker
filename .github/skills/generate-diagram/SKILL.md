@@ -30,7 +30,7 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 - **Target Format:** [ .drawio | .md | .bpmn ]
 - **Diagram Type:** [ Business Process Swimlane | Sequence | System Context | ERD | State Transition ]
-- **Target File Path:** `requirements/output/epics/<epic-slug>/diagrams/diagram-<slug>.<ext>`
+- **Target File Path:** `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/diagrams/diagram-<slug>.<ext>`
 - **Actors / Swimlanes:**
   - Lane 1: <System or Role Name>
   - Lane 2: <System or Role Name>
@@ -73,25 +73,26 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 ---
 
-## Core Tooling (in `./scripts/`)
+## Core Tooling (in `.github/skills/generate-diagram/scripts/`)
 
 | Utility | Script Command | Description |
 |---|---|---|
-| **Graphviz Autolayout** | `python scripts/autolayout.py graph.json -o diagram.drawio` | Auto-arranges complex flows |
-| **Sequence Layout** | `python scripts/seqlayout.py seq.json -o diagram.drawio` | Deterministic sequence diagrams |
-| **System Context (C4)** | `python scripts/c4.py c4.json -o diagram.drawio` | High-level system context diagrams |
-| **Domain ERD Generator** | `python scripts/sqlerd.py schema.sql -o diagram.drawio` | Generates entity relationship diagrams |
-| **API Spec Mapping** | `python scripts/openapiimports.py spec.yaml -o diagram.drawio` | Maps API operations to business schemas |
-| **Shape Finder** | `python scripts/shapesearch.py "<keywords>"` | Searches Draw.io shape library |
-| **Diagram Validator** | `python scripts/validate.py diagram.drawio --score` | Lints XML structure and routing |
-| **PNG Repair** | `python scripts/repair_png.py diagram.drawio.png` | Fixes exported PNG chunk truncation |
+| **BPMN Auto-Layout** | `node .github/skills/generate-diagram/scripts/autolayout_bpmn.js <file.bpmn>` | Single & multi-lane BPMN process auto-layout engine |
+| **Graphviz Autolayout** | `python .github/skills/generate-diagram/scripts/autolayout.py graph.json -o diagram.drawio` | Auto-arranges complex flows |
+| **Sequence Layout** | `python .github/skills/generate-diagram/scripts/seqlayout.py seq.json -o diagram.drawio` | Deterministic sequence diagrams |
+| **System Context (C4)** | `python .github/skills/generate-diagram/scripts/c4.py c4.json -o diagram.drawio` | High-level system context diagrams |
+| **Domain ERD Generator** | `python .github/skills/generate-diagram/scripts/sqlerd.py schema.sql -o diagram.drawio` | Generates entity relationship diagrams |
+| **API Spec Mapping** | `python .github/skills/generate-diagram/scripts/openapiimports.py spec.yaml -o diagram.drawio` | Maps API operations to business schemas |
+| **Shape Finder** | `python .github/skills/generate-diagram/scripts/shapesearch.py "<keywords>"` | Searches Draw.io shape library |
+| **Diagram Validator** | `python .github/skills/generate-diagram/scripts/validate.py diagram.drawio --score` | Lints XML structure and routing |
+| **PNG Repair** | `python .github/skills/generate-diagram/scripts/repair_png.py diagram.drawio.png` | Fixes exported PNG chunk truncation |
 
 ---
 
 ## Format Guides
 
 - **Draw.io (`.drawio`):** follow [references/drawio-guide.md](references/drawio-guide.md) and [references/xml-authoring.md](references/xml-authoring.md) for XML skeleton, shape presets, container containment, orthogonal edge routing, and label rules.
-- **BPMN (`.bpmn`):** follow [references/bpmn-guide.md](references/bpmn-guide.md) for lane containment, gateway semantics, and DI validation.
+- **BPMN (`.bpmn`):** follow [references/bpmn-guide.md](references/bpmn-guide.md) for swimlane layout rules, gateway semantics, DI layout geometry, and manual/rule-based waypoint alignment.
 - **Mermaid (`.md`):** follow [references/mermaid-guide.md](references/mermaid-guide.md) for Markdown-embedded diagrams.
 
 ---
@@ -112,6 +113,10 @@ Before presenting the completed diagram:
 - [ ] Correct file extension used (`.drawio`, `.bpmn`, or `.md`).
 - [ ] Activity labels are concise (`Verb + Noun`) without arbitrary step numbers (`1.`, `2.`).
 - [ ] For Draw.io: `<root>` contains `id="0"` and `id="1"`, edges have `<mxGeometry relative="1" as="geometry" />`, and no raw HTML tags in labels. Run `python scripts/validate.py <file.drawio> --score` if available.
-- [ ] For BPMN: validate sequence flow references and lane containment per `references/bpmn-guide.md`.
+- [ ] For BPMN: Auto-layout and validation are automatically triggered via post-artifact hook (`.github/hooks/post-artifact-workflow.ps1`).
+
 - [ ] For Mermaid: confirm Markdown fenced block without literal `;` characters inside Mermaid code.
 - [ ] In chat, return file path and short summary only.
+
+
+
