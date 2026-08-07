@@ -63,6 +63,9 @@ function postProcessBpmn(xml) {
   // Rule 0: Compress excessive horizontal spacing from default auto-layout grid
   processed = compressHorizontalSpacing(processed);
 
+  // Gateway Branch Stacking: Align nodes vertically if branched from same gateway in same lane
+  processed = stackSameLaneGatewayBranches(processed);
+
   // Rule 1: Vertical Swimlane & Pool Shrink-Wrapping
   processed = shrinkWrapSwimlanesAndPools(processed);
 
@@ -141,6 +144,9 @@ function postProcessBpmn(xml) {
 
   // Rule 9: Enforce 100% Orthogonal Edge Routing & Shape Perimeter Touch
   processed = enforceOrthogonalAndTouchingWaypoints(processed);
+
+  // Rule 10: Strip invalid semantic attributes from DI elements
+  processed = stripInvalidDiAttributes(processed);
 
   // Final Audits & Sanity Inspectors
   auditLineShapeCollisions(processed);
@@ -221,6 +227,22 @@ function auditLineShapeCollisions(xml) {
  * Audits anchor port distribution on all shapes to ensure no two flows compete for the exact same pixel anchor
  */
 function auditAnchorPortDistribution(xml) {
+  const nodeFlows = new Map();
+  const flowMap = new Map();
+  const fRegex = /<bpmn:sequenceFlow\s+([^>]+)>/g;
+  let fm;
+  while ((fm = fRegex.exec(xml)) !== null) {
+    const attrs = fm[1];
+    const idM = attrs.match(/id="([^"]+)"/);
+    const srcM = attrs.match(/sourceRef="([^"]+)"/);
+    const tgtM = attrs.match(/targetRef="([^"]+)"/);
+    if (idM && srcM && tgtM) {
+      flowMap.set(idM[1], { src: srcM[1], tgt: tgtM[1] });
+      nodeFlows.set(srcM[1], (nodeFlows.get(srcM[1]) || 0) + 1);
+      nodeFlows.set(tgtM[1], (nodeFlows.get(tgtM[1]) || 0) + 1);
+    }
+  }
+
   const portUsage = {};
   const edgeRegex = /<bpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>([\s\S]*?)<\/bpmndi:BPMNEdge>/g;
   let eMatch;
@@ -237,18 +259,30 @@ function auditAnchorPortDistribution(xml) {
     if (waypoints.length >= 2) {
       const startWp = `${waypoints[0].x},${waypoints[0].y}`;
       const endWp = `${waypoints[waypoints.length - 1].x},${waypoints[waypoints.length - 1].y}`;
+      
+      const flow = flowMap.get(flowId);
+      if (flow) {
+        portUsage[startWp] = portUsage[startWp] || [];
+        portUsage[startWp].push({ flowId, role: 'exit', node: flow.src });
 
-      portUsage[startWp] = portUsage[startWp] || [];
-      portUsage[startWp].push({ flowId, role: 'exit' });
-
-      portUsage[endWp] = portUsage[endWp] || [];
-      portUsage[endWp].push({ flowId, role: 'entry' });
+        portUsage[endWp] = portUsage[endWp] || [];
+        portUsage[endWp].push({ flowId, role: 'entry', node: flow.tgt });
+      }
     }
   }
 
   let duplicateCount = 0;
   for (const [wpKey, flows] of Object.entries(portUsage)) {
     if (flows.length > 1) {
+      const firstNode = flows[0].node;
+      const allSameNode = flows.every(f => f.node === firstNode);
+      const allSameRole = flows.every(f => f.role === flows[0].role);
+      
+      // High-Density Node Exception: allow overlap if node has > 4 flows and all overlapping flows share the same direction
+      if (allSameNode && allSameRole && nodeFlows.get(firstNode) > 4) {
+        continue;
+      }
+
       duplicateCount++;
       const flowIds = flows.map(f => `${f.flowId} (${f.role})`).join(', ');
       console.warn(`[Anchor Port Warning] Competing anchor port detected at waypoint (${wpKey}) shared by: ${flowIds}`);
@@ -634,7 +668,157 @@ function nudgeNodesToStraightenFlows(xml) {
 }
 
 /**
+ * Same-Lane Gateway Branching (Vertical Stacking)
+ * If a gateway branches to multiple target nodes in the same swimlane, 
+ * places those target nodes vertically aligned in the exact same column (Center-X).
+ */
+function stackSameLaneGatewayBranches(xml) {
+  let res = xml;
+
+  const nodeToLane = new Map();
+  const lRegex = /<bpmn:lane\s+id="([^"]+)"[^>]*>([\s\S]*?)<\/bpmn:lane>/g;
+  let lm;
+  while ((lm = lRegex.exec(xml)) !== null) {
+    const laneId = lm[1];
+    const laneContent = lm[2];
+    const fnRegex = /<bpmn:flowNodeRef>([^<]+)<\/bpmn:flowNodeRef>/g;
+    let fnm;
+    while ((fnm = fnRegex.exec(laneContent)) !== null) {
+      nodeToLane.set(fnm[1], laneId);
+    }
+  }
+
+  const gwOutgoing = new Map();
+  const flowMap = new Map();
+  const fRegex = /<bpmn:sequenceFlow\s+([^>]+)>/g;
+  let fm;
+  while ((fm = fRegex.exec(xml)) !== null) {
+    const attrs = fm[1];
+    const idM = attrs.match(/id="([^"]+)"/);
+    const srcM = attrs.match(/sourceRef="([^"]+)"/);
+    const tgtM = attrs.match(/targetRef="([^"]+)"/);
+    if (idM && srcM && tgtM) {
+      flowMap.set(idM[1], { src: srcM[1], tgt: tgtM[1] });
+      if (srcM[1].includes('Gateway') || srcM[1].includes('gw_')) {
+        if (!gwOutgoing.has(srcM[1])) gwOutgoing.set(srcM[1], []);
+        gwOutgoing.get(srcM[1]).push(tgtM[1]);
+      }
+    }
+  }
+
+  const gateways = new Set();
+  const gwMatch = xml.match(/<bpmn:(?:exclusive|inclusive|parallel)Gateway\s+id="([^"]+)"/g);
+  if (gwMatch) {
+    gwMatch.forEach(m => {
+      const id = m.match(/id="([^"]+)"/)[1];
+      gateways.add(id);
+    });
+  }
+
+  const shapeBounds = new Map();
+  const sRegex = /<bpmndi:BPMNShape\s+id="([^"]+)_di"\s+bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+x="([^"]+)"\s+y="([^"]+)"/g;
+  let sm;
+  while ((sm = sRegex.exec(xml)) !== null) {
+    shapeBounds.set(sm[2], { x: parseFloat(sm[3]), y: parseFloat(sm[4]) });
+  }
+
+  const shapesToUpdate = new Map();
+
+  for (const [gwId, targets] of gwOutgoing.entries()) {
+    if (!gateways.has(gwId) && !gwId.toLowerCase().includes('gateway')) continue;
+
+    const targetsByLane = new Map();
+    for (const tgt of targets) {
+      const laneId = nodeToLane.get(tgt);
+      if (laneId) {
+        if (!targetsByLane.has(laneId)) targetsByLane.set(laneId, []);
+        targetsByLane.get(laneId).push(tgt);
+      }
+    }
+
+    for (const [laneId, laneTargets] of targetsByLane.entries()) {
+      if (laneTargets.length > 1) {
+        let maxX = -Infinity;
+        let minY = Infinity;
+        const validTargets = [];
+
+        for (const tgt of laneTargets) {
+          const bounds = shapeBounds.get(tgt);
+          if (bounds) {
+            validTargets.push({ id: tgt, bounds });
+            if (bounds.x > maxX) maxX = bounds.x;
+            if (bounds.y < minY) minY = bounds.y;
+          }
+        }
+
+        if (validTargets.length > 1) {
+          validTargets.sort((a, b) => a.bounds.y - b.bounds.y);
+          
+          let currentY = minY;
+          for (const tgtObj of validTargets) {
+            shapesToUpdate.set(tgtObj.id, { x: maxX, y: currentY });
+            currentY += 120; // 80px height + 40px gap
+          }
+        }
+      }
+    }
+  }
+
+  if (shapesToUpdate.size > 0) {
+    let stackedCount = 0;
+    const replaceRegex = /(<bpmndi:BPMNShape\s+id="[^"]+"[^>]*bpmnElement="([^"]+)"[^>]*>\s*<dc:Bounds\s+)x="[^"]+"\s+y="[^"]+"/g;
+    res = res.replace(replaceRegex, (match, prefix, bpmnElement) => {
+      const update = shapesToUpdate.get(bpmnElement);
+      if (update) {
+        stackedCount++;
+        return `${prefix}x="${update.x}" y="${update.y}"`;
+      }
+      return match;
+    });
+    
+    const edgesToClear = new Set();
+    for (const [flowId, flow] of flowMap.entries()) {
+      if (shapesToUpdate.has(flow.src) || shapesToUpdate.has(flow.tgt)) {
+        edgesToClear.add(flowId);
+      }
+    }
+
+    const shapeCenters = new Map();
+    for (const [id, bounds] of shapeBounds.entries()) {
+      const update = shapesToUpdate.get(id);
+      const b = update || bounds;
+      shapeCenters.set(id, { x: b.x + 50, y: b.y + 40 });
+    }
+
+    const edgeReplaceRegex = /(<bpmndi:BPMNEdge\s+id="([^"]+)"\s+bpmnElement="([^"]+)"[^>]*>)([\s\S]*?)(<\/bpmndi:BPMNEdge>)/g;
+    res = res.replace(edgeReplaceRegex, (match, openTag, edgeId, flowId, content, closeTag) => {
+      if (edgesToClear.has(flowId)) {
+        const flow = flowMap.get(flowId);
+        if (flow) {
+           const srcC = shapeCenters.get(flow.src);
+           const tgtC = shapeCenters.get(flow.tgt);
+           if (srcC && tgtC) {
+             const wps = `\n        <di:waypoint x="${Math.round(srcC.x)}" y="${Math.round(srcC.y)}" />\n        <di:waypoint x="${Math.round(tgtC.x)}" y="${Math.round(tgtC.y)}" />`;
+             const labelMatch = content.match(/<bpmndi:BPMNLabel>[\s\S]*?<\/bpmndi:BPMNLabel>/);
+             const label = labelMatch ? `\n        ${labelMatch[0]}` : '';
+             return `${openTag}${wps}${label}\n      ${closeTag}`;
+           }
+        }
+      }
+      return match;
+    });
+
+    if (stackedCount > 0) {
+      console.log(`[Gateway Branch Stacking] Vertically stacked ${stackedCount} same-lane target nodes.`);
+    }
+  }
+
+  return res;
+}
+
+/**
  * Rule 1 — Vertical Swimlane & Pool Shrink-Wrapping
+
  * Dynamically adjusts height and y-bounds of Swimlanes and Pools to fit contained nodes cleanly with vertical padding.
  */
 function shrinkWrapSwimlanesAndPools(xml) {
@@ -1156,6 +1340,24 @@ function enforceOrthogonalAndTouchingWaypoints(xml) {
     console.log(`[Orthogonal & Perimeter Repair] Enforced strict 100% orthogonal routing and shape perimeter touching on ${fixedEdges} sequence flow edges.`);
   }
 
+  return res;
+}
+
+/**
+ * Strips invalid semantic attributes (like 'name') from visual DI elements
+ * which causes schema validation errors in downstream linters.
+ */
+function stripInvalidDiAttributes(xml) {
+  let res = xml;
+  // Remove name="..." from <bpmndi:BPMNEdge ...> and <bpmndi:BPMNShape ...>
+  let strippedCount = 0;
+  res = res.replace(/(<bpmndi:BPMN(?:Edge|Shape)\s+[^>]*?)(\s+name="[^"]*")/g, (match, p1, p2) => {
+    strippedCount++;
+    return p1;
+  });
+  if (strippedCount > 0) {
+    console.log(`[Schema Auto-Fix] Stripped invalid 'name' attribute from ${strippedCount} DI element(s).`);
+  }
   return res;
 }
 

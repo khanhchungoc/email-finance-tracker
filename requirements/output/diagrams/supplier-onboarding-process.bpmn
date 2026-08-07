@@ -198,7 +198,7 @@
         <dc:Bounds x="1015" y="250" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_SendCertCorrectionReq_di" bpmnElement="Task_SendCertCorrectionReq" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
-        <dc:Bounds x="1785" y="235" width="110" height="80" />
+        <dc:Bounds x="1945" y="235" width="110" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_ActivateSupplier_di" bpmnElement="Task_ActivateSupplier" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
         <dc:Bounds x="2425" y="235" width="110" height="80" />
@@ -268,12 +268,12 @@
         <di:waypoint x="455" y="275" />
         <di:waypoint x="535" y="275" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_4_di" name="No - incomplete" bpmnElement="Flow_4">
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
         <di:waypoint x="560" y="300" />
         <di:waypoint x="560" y="565" />
         <di:waypoint x="665" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_5_di" name="Yes - complete" bpmnElement="Flow_5">
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
         <di:waypoint x="585" y="275" />
         <di:waypoint x="1015" y="275" />
       </bpmndi:BPMNEdge>
@@ -288,10 +288,11 @@
         <di:waypoint x="1040" y="145" />
         <di:waypoint x="1040" y="250" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_T1_di" name="Timeout" bpmnElement="Flow_T1">
+      <bpmndi:BPMNEdge id="Flow_T1_di" bpmnElement="Flow_T1">
         <di:waypoint x="933" y="203" />
-        <di:waypoint x="933" y="445" />
-        <di:waypoint x="1655" y="445" />
+        <di:waypoint x="933" y="390" />
+        <di:waypoint x="1680" y="390" />
+        <di:waypoint x="1680" y="410" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
         <di:waypoint x="1065" y="275" />
@@ -303,57 +304,58 @@
         <di:waypoint x="1255" y="565" />
         <di:waypoint x="1335" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_10_di" name="No - non compliant" bpmnElement="Flow_10">
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
         <di:waypoint x="1360" y="590" />
         <di:waypoint x="1360" y="685" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_11_di" name="Yes - compliant" bpmnElement="Flow_11">
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
         <di:waypoint x="1385" y="565" />
         <di:waypoint x="1465" y="565" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
         <di:waypoint x="1415" y="725" />
         <di:waypoint x="1440" y="725" />
-        <di:waypoint x="1440" y="425" />
-        <di:waypoint x="1655" y="425" />
+        <di:waypoint x="1440" y="435" />
         <di:waypoint x="1655" y="435" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
         <di:waypoint x="1575" y="565" />
         <di:waypoint x="1655" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_14_di" name="Rejected" bpmnElement="Flow_14">
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
         <di:waypoint x="1680" y="540" />
         <di:waypoint x="1680" y="460" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15_di" name="No - correction needed" bpmnElement="Flow_15">
-        <di:waypoint x="1705" y="575" />
-        <di:waypoint x="1840" y="575" />
-        <di:waypoint x="1840" y="315" />
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="1680" y="590" />
+        <di:waypoint x="1680" y="610" />
+        <di:waypoint x="1920" y="610" />
+        <di:waypoint x="1920" y="275" />
+        <di:waypoint x="1945" y="275" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1770" y="590" width="130" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16_di" name="Yes - valid" bpmnElement="Flow_16">
-        <di:waypoint x="1705" y="555" />
-        <di:waypoint x="1750" y="555" />
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
+        <di:waypoint x="1705" y="565" />
+        <di:waypoint x="1750" y="565" />
         <di:waypoint x="1750" y="515" />
         <di:waypoint x="2160" y="515" />
         <di:waypoint x="2160" y="540" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17">
-        <di:waypoint x="1895" y="275" />
-        <di:waypoint x="1920" y="275" />
-        <di:waypoint x="1920" y="565" />
-        <di:waypoint x="1945" y="565" />
+        <di:waypoint x="2000" y="315" />
+        <di:waypoint x="2000" y="525" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_18_di" bpmnElement="Flow_18">
         <di:waypoint x="2055" y="565" />
         <di:waypoint x="2135" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_T2_di" name="Timeout" bpmnElement="Flow_T2">
+      <bpmndi:BPMNEdge id="Flow_T2_di" bpmnElement="Flow_T2">
         <di:waypoint x="2053" y="623" />
-        <di:waypoint x="2053" y="750" />
-        <di:waypoint x="1720" y="750" />
-        <di:waypoint x="1720" y="420" />
-        <di:waypoint x="1705" y="420" />
+        <di:waypoint x="2053" y="790" />
+        <di:waypoint x="1680" y="790" />
+        <di:waypoint x="1680" y="460" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_19_di" bpmnElement="Flow_19">
         <di:waypoint x="2185" y="565" />

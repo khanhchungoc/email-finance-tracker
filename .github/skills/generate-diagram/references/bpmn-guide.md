@@ -37,8 +37,9 @@ Use this reference guide when creating, reviewing, or revising `.bpmn` files wit
 3. **Minimal Competing Anchors:** Avoid routing multiple incoming or outgoing sequence flows into the exact same pixel anchor port (`Top`, `Bottom`, `Left`, `Right`) on a single shape.
 4. **Horizontal Row Alignment & Secondary Rows:** All nodes and gateways on the same line MUST be horizontally aligned (`Center-Y`). If adding a node or gateway on the main line causes an overlap with an existing arrow or node, create a secondary parallel horizontal line (row) within the same swimlane (e.g. `Y = Row1_Center + 90px`).
 5. **Multi-Row Swimlane Height Expansion:** If a swimlane contains **2 or more nodes aligned vertically** (e.g. main path + secondary row / rejection task), the swimlane height MUST be expanded dynamically (`Height >= Num_Rows × 80px + (Num_Rows - 1) × 40px + 60px`) to prevent vertical crowding.
-6. **Converging Gateway Alignment:** Align converging join gateways on the exact same Y-axis as the diverging split gateway that initiated the path.
-7. **Inline Vertical Decision Stacking & Cross-Lane Alignment:** Place decision splits, rejection tasks, or cross-lane transition targets in the exact same vertical column (`Center-X`) to produce **0-turn straight vertical lines** (`(X, Y1) ➡️ (X, Y2)`).
+6. **Same-Lane Gateway Branching (Vertical Stacking):** If a gateway branches to multiple target nodes that all reside within the **same swimlane**, place those target nodes vertically aligned in the exact same column (`Center-X`). Expand the swimlane's height accordingly to accommodate the stacked nodes.
+7. **Converging Gateway Alignment:** Align converging join gateways on the exact same Y-axis as the diverging split gateway that initiated the path.
+8. **Inline Vertical Decision Stacking & Cross-Lane Alignment:** Place decision splits, rejection tasks, or cross-lane transition targets in the exact same vertical column (`Center-X`) to produce **0-turn straight vertical lines** (`(X, Y1) ➡️ (X, Y2)`).
 8. **Node Nudge-to-Align:** If a node can be shifted vertically by ≤ **35 px** to make a connecting flow straight (reducing it from 3+ waypoints → 2 waypoints, 0 turns), **move the node** and collapse the flow to a straight horizontal line. Apply in this order:
    - Check whether shifting the **target** node by `Δy = sourceCenterY − targetCenterY` would overlap any sibling node in the same column (x-range within 2× node width).
    - If no overlap: move the node, straighten the triggering edge, and adjust all other edges anchored to that node accordingly.
@@ -54,6 +55,7 @@ Use this reference guide when creating, reviewing, or revising `.bpmn` files wit
 
 ### A. Minimal Competing Anchor Distribution
 - **Minimal Competing Anchors:** Avoid routing multiple incoming or outgoing sequence flows into the exact same pixel anchor port (`Top`, `Bottom`, `Left`, `Right`) on a single shape.
+- **Gateway Anchor Exception:** NEVER shift anchor points off-center on Gateway (diamond) shapes. Unlike rectangular tasks, shifting arrows off-center on a diamond causes them to visually detach from the tips and float in the air. For gateways, ALWAYS snap arrows to the exact center of the top, bottom, left, or right port. If a gateway port is crowded, actively route some flows to the unused empty ports rather than shifting the anchors.
 - **Facing Port Allocation:**
   - Main Sequence (forward): Enters **Left** port, exits **Right** port.
   - Loopback / Resubmittal (leftward): Use the port that produces the **fewest turns and least overlap** — not always the Right port. Prefer `Top` or `Bottom` exit when the target is to the left and a clear above/below channel is available.
