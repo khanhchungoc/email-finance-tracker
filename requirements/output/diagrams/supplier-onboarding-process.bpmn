@@ -1,383 +1,385 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:bioc="http://bpmn.io/schema/bpmn/bioc/1.0"
-                  xmlns:color="http://www.omg.org/spec/BPMN/20100524/DI/color"
-                  id="Definitions_SupplierOnboarding"
-                  targetNamespace="http://bpmn.io/schema/bpmn">
+<bpmn:definitions xmlns:bioc="http://bpmn.io/schema/bpmn/bioc/1.0" xmlns:color="http://www.omg.org/spec/BPMN/20100524/DI/color" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_SupplierOnboarding" targetNamespace="http://bpmn.io/schema/bpmn">
   <bpmn:collaboration id="Collaboration_SupplierOnboarding">
-    <bpmn:participant id="Participant_ProcurementSystem" name="Supplier Onboarding Process" processRef="Process_SupplierOnboarding" />
+    <bpmn:participant id="Participant_SupplierOnboarding" name="Supplier Onboarding" processRef="Process_SupplierOnboarding" />
   </bpmn:collaboration>
-
   <bpmn:process id="Process_SupplierOnboarding" name="Supplier Onboarding" isExecutable="false">
-    <bpmn:laneSet id="LaneSet_ProcurementSystem">
+    <bpmn:laneSet id="LaneSet_SupplierOnboarding">
       <bpmn:lane id="Lane_ProcurementManager" name="Procurement Manager">
-        <bpmn:flowNodeRef>StartEvent_OnboardingInitiated</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_SubmitRequest</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_ReceiveUpdatedDetails</bpmn:flowNodeRef>
-      </bpmn:lane>
-      <bpmn:lane id="Lane_ComplianceUser" name="Compliance User">
-        <bpmn:flowNodeRef>UserTask_SendMissingInfoRequest</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ExclusiveGateway_AppCompleteMerge</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_PerformComplianceReview</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ExclusiveGateway_ComplianceMet</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_RejectSupplier</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_VerifyCertificates</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ExclusiveGateway_CertificatesValid</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_ReceiveCorrectedCertificates</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ExclusiveGateway_CertificatesValidMerge</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>UserTask_ApproveOnboarding</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_Initiate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SubmitRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReceiveUpdatedDetails</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_System" name="System">
-        <bpmn:flowNodeRef>ServiceTask_ValidateData</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ExclusiveGateway_AppComplete</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_SendCorrectionRequest</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_SendRejectionNotification</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>EndEvent_SupplierRejected</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_ActivateMasterData</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_SendApprovalNotification</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>EndEvent_SupplierOnboarded</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ValidateData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_AppComplete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_AppCompleteMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendCertCorrectionReq</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_RejectionMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendRejectionNotif</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Rejected</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ActivateSupplier</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendApprovalNotif</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_Onboarded</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_ComplianceUser" name="Compliance User">
+        <bpmn:flowNodeRef>Task_SendMissingInfoReq</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PerformComplianceReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_ComplianceCriteria</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RejectSupplier</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_VerifyCertificates</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_CertValid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReceiveCorrectedCerts</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_CertValidMerge</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ApproveSupplier</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
-
-    <!-- Start Event -->
-    <bpmn:startEvent id="StartEvent_OnboardingInitiated" name="Supplier onboarding request initiated">
-      <bpmn:outgoing>Flow_StartToSubmit</bpmn:outgoing>
+    <bpmn:startEvent id="StartEvent_Initiate" name="Supplier onboarding request initiated">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
     </bpmn:startEvent>
-
-    <!-- Procurement Manager Tasks -->
-    <bpmn:userTask id="UserTask_SubmitRequest" name="Submit supplier onboarding request">
-      <bpmn:incoming>Flow_StartToSubmit</bpmn:incoming>
-      <bpmn:outgoing>Flow_SubmitToValidate</bpmn:outgoing>
+    <bpmn:userTask id="Task_SubmitRequest" name="Submit supplier onboarding request">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
     </bpmn:userTask>
-
-    <bpmn:userTask id="UserTask_ReceiveUpdatedDetails" name="Receive updated onboarding details">
-      <bpmn:incoming>Flow_SendMissingToReceiveUpdated</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveUpdatedToMerge</bpmn:outgoing>
-    </bpmn:userTask>
-
-    <!-- System Tasks & Gateways -->
-    <bpmn:serviceTask id="ServiceTask_ValidateData" name="Validate mandatory onboarding data">
-      <bpmn:incoming>Flow_SubmitToValidate</bpmn:incoming>
-      <bpmn:outgoing>Flow_ValidateToAppCompleteGw</bpmn:outgoing>
+    <bpmn:serviceTask id="Task_ValidateData" name="Validate mandatory onboarding data">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
     </bpmn:serviceTask>
-
-    <bpmn:exclusiveGateway id="ExclusiveGateway_AppComplete" name="Application complete?" default="Flow_AppComplete_Yes">
-      <bpmn:incoming>Flow_ValidateToAppCompleteGw</bpmn:incoming>
-      <bpmn:outgoing>Flow_AppComplete_Yes</bpmn:outgoing>
-      <bpmn:outgoing>Flow_AppComplete_No</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_AppComplete" name="Application complete?" default="Flow_5">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-
-    <!-- Compliance User Tasks & Gateways -->
-    <bpmn:userTask id="UserTask_SendMissingInfoRequest" name="Send missing information request">
-      <bpmn:incoming>Flow_AppComplete_No</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendMissingToReceiveUpdated</bpmn:outgoing>
-    </bpmn:userTask>
-
-    <bpmn:exclusiveGateway id="ExclusiveGateway_AppCompleteMerge" name="Application complete merge">
-      <bpmn:incoming>Flow_AppComplete_Yes</bpmn:incoming>
-      <bpmn:incoming>Flow_ReceiveUpdatedToMerge</bpmn:incoming>
-      <bpmn:outgoing>Flow_MergeToComplianceReview</bpmn:outgoing>
+    <bpmn:sendTask id="Task_SendMissingInfoReq" name="Send missing information request">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="Task_ReceiveUpdatedDetails" name="Receive updated onboarding details">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:boundaryEvent id="Boundary_MissingInfoTimeout" name="No response received in time" attachedToRef="Task_ReceiveUpdatedDetails">
+      <bpmn:outgoing>Flow_T1</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1" />
+    </bpmn:boundaryEvent>
+    <bpmn:exclusiveGateway id="Gateway_AppCompleteMerge" name="Application complete merge">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-
-    <bpmn:userTask id="UserTask_PerformComplianceReview" name="Perform compliance review">
-      <bpmn:incoming>Flow_MergeToComplianceReview</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReviewToComplianceGw</bpmn:outgoing>
+    <bpmn:userTask id="Task_PerformComplianceReview" name="Perform compliance review">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
     </bpmn:userTask>
-
-    <bpmn:exclusiveGateway id="ExclusiveGateway_ComplianceMet" name="Compliance criteria met?" default="Flow_Compliance_Yes">
-      <bpmn:incoming>Flow_ReviewToComplianceGw</bpmn:incoming>
-      <bpmn:outgoing>Flow_Compliance_Yes</bpmn:outgoing>
-      <bpmn:outgoing>Flow_Compliance_No</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_ComplianceCriteria" name="Compliance criteria met?" default="Flow_11">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-
-    <bpmn:userTask id="UserTask_RejectSupplier" name="Reject supplier onboarding">
-      <bpmn:incoming>Flow_Compliance_No</bpmn:incoming>
-      <bpmn:outgoing>Flow_RejectSupplierToNotification</bpmn:outgoing>
+    <bpmn:userTask id="Task_RejectSupplier" name="Reject supplier onboarding">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
     </bpmn:userTask>
-
-    <bpmn:userTask id="UserTask_VerifyCertificates" name="Verify supplier certificates">
-      <bpmn:incoming>Flow_Compliance_Yes</bpmn:incoming>
-      <bpmn:outgoing>Flow_VerifyToCertificatesGw</bpmn:outgoing>
+    <bpmn:userTask id="Task_VerifyCertificates" name="Verify supplier certificates">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
     </bpmn:userTask>
-
-    <bpmn:exclusiveGateway id="ExclusiveGateway_CertificatesValid" name="Certificates valid?" default="Flow_Certificates_Yes">
-      <bpmn:incoming>Flow_VerifyToCertificatesGw</bpmn:incoming>
-      <bpmn:outgoing>Flow_Certificates_Yes</bpmn:outgoing>
-      <bpmn:outgoing>Flow_Certificates_Correction</bpmn:outgoing>
-      <bpmn:outgoing>Flow_Certificates_Rejected</bpmn:outgoing>
+    <bpmn:exclusiveGateway id="Gateway_CertValid" name="Certificates valid?" default="Flow_16">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-
-    <bpmn:serviceTask id="ServiceTask_SendCorrectionRequest" name="Send certificate correction request">
-      <bpmn:incoming>Flow_Certificates_Correction</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendCorrectionToReceiveCorrected</bpmn:outgoing>
-    </bpmn:serviceTask>
-
-    <bpmn:userTask id="UserTask_ReceiveCorrectedCertificates" name="Receive corrected certificates">
-      <bpmn:incoming>Flow_SendCorrectionToReceiveCorrected</bpmn:incoming>
-      <bpmn:outgoing>Flow_ReceiveCorrectedToCertMerge</bpmn:outgoing>
-    </bpmn:userTask>
-
-    <bpmn:exclusiveGateway id="ExclusiveGateway_CertificatesValidMerge" name="Certificates valid merge">
-      <bpmn:incoming>Flow_Certificates_Yes</bpmn:incoming>
-      <bpmn:incoming>Flow_ReceiveCorrectedToCertMerge</bpmn:incoming>
-      <bpmn:outgoing>Flow_CertMergeToApprove</bpmn:outgoing>
+    <bpmn:sendTask id="Task_SendCertCorrectionReq" name="Send certificate correction request">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_17</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="Task_ReceiveCorrectedCerts" name="Receive corrected certificates">
+      <bpmn:incoming>Flow_17</bpmn:incoming>
+      <bpmn:outgoing>Flow_18</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:boundaryEvent id="Boundary_CertCorrectionTimeout" name="No response received in time" attachedToRef="Task_ReceiveCorrectedCerts">
+      <bpmn:outgoing>Flow_T2</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_2" />
+    </bpmn:boundaryEvent>
+    <bpmn:exclusiveGateway id="Gateway_CertValidMerge" name="Certificates valid merge">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+      <bpmn:incoming>Flow_18</bpmn:incoming>
+      <bpmn:outgoing>Flow_19</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-
-    <bpmn:userTask id="UserTask_ApproveOnboarding" name="Approve supplier onboarding">
-      <bpmn:incoming>Flow_CertMergeToApprove</bpmn:incoming>
-      <bpmn:outgoing>Flow_ApproveToActivate</bpmn:outgoing>
-    </bpmn:userTask>
-
-    <bpmn:serviceTask id="ServiceTask_SendRejectionNotification" name="Send rejection notification">
-      <bpmn:incoming>Flow_RejectSupplierToNotification</bpmn:incoming>
-      <bpmn:incoming>Flow_Certificates_Rejected</bpmn:incoming>
-      <bpmn:outgoing>Flow_SendRejectionToRejectedEnd</bpmn:outgoing>
-    </bpmn:serviceTask>
-
-    <bpmn:endEvent id="EndEvent_SupplierRejected" name="Supplier rejected">
-      <bpmn:incoming>Flow_SendRejectionToRejectedEnd</bpmn:incoming>
+    <bpmn:exclusiveGateway id="Gateway_RejectionMerge" name="Rejection merge">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:incoming>Flow_T1</bpmn:incoming>
+      <bpmn:incoming>Flow_T2</bpmn:incoming>
+      <bpmn:outgoing>Flow_20</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sendTask id="Task_SendRejectionNotif" name="Send rejection notification">
+      <bpmn:incoming>Flow_20</bpmn:incoming>
+      <bpmn:outgoing>Flow_21</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_Rejected" name="Supplier rejected">
+      <bpmn:incoming>Flow_21</bpmn:incoming>
     </bpmn:endEvent>
-
-    <bpmn:serviceTask id="ServiceTask_ActivateMasterData" name="Activate supplier in master data">
-      <bpmn:incoming>Flow_ApproveToActivate</bpmn:incoming>
-      <bpmn:outgoing>Flow_ActivateToApprovalNotif</bpmn:outgoing>
+    <bpmn:userTask id="Task_ApproveSupplier" name="Approve supplier onboarding">
+      <bpmn:incoming>Flow_19</bpmn:incoming>
+      <bpmn:outgoing>Flow_22</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_ActivateSupplier" name="Activate supplier in master data">
+      <bpmn:incoming>Flow_22</bpmn:incoming>
+      <bpmn:outgoing>Flow_23</bpmn:outgoing>
     </bpmn:serviceTask>
-
-    <bpmn:serviceTask id="ServiceTask_SendApprovalNotification" name="Send approval notification">
-      <bpmn:incoming>Flow_ActivateToApprovalNotif</bpmn:incoming>
-      <bpmn:outgoing>Flow_ApprovalNotifToOnboardedEnd</bpmn:outgoing>
-    </bpmn:serviceTask>
-
-    <bpmn:endEvent id="EndEvent_SupplierOnboarded" name="Supplier onboarded">
-      <bpmn:incoming>Flow_ApprovalNotifToOnboardedEnd</bpmn:incoming>
+    <bpmn:sendTask id="Task_SendApprovalNotif" name="Send approval notification">
+      <bpmn:incoming>Flow_23</bpmn:incoming>
+      <bpmn:outgoing>Flow_24</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_Onboarded" name="Supplier onboarded">
+      <bpmn:incoming>Flow_24</bpmn:incoming>
     </bpmn:endEvent>
-
-    <!-- Sequence Flows -->
-    <bpmn:sequenceFlow id="Flow_StartToSubmit" sourceRef="StartEvent_OnboardingInitiated" targetRef="UserTask_SubmitRequest" />
-    <bpmn:sequenceFlow id="Flow_SubmitToValidate" sourceRef="UserTask_SubmitRequest" targetRef="ServiceTask_ValidateData" />
-    <bpmn:sequenceFlow id="Flow_ValidateToAppCompleteGw" sourceRef="ServiceTask_ValidateData" targetRef="ExclusiveGateway_AppComplete" />
-    <bpmn:sequenceFlow id="Flow_AppComplete_Yes" name="Yes - complete" sourceRef="ExclusiveGateway_AppComplete" targetRef="ExclusiveGateway_AppCompleteMerge" />
-    <bpmn:sequenceFlow id="Flow_AppComplete_No" name="No - incomplete" sourceRef="ExclusiveGateway_AppComplete" targetRef="UserTask_SendMissingInfoRequest" />
-    <bpmn:sequenceFlow id="Flow_SendMissingToReceiveUpdated" sourceRef="UserTask_SendMissingInfoRequest" targetRef="UserTask_ReceiveUpdatedDetails" />
-    <bpmn:sequenceFlow id="Flow_ReceiveUpdatedToMerge" sourceRef="UserTask_ReceiveUpdatedDetails" targetRef="ExclusiveGateway_AppCompleteMerge" />
-    <bpmn:sequenceFlow id="Flow_MergeToComplianceReview" sourceRef="ExclusiveGateway_AppCompleteMerge" targetRef="UserTask_PerformComplianceReview" />
-    <bpmn:sequenceFlow id="Flow_ReviewToComplianceGw" sourceRef="UserTask_PerformComplianceReview" targetRef="ExclusiveGateway_ComplianceMet" />
-    <bpmn:sequenceFlow id="Flow_Compliance_Yes" name="Yes - compliant" sourceRef="ExclusiveGateway_ComplianceMet" targetRef="UserTask_VerifyCertificates" />
-    <bpmn:sequenceFlow id="Flow_Compliance_No" name="No - non compliant" sourceRef="ExclusiveGateway_ComplianceMet" targetRef="UserTask_RejectSupplier" />
-    <bpmn:sequenceFlow id="Flow_RejectSupplierToNotification" sourceRef="UserTask_RejectSupplier" targetRef="ServiceTask_SendRejectionNotification" />
-    <bpmn:sequenceFlow id="Flow_VerifyToCertificatesGw" sourceRef="UserTask_VerifyCertificates" targetRef="ExclusiveGateway_CertificatesValid" />
-    <bpmn:sequenceFlow id="Flow_Certificates_Yes" name="Yes - valid" sourceRef="ExclusiveGateway_CertificatesValid" targetRef="ExclusiveGateway_CertificatesValidMerge" />
-    <bpmn:sequenceFlow id="Flow_Certificates_Correction" name="No - correction needed" sourceRef="ExclusiveGateway_CertificatesValid" targetRef="ServiceTask_SendCorrectionRequest" />
-    <bpmn:sequenceFlow id="Flow_Certificates_Rejected" name="Rejected" sourceRef="ExclusiveGateway_CertificatesValid" targetRef="ServiceTask_SendRejectionNotification" />
-    <bpmn:sequenceFlow id="Flow_SendCorrectionToReceiveCorrected" sourceRef="ServiceTask_SendCorrectionRequest" targetRef="UserTask_ReceiveCorrectedCertificates" />
-    <bpmn:sequenceFlow id="Flow_ReceiveCorrectedToCertMerge" sourceRef="UserTask_ReceiveCorrectedCertificates" targetRef="ExclusiveGateway_CertificatesValidMerge" />
-    <bpmn:sequenceFlow id="Flow_SendRejectionToRejectedEnd" sourceRef="ServiceTask_SendRejectionNotification" targetRef="EndEvent_SupplierRejected" />
-    <bpmn:sequenceFlow id="Flow_CertMergeToApprove" sourceRef="ExclusiveGateway_CertificatesValidMerge" targetRef="UserTask_ApproveOnboarding" />
-    <bpmn:sequenceFlow id="Flow_ApproveToActivate" sourceRef="UserTask_ApproveOnboarding" targetRef="ServiceTask_ActivateMasterData" />
-    <bpmn:sequenceFlow id="Flow_ActivateToApprovalNotif" sourceRef="ServiceTask_ActivateMasterData" targetRef="ServiceTask_SendApprovalNotification" />
-    <bpmn:sequenceFlow id="Flow_ApprovalNotifToOnboardedEnd" sourceRef="ServiceTask_SendApprovalNotification" targetRef="EndEvent_SupplierOnboarded" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_Initiate" targetRef="Task_SubmitRequest" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_SubmitRequest" targetRef="Task_ValidateData" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_ValidateData" targetRef="Gateway_AppComplete" />
+    <bpmn:sequenceFlow id="Flow_4" name="No - incomplete" sourceRef="Gateway_AppComplete" targetRef="Task_SendMissingInfoReq" />
+    <bpmn:sequenceFlow id="Flow_5" name="Yes - complete" sourceRef="Gateway_AppComplete" targetRef="Gateway_AppCompleteMerge" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_SendMissingInfoReq" targetRef="Task_ReceiveUpdatedDetails" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_ReceiveUpdatedDetails" targetRef="Gateway_AppCompleteMerge" />
+    <bpmn:sequenceFlow id="Flow_T1" name="Timeout" sourceRef="Boundary_MissingInfoTimeout" targetRef="Gateway_RejectionMerge" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_AppCompleteMerge" targetRef="Task_PerformComplianceReview" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_PerformComplianceReview" targetRef="Gateway_ComplianceCriteria" />
+    <bpmn:sequenceFlow id="Flow_10" name="No - non compliant" sourceRef="Gateway_ComplianceCriteria" targetRef="Task_RejectSupplier" />
+    <bpmn:sequenceFlow id="Flow_11" name="Yes - compliant" sourceRef="Gateway_ComplianceCriteria" targetRef="Task_VerifyCertificates" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_RejectSupplier" targetRef="Gateway_RejectionMerge" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Task_VerifyCertificates" targetRef="Gateway_CertValid" />
+    <bpmn:sequenceFlow id="Flow_14" name="Rejected" sourceRef="Gateway_CertValid" targetRef="Gateway_RejectionMerge" />
+    <bpmn:sequenceFlow id="Flow_15" name="No - correction needed" sourceRef="Gateway_CertValid" targetRef="Task_SendCertCorrectionReq" />
+    <bpmn:sequenceFlow id="Flow_16" name="Yes - valid" sourceRef="Gateway_CertValid" targetRef="Gateway_CertValidMerge" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="Task_SendCertCorrectionReq" targetRef="Task_ReceiveCorrectedCerts" />
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="Task_ReceiveCorrectedCerts" targetRef="Gateway_CertValidMerge" />
+    <bpmn:sequenceFlow id="Flow_T2" name="Timeout" sourceRef="Boundary_CertCorrectionTimeout" targetRef="Gateway_RejectionMerge" />
+    <bpmn:sequenceFlow id="Flow_19" sourceRef="Gateway_CertValidMerge" targetRef="Task_ApproveSupplier" />
+    <bpmn:sequenceFlow id="Flow_20" sourceRef="Gateway_RejectionMerge" targetRef="Task_SendRejectionNotif" />
+    <bpmn:sequenceFlow id="Flow_21" sourceRef="Task_SendRejectionNotif" targetRef="EndEvent_Rejected" />
+    <bpmn:sequenceFlow id="Flow_22" sourceRef="Task_ApproveSupplier" targetRef="Task_ActivateSupplier" />
+    <bpmn:sequenceFlow id="Flow_23" sourceRef="Task_ActivateSupplier" targetRef="Task_SendApprovalNotif" />
+    <bpmn:sequenceFlow id="Flow_24" sourceRef="Task_SendApprovalNotif" targetRef="EndEvent_Onboarded" />
   </bpmn:process>
-
-  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_SupplierOnboarding">
-      <!-- Participant Pool Shape -->
-      <bpmndi:BPMNShape id="Participant_ProcurementSystem_di" bpmnElement="Participant_ProcurementSystem" isHorizontal="true" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="20" y="20" width="2500" height="650" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Process_SupplierOnboarding">
+    <bpmndi:BPMNPlane id="BPMNPlane_Process_SupplierOnboarding" bpmnElement="Collaboration_SupplierOnboarding">
+      <bpmndi:BPMNShape id="Participant_SupplierOnboarding_di" bpmnElement="Participant_SupplierOnboarding" isHorizontal="true">
+        <dc:Bounds x="20" y="80" width="2900" height="710" />
       </bpmndi:BPMNShape>
-
-      <!-- Lane Shapes -->
       <bpmndi:BPMNShape id="Lane_ProcurementManager_di" bpmnElement="Lane_ProcurementManager" isHorizontal="true">
-        <dc:Bounds x="50" y="20" width="2470" height="130" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_ComplianceUser_di" bpmnElement="Lane_ComplianceUser" isHorizontal="true">
-        <dc:Bounds x="50" y="150" width="2470" height="260" />
+        <dc:Bounds x="50" y="80" width="2870" height="130" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_System_di" bpmnElement="Lane_System" isHorizontal="true">
-        <dc:Bounds x="50" y="410" width="2470" height="260" />
+        <dc:Bounds x="50" y="210" width="2870" height="290" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_ComplianceUser_di" bpmnElement="Lane_ComplianceUser" isHorizontal="true">
+        <dc:Bounds x="50" y="500" width="2870" height="290" />
       </bpmndi:BPMNShape>
 
-      <!-- Node Shapes -->
-      <!-- Procurement Manager Lane (Y Center: 90) -->
-      <bpmndi:BPMNShape id="StartEvent_OnboardingInitiated_di" bpmnElement="StartEvent_OnboardingInitiated" bioc:stroke="#2E7D32" bioc:fill="#E8F5E9">
-        <dc:Bounds x="90" y="72" width="36" height="36" />
+      <bpmndi:BPMNShape id="StartEvent_Initiate_di" bpmnElement="StartEvent_Initiate" bioc:stroke="#2E7D32" bioc:fill="#E8F5E9" color:background-color="#E8F5E9" color:border-color="#2E7D32">
+        <dc:Bounds x="62" y="127" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_SubmitRequest_di" bpmnElement="UserTask_SubmitRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="180" y="50" width="110" height="80" />
+      <bpmndi:BPMNShape id="Task_SubmitRequest_di" bpmnElement="Task_SubmitRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="185" y="105" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_ReceiveUpdatedDetails_di" bpmnElement="UserTask_ReceiveUpdatedDetails" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="740" y="50" width="110" height="80" />
+      <bpmndi:BPMNShape id="Task_ReceiveUpdatedDetails_di" bpmnElement="Task_ReceiveUpdatedDetails" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="825" y="105" width="110" height="80" />
       </bpmndi:BPMNShape>
 
-      <!-- Compliance User Lane (Y Center: 235) -->
-      <bpmndi:BPMNShape id="UserTask_SendMissingInfoRequest_di" bpmnElement="UserTask_SendMissingInfoRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="580" y="195" width="110" height="80" />
+      <bpmndi:BPMNShape id="Task_ValidateData_di" bpmnElement="Task_ValidateData" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="345" y="235" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_AppCompleteMerge_di" bpmnElement="ExclusiveGateway_AppCompleteMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
-        <dc:Bounds x="900" y="210" width="50" height="50" />
+      <bpmndi:BPMNShape id="Gateway_AppComplete_di" bpmnElement="Gateway_AppComplete" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17">
+        <dc:Bounds x="535" y="250" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_PerformComplianceReview_di" bpmnElement="UserTask_PerformComplianceReview" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1000" y="195" width="110" height="80" />
+      <bpmndi:BPMNShape id="Gateway_AppCompleteMerge_di" bpmnElement="Gateway_AppCompleteMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17">
+        <dc:Bounds x="1015" y="250" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_ComplianceMet_di" bpmnElement="ExclusiveGateway_ComplianceMet" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
-        <dc:Bounds x="1160" y="210" width="50" height="50" />
+      <bpmndi:BPMNShape id="Task_SendCertCorrectionReq_di" bpmnElement="Task_SendCertCorrectionReq" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="1785" y="235" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_RejectSupplier_di" bpmnElement="UserTask_RejectSupplier" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1270" y="260" width="110" height="55" />
+      <bpmndi:BPMNShape id="Task_ActivateSupplier_di" bpmnElement="Task_ActivateSupplier" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="2425" y="235" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_VerifyCertificates_di" bpmnElement="UserTask_VerifyCertificates" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1270" y="175" width="110" height="75" />
+      <bpmndi:BPMNShape id="Task_SendApprovalNotif_di" bpmnElement="Task_SendApprovalNotif" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="2585" y="235" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_CertificatesValid_di" bpmnElement="ExclusiveGateway_CertificatesValid" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
-        <dc:Bounds x="1430" y="187.5" width="50" height="50" />
+      <bpmndi:BPMNShape id="EndEvent_Onboarded_di" bpmnElement="EndEvent_Onboarded" bioc:stroke="#C62828" bioc:fill="#FFEBEE" color:background-color="#FFEBEE" color:border-color="#C62828">
+        <dc:Bounds x="2782" y="257" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_ReceiveCorrectedCertificates_di" bpmnElement="UserTask_ReceiveCorrectedCertificates" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1700" y="175" width="110" height="75" />
+      <bpmndi:BPMNShape id="Gateway_RejectionMerge_di" bpmnElement="Gateway_RejectionMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17">
+        <dc:Bounds x="1655" y="410" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_CertificatesValidMerge_di" bpmnElement="ExclusiveGateway_CertificatesValidMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
-        <dc:Bounds x="1860" y="187.5" width="50" height="50" />
+      <bpmndi:BPMNShape id="Task_SendRejectionNotif_di" bpmnElement="Task_SendRejectionNotif" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="1785" y="395" width="110" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_ApproveOnboarding_di" bpmnElement="UserTask_ApproveOnboarding" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1960" y="175" width="110" height="75" />
-      </bpmndi:BPMNShape>
-
-      <!-- System Lane (Y Center: 475) -->
-      <bpmndi:BPMNShape id="ServiceTask_ValidateData_di" bpmnElement="ServiceTask_ValidateData" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="330" y="435" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ExclusiveGateway_AppComplete_di" bpmnElement="ExclusiveGateway_AppComplete" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1">
-        <dc:Bounds x="480" y="450" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_SendCorrectionRequest_di" bpmnElement="ServiceTask_SendCorrectionRequest" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1540" y="435" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_SendRejectionNotification_di" bpmnElement="ServiceTask_SendRejectionNotification" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="1540" y="530" width="110" height="60" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_SupplierRejected_di" bpmnElement="EndEvent_SupplierRejected" bioc:stroke="#C62828" bioc:fill="#FFEBEE">
-        <dc:Bounds x="1710" y="542" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_ActivateMasterData_di" bpmnElement="ServiceTask_ActivateMasterData" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="2110" y="435" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="ServiceTask_SendApprovalNotification_di" bpmnElement="ServiceTask_SendApprovalNotification" bioc:stroke="#1565C0" bioc:fill="#E3F2FD">
-        <dc:Bounds x="2260" y="435" width="110" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_SupplierOnboarded_di" bpmnElement="EndEvent_SupplierOnboarded" bioc:stroke="#C62828" bioc:fill="#FFEBEE">
-        <dc:Bounds x="2410" y="457" width="36" height="36" />
+      <bpmndi:BPMNShape id="EndEvent_Rejected_di" bpmnElement="EndEvent_Rejected" bioc:stroke="#C62828" bioc:fill="#FFEBEE" color:background-color="#FFEBEE" color:border-color="#C62828">
+        <dc:Bounds x="1982" y="417" width="36" height="36" />
       </bpmndi:BPMNShape>
 
-      <!-- 100% Orthogonal Sequence Flow Edges -->
-      <bpmndi:BPMNEdge id="Flow_StartToSubmit_di" bpmnElement="Flow_StartToSubmit">
-        <di:waypoint x="126" y="90" />
-        <di:waypoint x="180" y="90" />
+      <bpmndi:BPMNShape id="Task_SendMissingInfoReq_di" bpmnElement="Task_SendMissingInfoReq" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="665" y="525" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PerformComplianceReview_di" bpmnElement="Task_PerformComplianceReview" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="1145" y="525" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ComplianceCriteria_di" bpmnElement="Gateway_ComplianceCriteria" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17">
+        <dc:Bounds x="1335" y="540" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RejectSupplier_di" bpmnElement="Task_RejectSupplier" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="1305" y="685" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyCertificates_di" bpmnElement="Task_VerifyCertificates" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="1465" y="525" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CertValid_di" bpmnElement="Gateway_CertValid" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17">
+        <dc:Bounds x="1655" y="540" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveCorrectedCerts_di" bpmnElement="Task_ReceiveCorrectedCerts" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="1945" y="525" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CertValidMerge_di" bpmnElement="Gateway_CertValidMerge" isMarkerVisible="true" bioc:stroke="#F57F17" bioc:fill="#FFF8E1" color:background-color="#FFF8E1" color:border-color="#F57F17">
+        <dc:Bounds x="2135" y="540" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApproveSupplier_di" bpmnElement="Task_ApproveSupplier" bioc:stroke="#1565C0" bioc:fill="#E3F2FD" color:background-color="#E3F2FD" color:border-color="#1565C0">
+        <dc:Bounds x="2265" y="525" width="110" height="80" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Boundary_MissingInfoTimeout_di" bpmnElement="Boundary_MissingInfoTimeout">
+        <dc:Bounds x="915" y="167" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Boundary_CertCorrectionTimeout_di" bpmnElement="Boundary_CertCorrectionTimeout">
+        <dc:Bounds x="2035" y="587" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="98" y="145" />
+        <di:waypoint x="185" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SubmitToValidate_di" bpmnElement="Flow_SubmitToValidate">
-        <di:waypoint x="290" y="90" />
-        <di:waypoint x="385" y="90" />
-        <di:waypoint x="385" y="435" />
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="295" y="145" />
+        <di:waypoint x="320" y="145" />
+        <di:waypoint x="320" y="275" />
+        <di:waypoint x="345" y="275" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ValidateToAppCompleteGw_di" bpmnElement="Flow_ValidateToAppCompleteGw">
-        <di:waypoint x="440" y="475" />
-        <di:waypoint x="480" y="475" />
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="455" y="275" />
+        <di:waypoint x="535" y="275" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AppComplete_Yes_di" bpmnElement="Flow_AppComplete_Yes">
-        <di:waypoint x="530" y="475" />
-        <di:waypoint x="925" y="475" />
-        <di:waypoint x="925" y="260" />
+      <bpmndi:BPMNEdge id="Flow_4_di" name="No - incomplete" bpmnElement="Flow_4">
+        <di:waypoint x="560" y="300" />
+        <di:waypoint x="560" y="565" />
+        <di:waypoint x="665" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_AppComplete_No_di" bpmnElement="Flow_AppComplete_No">
-        <di:waypoint x="505" y="450" />
-        <di:waypoint x="505" y="235" />
-        <di:waypoint x="580" y="235" />
+      <bpmndi:BPMNEdge id="Flow_5_di" name="Yes - complete" bpmnElement="Flow_5">
+        <di:waypoint x="585" y="275" />
+        <di:waypoint x="1015" y="275" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendMissingToReceiveUpdated_di" bpmnElement="Flow_SendMissingToReceiveUpdated">
-        <di:waypoint x="635" y="195" />
-        <di:waypoint x="635" y="90" />
-        <di:waypoint x="740" y="90" />
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="775" y="565" />
+        <di:waypoint x="800" y="565" />
+        <di:waypoint x="800" y="145" />
+        <di:waypoint x="825" y="145" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveUpdatedToMerge_di" bpmnElement="Flow_ReceiveUpdatedToMerge">
-        <di:waypoint x="850" y="90" />
-        <di:waypoint x="925" y="90" />
-        <di:waypoint x="925" y="210" />
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="935" y="145" />
+        <di:waypoint x="1040" y="145" />
+        <di:waypoint x="1040" y="250" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_MergeToComplianceReview_di" bpmnElement="Flow_MergeToComplianceReview">
-        <di:waypoint x="950" y="235" />
-        <di:waypoint x="1000" y="235" />
+      <bpmndi:BPMNEdge id="Flow_T1_di" name="Timeout" bpmnElement="Flow_T1">
+        <di:waypoint x="933" y="203" />
+        <di:waypoint x="933" y="445" />
+        <di:waypoint x="1655" y="445" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReviewToComplianceGw_di" bpmnElement="Flow_ReviewToComplianceGw">
-        <di:waypoint x="1110" y="235" />
-        <di:waypoint x="1160" y="235" />
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1065" y="275" />
+        <di:waypoint x="1100" y="275" />
+        <di:waypoint x="1100" y="565" />
+        <di:waypoint x="1145" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Compliance_Yes_di" bpmnElement="Flow_Compliance_Yes">
-        <di:waypoint x="1210" y="235" />
-        <di:waypoint x="1270" y="235" />
-        <di:waypoint x="1270" y="213" />
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1255" y="565" />
+        <di:waypoint x="1335" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Compliance_No_di" bpmnElement="Flow_Compliance_No">
-        <di:waypoint x="1185" y="260" />
-        <di:waypoint x="1185" y="288" />
-        <di:waypoint x="1270" y="288" />
+      <bpmndi:BPMNEdge id="Flow_10_di" name="No - non compliant" bpmnElement="Flow_10">
+        <di:waypoint x="1360" y="590" />
+        <di:waypoint x="1360" y="685" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_RejectSupplierToNotification_di" bpmnElement="Flow_RejectSupplierToNotification">
-        <di:waypoint x="1380" y="288" />
-        <di:waypoint x="1495" y="288" />
-        <di:waypoint x="1495" y="560" />
-        <di:waypoint x="1540" y="560" />
+      <bpmndi:BPMNEdge id="Flow_11_di" name="Yes - compliant" bpmnElement="Flow_11">
+        <di:waypoint x="1385" y="565" />
+        <di:waypoint x="1465" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_VerifyToCertificatesGw_di" bpmnElement="Flow_VerifyToCertificatesGw">
-        <di:waypoint x="1380" y="213" />
-        <di:waypoint x="1430" y="213" />
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="1415" y="725" />
+        <di:waypoint x="1440" y="725" />
+        <di:waypoint x="1440" y="425" />
+        <di:waypoint x="1655" y="425" />
+        <di:waypoint x="1655" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Certificates_Yes_di" bpmnElement="Flow_Certificates_Yes">
-        <di:waypoint x="1455" y="188" />
-        <di:waypoint x="1455" y="170" />
-        <di:waypoint x="1885" y="170" />
-        <di:waypoint x="1885" y="188" />
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="1575" y="565" />
+        <di:waypoint x="1655" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Certificates_Correction_di" bpmnElement="Flow_Certificates_Correction">
-        <di:waypoint x="1455" y="238" />
-        <di:waypoint x="1455" y="390" />
-        <di:waypoint x="1595" y="390" />
-        <di:waypoint x="1595" y="435" />
+      <bpmndi:BPMNEdge id="Flow_14_di" name="Rejected" bpmnElement="Flow_14">
+        <di:waypoint x="1680" y="540" />
+        <di:waypoint x="1680" y="460" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Certificates_Rejected_di" bpmnElement="Flow_Certificates_Rejected">
-        <di:waypoint x="1430" y="213" />
-        <di:waypoint x="1400" y="213" />
-        <di:waypoint x="1400" y="560" />
-        <di:waypoint x="1540" y="560" />
+      <bpmndi:BPMNEdge id="Flow_15_di" name="No - correction needed" bpmnElement="Flow_15">
+        <di:waypoint x="1705" y="575" />
+        <di:waypoint x="1840" y="575" />
+        <di:waypoint x="1840" y="315" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendCorrectionToReceiveCorrected_di" bpmnElement="Flow_SendCorrectionToReceiveCorrected">
-        <di:waypoint x="1650" y="475" />
-        <di:waypoint x="1755" y="475" />
-        <di:waypoint x="1755" y="250" />
+      <bpmndi:BPMNEdge id="Flow_16_di" name="Yes - valid" bpmnElement="Flow_16">
+        <di:waypoint x="1705" y="555" />
+        <di:waypoint x="1750" y="555" />
+        <di:waypoint x="1750" y="515" />
+        <di:waypoint x="2160" y="515" />
+        <di:waypoint x="2160" y="540" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ReceiveCorrectedToCertMerge_di" bpmnElement="Flow_ReceiveCorrectedToCertMerge">
-        <di:waypoint x="1810" y="213" />
-        <di:waypoint x="1860" y="213" />
+      <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17">
+        <di:waypoint x="1895" y="275" />
+        <di:waypoint x="1920" y="275" />
+        <di:waypoint x="1920" y="565" />
+        <di:waypoint x="1945" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_SendRejectionToRejectedEnd_di" bpmnElement="Flow_SendRejectionToRejectedEnd">
-        <di:waypoint x="1650" y="560" />
-        <di:waypoint x="1710" y="560" />
+      <bpmndi:BPMNEdge id="Flow_18_di" bpmnElement="Flow_18">
+        <di:waypoint x="2055" y="565" />
+        <di:waypoint x="2135" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_CertMergeToApprove_di" bpmnElement="Flow_CertMergeToApprove">
-        <di:waypoint x="1910" y="213" />
-        <di:waypoint x="1960" y="213" />
+      <bpmndi:BPMNEdge id="Flow_T2_di" name="Timeout" bpmnElement="Flow_T2">
+        <di:waypoint x="2053" y="623" />
+        <di:waypoint x="2053" y="750" />
+        <di:waypoint x="1720" y="750" />
+        <di:waypoint x="1720" y="420" />
+        <di:waypoint x="1705" y="420" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ApproveToActivate_di" bpmnElement="Flow_ApproveToActivate">
-        <di:waypoint x="2070" y="213" />
-        <di:waypoint x="2165" y="213" />
-        <di:waypoint x="2165" y="435" />
+      <bpmndi:BPMNEdge id="Flow_19_di" bpmnElement="Flow_19">
+        <di:waypoint x="2185" y="565" />
+        <di:waypoint x="2265" y="565" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ActivateToApprovalNotif_di" bpmnElement="Flow_ActivateToApprovalNotif">
-        <di:waypoint x="2220" y="475" />
-        <di:waypoint x="2260" y="475" />
+      <bpmndi:BPMNEdge id="Flow_20_di" bpmnElement="Flow_20">
+        <di:waypoint x="1705" y="435" />
+        <di:waypoint x="1785" y="435" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_ApprovalNotifToOnboardedEnd_di" bpmnElement="Flow_ApprovalNotifToOnboardedEnd">
-        <di:waypoint x="2370" y="475" />
-        <di:waypoint x="2410" y="475" />
+      <bpmndi:BPMNEdge id="Flow_21_di" bpmnElement="Flow_21">
+        <di:waypoint x="1895" y="435" />
+        <di:waypoint x="1982" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_22_di" bpmnElement="Flow_22">
+        <di:waypoint x="2375" y="565" />
+        <di:waypoint x="2400" y="565" />
+        <di:waypoint x="2400" y="275" />
+        <di:waypoint x="2425" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_23_di" bpmnElement="Flow_23">
+        <di:waypoint x="2535" y="275" />
+        <di:waypoint x="2585" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_24_di" bpmnElement="Flow_24">
+        <di:waypoint x="2695" y="275" />
+        <di:waypoint x="2782" y="275" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

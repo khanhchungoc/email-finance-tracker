@@ -8,6 +8,8 @@ Use this reference guide when creating, reviewing, or revising `.bpmn` files wit
 
 - **Lane Assignment:** Assign every event, task, and gateway to its owning lane. Ensure visual `<bpmndi:BPMNShape>` bounds reside strictly inside the declared `<bpmn:lane>` container.
 - **Specific Task Typing:** Use `<bpmn:userTask>` for human steps, `<bpmn:serviceTask>` for automated steps, and `<bpmn:sendTask>`/`<bpmn:receiveTask>` for cross-boundary messaging.
+- **Data Objects & Stores:** Model data flow using `<bpmn:dataObjectReference>` (for documents/payloads) and `<bpmn:dataStoreReference>` (for databases/persistence). Connect them to tasks using `<bpmn:dataInputAssociation>` and `<bpmn:dataOutputAssociation>`.
+- **Cross-Pool Communication:** NEVER use standard `<bpmn:sequenceFlow>` to connect elements across different Pools (Participants). You MUST use `<bpmn:messageFlow>` (dashed line) for communication between entirely different systems or external entities. Use Sequence Flows ONLY within the same Pool (even across lanes in that Pool).
 - **Exclusive Gateway Splits & Defaults:** Every `exclusiveGateway` split MUST specify a valid `default="<SF_ID>"` attribute pointing to the happy path or default branch.
 - **Explicit Converging Merges:** Use converging Exclusive Gateways (`exclusiveGateway`) to join alternate paths before shared tasks. Name join gateways explicitly (e.g. `Application complete join`).
 - **Loop Bounding & Timouts:** Any `receiveTask` or resubmittal wait state MUST have an attached Boundary Timer Event (`<bpmn:boundaryEvent>` with `attachedToRef`) leading to a timeout/escalation path to prevent infinite loops.
@@ -68,7 +70,7 @@ When a flow must go **back to the left** (target X < source X), apply the follow
 6. **Route the horizontal return segment** through an open dedicated channel (above or below all task rows in the lane), never cutting across existing task bounding boxes.
 
 ### C. Collision Avoidance & Dedicated Channel Offsets
-- **Zero Arrow-Node Overlap:** No sequence flow line segment (`<di:waypoint>`) may intersect or strike across the bounding box (`<dc:Bounds>`) of any task, gateway, or event node.
+- **Zero Arrow-Node Overlap:** No sequence flow line segment (`<di:waypoint>`) may intersect or strike across the bounding box (`<dc:Bounds>`) of any task, gateway, or event node. The auto-layout engine (`autolayout_bpmn.js`) audits collisions and will actively attempt to reroute flows, but if you define manual waypoints, ensure they follow collision-free channels.
 - **Dedicated Horizontal Channels:** Route horizontal cross-column segments through open, uncontained corridors (e.g. `Y = Lane_Top + 20px` or `Y = Task_Bottom + 40px`).
 - **Dedicated Vertical Channels:** Route vertical cross-row segments through open corridors between task columns (e.g. `X = Task_Right + 25px`).
 - **Strictly Orthogonal Waypoints:** All edge segments must route at right angles (100% horizontal or vertical). Never use diagonal lines.

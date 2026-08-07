@@ -36,8 +36,10 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
   - Lane 2: <System or Role Name>
 - **Flow & Data Points:**
   - Step 1 (<Actor>): <Action Verb + Noun> [Technical Identifiers: <SN0001, BN0001, etc.>]
+    - Data: <Data Object / Payload produced or consumed>
   - Step 2 (<Actor>): <Action Verb + Noun>
   - Decision (<Actor>): <Decision Question?> -> Yes: Step 3 | No: Step 4
+  - Merge: Step 3 and Step 4 converge -> Step 5
 ```
 
 ---
@@ -61,7 +63,7 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 ---
 
-## Before Generating
+## Before Generating & Modifying
 
 - **Define actors and swimlanes first** before creating the diagram file.
 - Identify actors, systems, roles, start/end points, decisions, loops, and exception paths.
@@ -69,6 +71,7 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 - Use plain business labels unless the audience is technical.
 - Ask only when missing context would change the diagram materially; otherwise state assumptions.
 - Identify whether the diagram is related to one or more user stories, one epic, or multiple epics before writing a file.
+- **When modifying an existing diagram:** Do not overwrite or regenerate the entire file from scratch. Use search-and-replace to insert new nodes and update `targetRef`s of existing flows. This preserves manual layout tweaks and allows the auto-layout engine to gracefully incorporate the changes.
 
 ---
 
