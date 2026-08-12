@@ -26,7 +26,7 @@ Adapt slicing strategy to the project's technical architecture and delivery scop
 
 1. **Step 1: Scope Sizing Audit**
    - If feature effort > 1 month $\rightarrow$ Group into an **Initiative / Epic**.
-   - If story effort > 1 week $\rightarrow$ Apply **INVEST Slicing Patterns** (Section 3).
+   - If story effort > 1 week $\rightarrow$ Apply **INVEST Slicing Patterns** (Section 3). Decompose to <= 1 week per story.
 
 2. **Step 2: Apply Slicing Patterns**
    - **By User / Persona Role**: Separate stories by actor (e.g., Customer submission vs. Admin review).
@@ -35,14 +35,19 @@ Adapt slicing strategy to the project's technical architecture and delivery scop
    - **By Operations (CRUD)**: Separate Create/Read operations from Update/Delete operations.
    - **By Rule Complexity**: Implement basic validation in Story A, dynamic/configurable rules in Story B.
 
-3. **Step 3: Determine Artifact Links**
-   - For UI changes $\rightarrow$ Reference linked [GUI Specification](./gui-screen-name.md).
+3. **Step 3: Determine Artifact Links & GUI Specification CRUD Actions**
+   - For UI changes $\rightarrow$ Determine explicit **GUI Specification CRUD Action**:
+     - `CREATE`: Slicing introduces a new screen $\rightarrow$ create new `gui-<screen-slug>.md`.
+     - `READ`: Slicing references an existing screen without UI changes $\rightarrow$ link to existing `gui-<screen-slug>.md`.
+     - `UPDATE`: Slicing modifies an existing screen (adds fields, validation rules, or state transitions) $\rightarrow$ update `gui-<screen-slug>.md` and append to `Screen Change Log`.
+     - `DELETE`: Slicing deprecates/retires a screen or UI component $\rightarrow$ update/archive `gui-<screen-slug>.md`.
+     - `NONE`: Backend/API/Data story with no UI component.
    - For API / Backend changes $\rightarrow$ Reference linked [API Specification](./api-spec-name.md).
 
 ---
 
-## 3. Scope Boundary Standards
+## 3. Scope Boundary Standards & Anti-Patterns
 
 - **Value-Driven Boundaries**: Every story slice must deliver testable functionality or system capabilities to a human user, API consumer, or downstream system.
-- **Avoid Sub-Task Stories**: Engineering tasks (e.g., code reviews, deployment scripts, unit test writing) belong in task tracking tools, not as backlog User Stories.
-- **Reference Existing Artifacts**: Link to existing GUI or API specifications using relative Markdown links rather than duplicating component tables.
+- **No Pure Engineering Sub-Tasks**: Engineering tasks (e.g., database indexing, unit test authoring, code refactoring, CI/CD pipeline setup) belong in sprint engineering tracking tools, not as backlog User Stories.
+- **Reference Existing Artifacts**: Link to existing GUI or API specifications using relative Markdown links rather than duplicating component tables or payload structures in the story body.

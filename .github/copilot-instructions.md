@@ -70,9 +70,8 @@ Always read and follow the matching `.github/agents/*.agent.md` or `.github/skil
 - Project knowledge research or KB lookup: `.github/skills/research-project-knowledge/SKILL.md`.
 - Diagram, process flow, BPMN, sequence, state, or ERD: `.github/skills/generate-diagram/SKILL.md`.
 - Wireframe, screen mockup, UI layout, or visual screen mockup: `.github/skills/generate-wireframe/SKILL.md`.
-- GUI specification, UI specification table, or screen behavior handoff: `.github/skills/write-gui-specification/SKILL.md`.
+- GUI specifications, UI component tables, screen behavior handoffs, user story authoring, and requirement folder hierarchy: `.github/skills/manage-requirement-artifacts/SKILL.md`.
 - API specification, contract schema, data dictionary, or mapping rule: `.github/skills/write-api-specification/SKILL.md`.
-- Requirement folder structure, initiative/epic indexing, user story authoring, or deliverable placement: `.github/skills/manage-requirement-artifacts/SKILL.md`.
 - WBS, ballpark estimate table, or scope breakdown: `.github/skills/write-wbs/SKILL.md`.
 - Requirement gap scan, SMART check, dependency/impact review, or analysis report: `.github/agents/business-requirements-analyst.agent.md`.
 - Sprint scope email or backlog push/pull sync via MCP: `.github/agents/backlog-manager.agent.md` and `.github/skills/sync-backlog/SKILL.md`.

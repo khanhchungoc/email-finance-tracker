@@ -103,9 +103,10 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 
 ### Core BA Artifact Skills
 
+- `manage-requirement-artifacts`: maintains the `requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, backlog-ready user stories, 3-tier acceptance criteria, and GUI specifications (`gui-*.md`) with UI component tables and screen change logs.
 - `write-api-specification`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
 - `generate-diagram`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
-- `write-gui-specification`: UI specification tables from screenshots, wireframes, or screen descriptions.
+- `generate-wireframe`: HTML/text wireframes and responsive screen layout artifacts.
 - `sync-backlog`: sprint commitment emails with goals and ticket tables.
   - Adapt the skill per project: Jira or Azure DevOps.
   - Define the sprint query/filter and ticket URL format.
@@ -113,7 +114,6 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
   - Confirm the estimate field: Jira custom field (e.g., `customfield_10036`) or Azure DevOps `Story Points`/`Effort`.
 - `update-project-knowledge`: updates outsourcing Wiki bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
 - `research-project-knowledge`: read-only KB research before BA work so agents inspect task-relevant Wiki instead of scanning the whole workspace.
-- `manage-requirement-artifacts`: maintains the `requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, requirement output re-indexing, backlog-ready user stories, and acceptance criteria.
 - `evaluate-ux-solution`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
 - `write-wbs`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
 - `generate-wireframe`: HTML/text wireframes and responsive screen layout artifacts.

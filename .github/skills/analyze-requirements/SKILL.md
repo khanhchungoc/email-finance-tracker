@@ -1,38 +1,35 @@
 ---
 name: analyze-requirements
-description: Use when performing Change Request (CR) impact analysis, gap audits, legacy system migration reviews, or cross-module scope delta analysis.
+description: Use when analyzing business requirements, evaluating readiness gates, applying INVEST scope slicing principles, performing Change Request (CR) impact analysis, or conducting gap audits.
 ---
 
-# Requirements Impact & Scope Delta Analysis
+# Requirements Analysis & Slicing Skill
 
 ## Purpose
 
-Produce high-density Impact Matrices and Gap Audit structures for Change Requests (CRs), commercial baseline reviews, and legacy system audits.
+Analyze business requirements for delivery readiness, apply INVEST scope slicing guidelines across project types (Full-Stack, API-Only, Data), and produce high-density Impact Matrices and Gap Audit reports for Change Requests (CRs), commercial baseline reviews, and system migrations.
 
-For daily feature breakdown, epic indexing, and user story slicing/drafting, route directly to `manage-requirement-artifacts`.
-
-Render the output structure defined in `guidelines/impact-scope-delta-review.md`.
+For physical user story creation (`us-*.md`), GUI specification authoring (`gui-*.md`), and index file updates, hand off to `manage-requirement-artifacts`.
 
 ---
 
-## Universal Analysis Rules
+## Guidelines & Reference Documents
 
-- Separate confirmed facts, assumptions, risks, dependencies, exclusions, gaps, and open questions.
-- Flag commercial baseline status (`IN_BASELINE` vs `SCOPE_CREEP_CR_CANDIDATE`).
-- Convert unknowns to internal assumptions only when the worst-case impact if wrong is limited to internal rework; flag all other unknowns as client-validation questions.
-- Call out timeline, cost, WBS, and 3rd-party integration SLA impacts.
-- Use concise tables. Keep outputs high-density without conversational narrative.
+- **Slicing Guidelines**: `references/slicing-guidelines.md` (Scope sizing, project-type slicing principles, INVEST decomposition)
+- **Impact & Scope Delta Review**: `references/impact-scope-delta-review.md` (Change Requests, gap audits, legacy migrations, and cross-module impact)
 
 ---
 
-## Mode Guideline
+## Universal Analysis & Output Rules
 
-The output structure is located in:
-- `guidelines/impact-scope-delta-review.md` (Impact & Scope Delta Review — Change Requests, gap audits, legacy migrations, and cross-module impact)
+- **Fact & Risk Separation**: Clearly separate confirmed facts, assumptions, risks, dependencies, gaps, open questions, and recommendations.
+- **Commercial Baseline Classification**: Flag items as **In Baseline Scope**, **Scope Creep (CR Candidate)**, or **TBD**.
+- **Unknowns & Assumptions**: Convert unknowns to assumptions only when worst-case risk is limited to internal rework; flag all commercial/client uncertainties as client-validation items.
+- **Outsourced & Delivery Focus**: Call out timeline, cost, WBS, and 3rd-party integration SLA impacts.
+- **High-Density Formatting**: Use concise tables and direct analytical findings without conversational narrative.
+- **Handoff & Next Steps**: Conclude with an explicit next step, route, and machine-readable handoff payload.
 
 ---
-
-
 
 ## Technique Selection Guide
 
@@ -45,14 +42,3 @@ The output structure is located in:
 - [ ] **Dependencies** — Impact matrix, traceability, dependency map
 - [ ] **Prioritization** — MoSCoW, RICE, Kano, value/effort matrix
 - [ ] **NFRs** — NFR checklist, acceptance criteria, risk analysis
-
----
-
-## Output Rules
-
-- Start with the selected analysis mode and the reason it was chosen.
-- Always include: UI artifact assessment, diagram assessment, status/transition check, and edge case behavior. Scale the depth of all other sections proportionally to scope and risk.
-- Separate confirmed facts, assumptions, risks, dependencies, gaps, open questions, and recommendations.
-- For outsourced delivery, always call out estimate-impacting gaps, client-validation questions, external-system ownership, and delivery-readiness risks.
-- Do not produce downstream artifact content (including partial drafts or outlines) unless the user explicitly asked for combined analysis plus that artifact and readiness is sufficient.
-- End with a recommended next step and route.

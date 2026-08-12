@@ -7,7 +7,7 @@ Use when evaluating Change Requests (CRs), gap audits, legacy system migrations,
 ## 1. Change & Scope Delta Summary
 - **Change / Audit Item**: `<Name of change request or scope item>`
 - **Source of Change**: `<Client request, technical debt, regulatory, legacy migration, or N/A>`
-- **Commercial Baseline Alignment**: `IN_BASELINE` | `SCOPE_CREEP_CR_CANDIDATE` | `TBD`
+- **Commercial Baseline Alignment**: `In Baseline Scope` | `Scope Creep (CR Candidate)` | `TBD`
 
 ---
 
@@ -23,7 +23,14 @@ Use when evaluating Change Requests (CRs), gap audits, legacy system migrations,
 
 ---
 
-## 3. Gap Audit & Client-Validation Items
+## 3. GUI Specification CRUD Assessment
+| Target Screen / View | CRUD Action | GUI Spec File Path | UI Impact / Component Delta | Downstream Action |
+|---|---|---|---|---|
+| `<Screen Name>` | `CREATE` \| `READ` \| `UPDATE` \| `DELETE` \| `NONE` | `gui-<screen-slug>.md` | `<New fields, validation rules, or deprecated UI>` | `manage-requirement-artifacts` |
+
+---
+
+## 4. Gap Audit & Client-Validation Items
 | Gap ID | Description | Needed From | Impact If Unresolved | Commercial Risk |
 |---|---|---|---|---|
 | GAP-01 |  | `Client` \| `Vendor` \| `3rd Party` |  | `Cost` \| `Timeline` \| `Quality` |

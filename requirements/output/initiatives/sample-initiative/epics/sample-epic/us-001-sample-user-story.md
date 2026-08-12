@@ -15,7 +15,7 @@ As a `<user role>`, I want `<capability>` so that `<business value>`.
 
 ## Acceptance Criteria
 
-**AC01** Placeholder acceptance criterion
+**AC 1** [Happy Path] Placeholder acceptance criterion
 
   **Given** project-specific context is available
   **When** the story is replaced with a real requirement

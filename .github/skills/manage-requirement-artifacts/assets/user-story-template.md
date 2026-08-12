@@ -7,15 +7,11 @@ tags: [requirement, user-story]
 timestamp: "<ISO-8601 timestamp>"
 ---
 
-# User Story Sample Template
+# `<User Story ID>` - `<User Story Name>`
 
-### Epic - `<Epic Name>`
-
-### `<User Story ID>` - `<User Story Name>`
+### Epic: `<Epic Name>`
 
 As a `<user role>` I want to `<goal>` so that I can `<business value>`
-
-Example: As a registered user I want to log in so that I can access subscriber-only content
 
 ---
 
@@ -34,49 +30,50 @@ Example: As a registered user I want to log in so that I can access subscriber-o
 ---
 
 ### Workflow/Activity Diagram
-- Provide a diagram or a text-based step description.
+- [`<Diagram Title>`](./diagrams/<diagram-name.md>)
 
 ---
 
 ### Screen / GUI Specification References
 | Reference ID | Screen / Artifact | Reference | Story-Relevant Behavior |
 |--------------|-------------------|-----------|-------------------------|
-| UI01         | `<Screen or artifact name>` | `<Mockup, wireframe, GUI specification, or N/A>` | `<Behavior needed to understand the story and acceptance criteria>` |
-
-Keep field-level controls, default values, validations, visibility rules, detailed UI states, and component behavior in the GUI specification rather than duplicating them here.
+| UI01         | `<Screen or artifact name>` | [`<GUI Spec or Wireframe>`](./<gui-screen-name.md>) | `<Behavior needed to understand the story and acceptance criteria>` |
 
 ---
 
 ### Business Acceptance Criteria
 
-<!-- Tier 1: Happy Path / Core Value Scenario -->
-**AC01.1** [Happy Path] `<Descriptive title for primary success scenario>`
+**AC 1** [Happy Path] `<Descriptive title for primary success scenario>`
 
    **Given** `<initial context or precondition>`  
    **When** `<user action or system event>`  
    **Then** `<expected business outcome>`  
    **And** `<additional expected outcome, if applicable>`
 
-<!-- Tier 2: Validation Summary (Do NOT list individual field rules; reference GUI spec) -->
-**AC02.1** [Validation] Form Input Validation
+**AC 2.1** [Validation] Form Input Validation
 
    **Given** the user is submitting the form with invalid or missing required inputs  
    **When** the user clicks submit  
    **Then** the system blocks submission and displays field validation errors per the linked [GUI Specification](./gui-screen-name.md)
 
-<!-- Tier 3: Security, Permissions & State Error Handling -->
-**AC03.1** [Security / State] `<Descriptive title for unauthorized access or invalid state transition>`
+**AC 2.2** [Validation] `<Business Rule or Backend Validation Scenario>`
 
-   **Given** `<unauthorized role or invalid lifecycle state>`  
+   **Given** `<specific business rule violation or backend condition, e.g. duplicate record, limit exceeded>`  
+   **When** `<user triggers action or submit>`  
+   **Then** `<system blocks action and displays exact error message: "Exact user-facing error message text">`
+
+**AC 3** [Security / State] `<Descriptive title for unauthorized access, invalid state transition, or service failure>`
+
+   **Given** `<unauthorized role, invalid lifecycle state, or service timeout>`  
    **When** `<user action or system event>`  
-   **Then** `<expected security restriction or transition error>`
+   **Then** `<expected security restriction or exact error message: "Exact user-facing message text">`
 
 ---
 
 ### Out of Scope
 | OOS ID | Description |
 |--------|-------------|
-| OOS1   | `<Scenario, behavior, or dependency excluded from this story, or N/A>` |
+| OOS01  | `<Scenario, behavior, or dependency excluded from this story, or N/A>` |
 
 ---
 

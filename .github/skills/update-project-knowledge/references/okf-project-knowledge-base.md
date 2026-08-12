@@ -71,16 +71,16 @@ Add more directories only when there is actual project knowledge to store.
 
 ## Directory Guide
 
-| Directory | Use For |
-|---|---|
-| `requirements/` | Delivery workbench for raw requirement intake and generated BA deliverables. |
-| `project-knowledge-base/index.md` | Root entrypoint with a compact project snapshot, highest-level business requirements, and links to detailed concepts. Keep it well below 100 lines. |
-| `project-knowledge-base/solution-context/` | Domains, systems, integrations, APIs, data, and technical context needed to understand requirements. |
-| `project-knowledge-base/wiki/` | Durable project wiki organized into placeholder knowledge areas such as `knowledge-area-1/` and `knowledge-area-2/`, renamed to project-specific topics when known. |
-| `project-knowledge-base/wiki/diagrams/` | Shared copies of relevant requirement diagrams used by multiple wiki areas. Keep originals in `requirements/` and cite the original path. |
-| `project-knowledge-base/wiki/<knowledge-area>/diagrams/` | Area-specific copied diagrams used by pages in that knowledge area. |
-| `project-knowledge-base/glossary/` | Terms, acronyms, synonyms, and naming conventions. |
-| `requirements/input/` | Raw source evidence such as briefs, tickets, screenshots, links, copied excerpts, and source metadata. |
+| Directory                                                  | Use For                                                                                                                                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `requirements/`                                          | Delivery workbench for raw requirement intake and generated BA deliverables.                                                                                           |
+| `project-knowledge-base/index.md`                        | Root entrypoint with a compact project snapshot, highest-level business requirements, and links to detailed concepts. Keep it well below 100 lines.                    |
+| `project-knowledge-base/solution-context/`               | Domains, systems, integrations, APIs, data, and technical context needed to understand requirements.                                                                   |
+| `project-knowledge-base/wiki/`                           | Durable project wiki organized into placeholder knowledge areas such as`knowledge-area-1/` and `knowledge-area-2/`, renamed to project-specific topics when known. |
+| `project-knowledge-base/wiki/diagrams/`                  | Shared copies of relevant requirement diagrams used by multiple wiki areas. Keep originals in`requirements/` and cite the original path.                             |
+| `project-knowledge-base/wiki/<knowledge-area>/diagrams/` | Area-specific copied diagrams used by pages in that knowledge area.                                                                                                    |
+| `project-knowledge-base/glossary/`                       | Terms, acronyms, synonyms, and naming conventions.                                                                                                                     |
+| `requirements/input/`                                    | Raw source evidence such as briefs, tickets, screenshots, links, copied excerpts, and source metadata.                                                                 |
 
 ## Concept File Rules
 
@@ -239,8 +239,3 @@ Tagging rules:
 8. Update the nearest `index.md` each time a concept is added.
 9. Update `project-knowledge-base/log.md` for material changes.
 10. Route downstream BA artifact creation to the matching BA skill instead of duplicating full artifacts here.
-
-## Citations
-
-[1] [Open Knowledge Format specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
-[2] [Open Knowledge Format README](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/README.md)

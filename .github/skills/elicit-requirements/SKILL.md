@@ -26,4 +26,4 @@ This skill contains specialized guidance files for different elicitation scenari
    - **Use when:** Initial intake to classify the work, or when exploring an unknown business domain or complex regulatory environment.
 
 *Instruction for Agent:* Use the 
-ead or iew_file tool to read the specific guidance file you need using the absolute path relative to this skill directory (e.g., .github/skills/elicit-requirements/references/ui-details.md).
+ead or view_file tool to read the specific guidance file you need using the absolute path relative to this skill directory (e.g., .github/skills/elicit-requirements/references/ui-details.md).
