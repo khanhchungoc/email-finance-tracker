@@ -5,13 +5,10 @@ tools:
   - search
   - agent
   - read
-  - execute
-  - web
+  - edit
   - vscode
   - todo
-  - edit
-  - "atlassian/atlassian-mcp-server/*"
-  - "microsoft/azure-devops-mcp/*"
+  - web
 skills:
   - ../skills/research-project-knowledge
   - ../skills/write-api-specification

@@ -75,6 +75,25 @@ Write concise acceptance criteria in Gherkin format, organized into 3 mandatory 
 - **Exact Error Copy**: Never use vague placeholders like *"displays an error message"*. Always specify the exact quote-delimited user-facing text in `Then` statements.
 - **Gherkin Syntax**: Format Gherkin keywords in bold (`**Given**`, `**When**`, `**Then**`, `**And**`) and indent scenario steps. Ensure all assertions are testable without subjective adjectives.
 
+### Edge Case & Heuristic Mapping (ZOMBIES, CRUD+L, Entry & Ripple)
+
+Map analysis heuristics cleanly into the 3-tier AC structure and linked specs without story bloat:
+
+- **ZOMBIES**:
+  - **Z – Zero (Empty/0)**: UI null/empty regex validation stays in linked [GUI Spec](./gui-screen-slug.md). Business zero blocks ($0 cart, 0 balance) live in **Tier 2 ACs**.
+  - **O – One**: Primary success path lives in **Tier 1 AC**.
+  - **M – Many**: List rendering/pagination stays in GUI Spec; bulk actions slice into separate stories.
+  - **B – Boundaries**: Business limits/caps live in **Tier 2 ACs** with exact error copy. Field length bounds stay in GUI Spec.
+  - **I – Interfaces**: Technical payloads/schemas belong in linked `./gui-*.md` or `./api-*.md`.
+  - **E – Exceptions**: Security, invalid state, or service failures live in **Tier 3 ACs**.
+  - **S – Simple**: Enforce $\le 1$ week scope per story.
+- **CRUD+L State Conflicts**:
+  - Capture state conflict errors when attempting actions on archived, suspended, expired, or locked entities in **Tier 3 ACs** (e.g., `**AC 3.1** [State] Block Edit on Archived Record`).
+- **Entry & Ripple System Dynamics**:
+  - **Multiple Entry Points**: Capture trigger variations (Main Nav vs Deep Link vs Quick Action) in Preconditions and **Tier 1 sub-scenarios** (e.g., `**AC 1.1** [Happy Path] Standard Nav Flow`, `**AC 1.2** [Happy Path] Deep Link with Auth Redirect`).
+  - **Cascading Invalidation**: Capture side-effects where changing one variable invalidates another in **Tier 2 ACs** (e.g., changing shipping country resets shipping method and re-evaluates promo code eligibility).
+  - **State Locks & Snapshot Rules**: Capture mutation restrictions on shared resources in **Tier 3 ACs** (e.g., block currency edit if pending transfers exist).
+
 ---
 
 ## Boundary With Detailed Specs
@@ -132,5 +151,6 @@ Before saving or certifying any user story file, verify against this quality che
 - [ ] **Deep Validation & Error Specificity**: Every validation rule, business exception, and backend failure branch explicitly quotes its distinct user-facing error message.
 - [ ] **Independent & Small**: Story is sliced to fit within 1 sprint (<= 1 week) without blocking dependencies. No pure technical tasks.
 - [ ] **No AC Bloat**: Form field dictionaries are delegated to GUI specifications (`gui-*.md`), while story ACs capture business-level outcomes and messages.
+- [ ] **Heuristic Scoping Applied**: ZOMBIES, CRUD+L exceptions, Entry multi-triggers, and Ripple downstream effects mapped cleanly across tiers without story bloat.
 - [ ] **Traceable & Ready**: Affected GUI/API specs, wireframes, and diagrams are linked with relative Markdown links.
 - [ ] **Index Synced**: Story is listed in parent `epics/<epic-slug>/index.md`.

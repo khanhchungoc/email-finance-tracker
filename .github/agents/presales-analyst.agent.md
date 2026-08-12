@@ -5,13 +5,10 @@ tools:
   - search
   - agent
   - read
-  - execute
-  - web
+  - edit
   - vscode
   - todo
-  - edit
-  - "atlassian/atlassian-mcp-server/*"
-  - "microsoft/azure-devops-mcp/*"
+  - web
 handoffs:
   - label: Required First Step
     agent: requirements-elicitor

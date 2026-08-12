@@ -32,7 +32,7 @@ Adapt slicing strategy to the project's technical architecture and delivery scop
    - **By User / Persona Role**: Separate stories by actor (e.g., Customer submission vs. Admin review).
    - **By Happy Path vs. Exception**: Separate core success path from complex error recovery.
    - **By Input / Data Channel**: Separate primary integration channel from secondary channels.
-   - **By Operations (CRUD)**: Separate Create/Read operations from Update/Delete operations.
+   - **By Entity Operations & Lifecycle (CRUD+L)**: Separate Create/Read operations from Update/Delete operations. Check if lifecycle states (Archive, Expire, Suspend, Restore) require dedicated user stories or state handling.
    - **By Rule Complexity**: Implement basic validation in Story A, dynamic/configurable rules in Story B.
 
 3. **Step 3: Determine Artifact Links & GUI Specification CRUD Actions**
@@ -46,7 +46,31 @@ Adapt slicing strategy to the project's technical architecture and delivery scop
 
 ---
 
-## 3. Scope Boundary Standards & Anti-Patterns
+## 3. Heuristic Analysis Filters (CRUD+L, Entry & Ripple, ZOMBIES)
+
+Before finalizing candidate story slices, evaluate the requirement against 3 core analysis filters:
+
+1. **CRUD+L Entity Lifecycle**:
+   - Check if all lifecycle operations for key domain entities are accounted for: Create, Read/View, Update/Edit, Delete/Soft-Delete, plus Lifecycle transitions (+L: Archive, Expire, Suspend, Restore).
+   - Slice lifecycle transitions into separate stories when they involve distinct workflows or permissions.
+
+2. **Entry & Exit Dynamics (Multi-Trigger Check)**:
+   - Identify if the feature/screen has $\ge 2$ entry points (e.g., Main Navigation vs Deep Link vs Quick Action vs Notification).
+   - Verify initial data state (pre-filled vs default empty), authentication redirects (`returnUrl`), and exit/cancel routing.
+
+3. **Ripple Lens (Shared Resource Side-Effects)**:
+   - Identify downstream impacts when modifying shared resources or global variables:
+     - **Snapshot Rule**: Determine if resource mutation affects past historical records, open/in-flight items, or future items only.
+     - **Cascading Invalidation**: Determine if changing variable X invalidates variable Y, requiring automatic resets or re-evaluations.
+     - **State Locks**: Block mutations on resources locked by active or pending workflows.
+
+4. **ZOMBIES Scope Sizing**:
+   - Ensure stories are sliced into **Simple (S)** $\le 1$ week scope with **One (O)** primary success path.
+   - Decompose **Many (M)** (bulk actions / complex lists) into separate stories, delegating UI list views to [GUI Specifications](./gui-screen-slug.md).
+
+---
+
+## 4. Scope Boundary Standards & Anti-Patterns
 
 - **Value-Driven Boundaries**: Every story slice must deliver testable functionality or system capabilities to a human user, API consumer, or downstream system.
 - **No Pure Engineering Sub-Tasks**: Engineering tasks (e.g., database indexing, unit test authoring, code refactoring, CI/CD pipeline setup) belong in sprint engineering tracking tools, not as backlog User Stories.

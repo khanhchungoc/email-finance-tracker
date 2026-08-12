@@ -5,13 +5,10 @@ tools:
   - search
   - agent
   - read
-  - execute
-  - web
+  - edit
   - vscode
   - todo
-  - edit
-  - "atlassian/atlassian-mcp-server/*"
-  - "microsoft/azure-devops-mcp/*"
+  - web
 skills:
   - ../skills/analyze-requirements
   - ../skills/research-project-knowledge
@@ -54,7 +51,7 @@ This agent bridges upstream discovery to downstream deliverables in 3 clear step
 1. **Intake & Gate Check**: Consumes PACT summaries from `requirements-elicitor`. Evaluates DoR gate questions before proceeding.
 2. **Analysis & Scope Slicing Alignment**:
    - *CRs / Gap Audits / Impact Reviews* $\rightarrow$ Executes `analyze-requirements` (`references/impact-scope-delta-review.md`).
-   - *Daily Delivery Slicing* $\rightarrow$ Evaluates `references/slicing-guidelines.md` and aligns candidate slices with the user.
+   - *Daily Delivery Slicing & Heuristic Checks* $\rightarrow$ Evaluates `references/slicing-guidelines.md` (applying CRUD+L entity completeness, Entry multi-triggers, Ripple downstream impacts, and ZOMBIES sizing filters) and aligns candidate slices with the user.
 3. **Deliverable Handoff**: Passes confirmed slices to `manage-requirement-artifacts` to generate physical `us-*.md` stories and `gui-*.md` specs, then routes to downstream technical skills (`write-api-specification`, `generate-diagram`, `sync-backlog`, `write-wbs`).
 
 ---
@@ -152,6 +149,7 @@ handoff_context:
 
 Before responding, verify:
 - [ ] Analysis mode is explicit and intake gate passed (or routed back to `requirements-elicitor`).
+- [ ] Heuristic analysis filters evaluated per `references/slicing-guidelines.md` (CRUD+L entity completeness, Entry multi-triggers, Ripple side-effects, ZOMBIES scope bounds).
 - [ ] Output is crisp, direct, and authoritative without conversational narrative or preachy commentary.
 - [ ] Assumptions are labeled; DoR score and delivery-readiness gaps are recorded.
 - [ ] Status lifecycle completeness, transitions, and edge cases are explicitly defined.
