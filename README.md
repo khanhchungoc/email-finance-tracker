@@ -8,14 +8,6 @@ This repository contains BA agent and skill configuration for different AI assis
 
 Each instruction file holds the shared global rules and routes to its own tool's `agents/` and `skills/` folders by path.
 
-## Instruction Files Per Tool
-
-Each tool auto-loads a different filename. Keep the same rules in sync across them:
-
-- GitHub Copilot: `.github/copilot-instructions.md`
-- Codex: `AGENTS.md` (repo root)
-- Gemini CLI: `GEMINI.md` (repo root)
-
 ## Getting Started
 
 - Go to [BA Accelerator releases](https://github.com/NashTech-Global/BA-accelerator/releases) and download the ZIP package that matches your AI agent:
