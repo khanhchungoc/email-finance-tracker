@@ -44,7 +44,6 @@ If the needed KB files do not exist, say what is missing and continue with the a
 | Requirements analysis | specified input files, related output hierarchy | `solution-context/` for behavior/data/API; `wiki/` for scope/risk/acceptance |
 | API requirements | specified input files, related initiative/epic | `solution-context/` for systems, consumers, providers, API, data, integration |
 | User story drafting | related initiative/epic folder | input file, parent epic folder `index.md`, solution context for UI/API/data behavior |
-| Presales/WBS | specified input files, related hierarchy | `wiki/` for scope, assumptions, exclusions, dependencies, risks |
 | GUI/wireframe | related story/epic | `solution-context/` for screens, workflow, permissions, data |
 | Diagram | related story/epic/input | `solution-context/` for actors, systems, flow, data, integration |
 

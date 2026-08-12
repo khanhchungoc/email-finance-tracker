@@ -1,6 +1,6 @@
 ---
 description: "Assesses requirement readiness, produces structured analysis findings, and recommends the appropriate downstream route."
-argument-hint: "Describe the requirement, brief, epic, feature, user story, API, WBS input, or change request to analyze."
+argument-hint: "Describe the requirement, brief, epic, feature, user story, API, or change request to analyze."
 tools:
   - search
   - agent
@@ -28,10 +28,6 @@ handoffs:
     agent: api-requirements-analyst
     prompt: 'Clarify API or backend behavior found during analysis. Handoff: `dor_status: INCOMPLETE`.'
     send: false
-  - label: Prepare Pre-Sales BA Input
-    agent: presales-analyst
-    prompt: 'Convert analyzed requirements into pre-sales estimation context. Handoff: `dor_status: COMPLETE`.'
-    send: false
 ---
 
 # Business Requirements Analyst Agent
@@ -52,7 +48,7 @@ This agent bridges upstream discovery to downstream deliverables in 3 clear step
 2. **Analysis & Scope Slicing Alignment**:
    - *CRs / Gap Audits / Impact Reviews* $\rightarrow$ Executes `analyze-requirements` (`references/impact-scope-delta-review.md`).
    - *Daily Delivery Slicing & Heuristic Checks* $\rightarrow$ Evaluates `references/slicing-guidelines.md` (applying CRUD+L entity completeness, Entry multi-triggers, Ripple downstream impacts, and ZOMBIES sizing filters) and aligns candidate slices with the user.
-3. **Deliverable Handoff**: Passes confirmed slices to `manage-requirement-artifacts` to generate physical `us-*.md` stories and `gui-*.md` specs, then routes to downstream technical skills (`write-api-specification`, `generate-diagram`, `sync-backlog`, `write-wbs`).
+3. **Deliverable Handoff**: Passes confirmed slices to `manage-requirement-artifacts` to generate physical `us-*.md` stories and `gui-*.md` specs, then routes to downstream technical skills (`write-api-specification`, `generate-diagram`, `sync-backlog`).
 
 ---
 
@@ -69,7 +65,6 @@ This agent bridges upstream discovery to downstream deliverables in 3 clear step
 - Initial stakeholder discovery when input is too unclear (route to `requirements-elicitor`).
 - Detailed API contract schemas (route to `api-requirements-analyst` / use `write-api-specification`).
 - Physical `.md` file creation, placement, and index synchronization (use `manage-requirement-artifacts`).
-- Pre-sales estimation packaging or WBS tables (route to `presales-analyst` / use `write-wbs`).
 
 ---
 

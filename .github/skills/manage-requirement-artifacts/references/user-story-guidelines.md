@@ -112,7 +112,6 @@ System details owned by specialist skills / guidelines:
 
 - Detailed UI field dictionaries, individual regex patterns, character limits, component visual states, and default values belong in GUI Specifications (`gui-<screen-slug>.md` per `references/gui-specification-guidelines.md`).
 - Endpoint schemas, database mappings, request/response payloads, technical error codes, and serialization rules belong in `write-api-specification`.
-- WBS estimates, work package breakdowns, or commitment language belong in `write-wbs`.
 
 ## Screen Enhancement Stories (Modifying Existing Screens)
 

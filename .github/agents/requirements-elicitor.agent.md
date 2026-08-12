@@ -25,10 +25,6 @@ handoffs:
     agent: business-requirements-analyst
     prompt: 'Analyze elicitation output for gaps, readiness, dependencies, risks, assumptions, impact, and the next route. Handoff: `pact_status: COMPLETE`.'
     send: false
-  - label: Prepare Pre-Sales Context
-    agent: presales-analyst
-    prompt: 'Convert elicitation outputs into pre-sales questions and estimation context. Handoff: `pact_status: COMPLETE`.'
-    send: false
 ---
 
 # Requirements Elicitor Agent
@@ -168,5 +164,4 @@ When elicitation is complete, the user asks to proceed, or items are parked, pro
 |---|---|
 | API/backend clarification or endpoint contract needed | `api-requirements-analyst` |
 | Requirement quality review, SMART checks, dependency/impact analysis, or backlog slicing | `business-requirements-analyst` |
-| Pre-sales proposal framing, WBS breakdown, ballpark estimation | `presales-analyst` |
 | User stories, GUI specs, diagrams, wireframes, or delivery artifacts | `business-requirements-analyst` (default route) |

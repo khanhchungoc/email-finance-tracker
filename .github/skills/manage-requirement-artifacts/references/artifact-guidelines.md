@@ -59,14 +59,6 @@ Read `references/user-story-guidelines.md`. Do not create or refine user stories
 - **Placement rules**: if a diagram supports a specific user story, write it in the `diagrams/` folder under that story's epic and link the story to the diagram. If the diagram spans multiple epics, write it in the initiative folder and link the relevant epic indexes or stories to it.
 - **Avoid**: diagrams without surrounding explanation, unlabeled decision points, or a missing link from related user stories.
 
-## WBS
-
-- **Purpose**: break down delivery scope for planning or estimation.
-- **Owner**: `write-wbs`.
-- **Location**: relevant epic folder as `wbs-<scope-slug>.md`.
-- **Must include**: scope rows, assumptions, risks, exclusions, dependencies, additional efforts, and source references.
-- **Avoid**: treating estimates as commitments unless the user explicitly confirms.
-
 ## Requirements Analysis
 
 - **Purpose**: evaluate readiness, gaps, dependencies, SMART quality, or impact.

@@ -43,7 +43,6 @@ flowchart TD
 - **To `write-api-specification`**: When backend endpoint contracts or schemas are required.
 - **To `generate-diagram`**: When visual workflow or state transition diagrams are required.
 - **To `sync-backlog`**: When backlog-ready items are ready for Jira or Azure DevOps sprint synchronization.
-- **To `write-wbs`**: When finalized stories/specs are ready for estimation and work package breakdown.
 - **To `update-project-knowledge`**: When stable domain concepts emerge to distill into `project-knowledge-base/`.
 
 ---
@@ -76,7 +75,6 @@ requirements/
                     |-- diagrams/
                     |   |-- diagram-<diagram-slug>.md
                     |   `-- diagram-<diagram-slug>.bpmn
-                    |-- wbs-<scope-slug>.md
                     `-- analysis-<analysis-slug>.md
 ```
 
@@ -108,5 +106,5 @@ requirements/
 ## Artifact Boundaries
 
 - **Owns**: Story placement, GUI component tables, screen change logs, and `requirements/` folder indexing.
-- **Does Not Own**: Endpoint schemas (`write-api-specification`), Mermaid/BPMN rendering (`generate-diagram`), HTML mockups (`generate-wireframe`), or estimation tables (`write-wbs`).
+- **Does Not Own**: Endpoint schemas (`write-api-specification`), Mermaid/BPMN rendering (`generate-diagram`), or HTML mockups (`generate-wireframe`).
 - Do not move deliverables to `project-knowledge-base/` or edit raw files in `requirements/input/`.

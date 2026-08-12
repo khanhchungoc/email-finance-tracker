@@ -37,8 +37,6 @@ Technique playbook and checklist library for requirements elicitation across sco
 7. **NFRs & Compliance**: Security, compliance (GDPR/HIPAA/PCI), accessibility, SLAs.
 8. **Delivery & Risks**: Rollout phasing, technical debt, assumptions, handoff readiness.
 
-*Rule*: Do not turn feature discovery maps into estimation WBS tables (route estimation to `presales-analyst` / `write-wbs`).
-
 ---
 
 ## 3. UI, Form & Data Detail Checklist

@@ -57,10 +57,8 @@ To manage requirements across interconnected systems, structure your workspace a
       └── 📁 .github/            
            ├── 📁 agents/        
            ├── 📁 skills/        
-           │    ├── 📁 write-api-specification/
-           │    │    └── SKILL.md       (Your specific skill instructions)
-           │    └── 📁 write-wbs/
-           │         └── SKILL.md
+           │    └── 📁 write-api-specification/
+           │         └── SKILL.md       (Your specific skill instructions)
            │
            └── copilot-instructions.md  (Your global BA instructions)
 ```
@@ -93,9 +91,8 @@ Use the agents like this:
 - `requirements-elicitor`: ask the right questions, clarify scope, separate user-answerable and client-validation questions, and maintain the parking lot.
 - `business-requirements-analyst`: uses specialist skills to produce the final requirements artifacts after checking readiness, gaps, and impact.
 - `api-requirements-analyst`: clarify API/backend behavior before API specification work.
-- `presales-ba`: prepare red-hat estimation inputs, assumptions, risks, exclusions, WBS/ballpark context, and client questions after the elicitation checkpoint. Direct presales requests should still start through `requirements-elicitor`.
 
-For direct artifact requests, ask for the matching skill output, such as UX solution evaluations, user stories, API specs, diagrams, GUI specs, wireframes, WBS, or sprint scope emails.
+For direct artifact requests, ask for the matching skill output, such as UX solution evaluations, user stories, API specs, diagrams, GUI specs, wireframes, or sprint scope emails.
 
 ## Skills Overview
 
@@ -115,7 +112,6 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 - `update-project-knowledge`: updates outsourcing Wiki bundles with Markdown concept files, YAML frontmatter, progressive indexes, logs, citations, client/vendor delivery context, scope, assumptions, risks, and cross-links.
 - `research-project-knowledge`: read-only KB research before BA work so agents inspect task-relevant Wiki instead of scanning the whole workspace.
 - `evaluate-ux-solution`: UX reviews for usability, accessibility, responsiveness, feasibility, and edge cases.
-- `write-wbs`: WBS breakdowns with assumptions, risks, remarks, and additional effort notes.
 - `generate-wireframe`: HTML/text wireframes and responsive screen layout artifacts.
 
 ### Quick Routing Guide

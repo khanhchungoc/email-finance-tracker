@@ -4,7 +4,7 @@ This is the GitHub Copilot instruction file. GitHub Copilot uses `.github/copilo
 
 ## Purpose
 
-This workspace supports outsourcing BA and software delivery work: elicitation, requirements analysis, user stories, API specifications, diagrams, wireframes, GUI specifications, WBS preparation, data mapping, and sprint communications.
+This workspace supports outsourcing BA and software delivery work: elicitation, requirements analysis, user stories, API specifications, diagrams, wireframes, GUI specifications, data mapping, and sprint communications.
 
 Project-specific context must come from the user, accessible source files, or clearly labeled assumptions.
 
@@ -16,9 +16,7 @@ Project-specific context must come from the user, accessible source files, or cl
 - Ask targeted clarifying questions when missing information materially affects estimation, delivery, testing, compliance, support, or approval.
 - Do not fabricate file contents, requirements, API fields, mappings, diagrams, estimates, source references, or stakeholder decisions.
 - Challenge unclear, contradictory, risky, untestable, or impractical inputs with concise reasoning and practical alternatives.
-- Authoritative & High-Density Delivery: Produce direct, structured outputs focused strictly on scope, logic, and artifacts. Omit conversational filler, meta-commentary, and methodology lecturing.
-- Treat pre-sales, discovery, estimation, delivery, sprint support, and post-release support as different work modes. Do not turn one mode's output into another mode's commitment unless the user explicitly confirms the transition.
-- Keep outputs clear enough for asynchronous review. Use tables, flows, examples, and acceptance criteria only when they improve precision. When a response would contain a table or a list of more than 7 items, the output-offload rule in the Startup section takes precedence: write the full content to a file and keep only a summary inline.
+- Produce direct, structured outputs focused on scope, logic, and artifacts. Keep pre-sales, discovery, estimation, delivery, sprint support, and post-release support distinct unless the user explicitly confirms a transition.
 
 ## Responsibility Boundary
 
@@ -44,50 +42,19 @@ Known workspace roots include:
 
 ## BA Routing & Elicitor-First Gate
 
-For BA workflow routing, intake, and first-step clarification, read and follow `.github/agents/requirements-elicitor.agent.md`.
-
-### Elicitor-First Gate Summary
-
-All BA requests involving requirements, scope, estimation, or artifact creation MUST pass through the Elicitor-First Gate before generating downstream artifacts:
-1. **Check Exceptions**: Skip elicitation ONLY if the user explicitly requests to skip, if the task is a narrow mechanical edit, or if the request is purely meta/configuration.
-2. **Execute Checkpoint**: Ask 1–3 targeted clarifying or confirmation questions before producing downstream artifacts.
-3. **Route**: Upon user response or confirmed assumptions, route to the appropriate downstream agent or skill.
-
-See `.github/agents/requirements-elicitor.agent.md` for full intake gate rules and non-interactive subagent guidelines.
+For BA requests involving requirements, scope, estimation, or artifact creation, route through `.github/agents/requirements-elicitor.agent.md` unless the user explicitly skips elicitation, the task is a narrow mechanical edit, or it is a meta/configuration request. The elicitor agent owns the full gate, question batching, triage, and handoff rules.
 
 ## Lifecycle Hooks and Workflow Gates
 
-`.github/hooks/ba-workflow.json` runs a supported `PostToolUse` hook that reminds the agent to apply the relevant artifact or project-knowledge checklist after matching writes.
+`.github/hooks/ba-workflow.json` runs post-write checks for changes under `requirements/` and `project-knowledge-base/`, including index reminders, status-frontmatter checks, complex-logic prompts, and BPMN post-processing.
 
-The intake gate remains an agent workflow rule because it depends on conversation context. Downstream agents require a PACT handoff or explicit `skip_elicitation: true`; `requirements-elicitor` is the entry point and must not route to itself.
-
-Handoff summaries must include `handoff_context` with `from_agent`, `to_agent`, and applicable status fields.
+The intake gate remains an agent workflow rule because it depends on conversation context. Downstream handoffs must follow the receiving agent or skill's schema, including any required status fields. `requirements-elicitor` is the entry point and must not route to itself.
 
 ## Mandatory Agent And Skill Triggers
 
-Always read and follow the matching `.github/agents/*.agent.md` or `.github/skills/*/SKILL.md` file when the user asks to analyze, create, revise, review, or convert a BA artifact covered by a local agent or skill:
-
-- Project knowledge research or KB lookup: `.github/skills/research-project-knowledge/SKILL.md`.
-- Diagram, process flow, BPMN, sequence, state, or ERD: `.github/skills/generate-diagram/SKILL.md`.
-- Wireframe, screen mockup, UI layout, or visual screen mockup: `.github/skills/generate-wireframe/SKILL.md`.
-- GUI specifications, UI component tables, screen behavior handoffs, user story authoring, and requirement folder hierarchy: `.github/skills/manage-requirement-artifacts/SKILL.md`.
-- API specification, contract schema, data dictionary, or mapping rule: `.github/skills/write-api-specification/SKILL.md`.
-- WBS, ballpark estimate table, or scope breakdown: `.github/skills/write-wbs/SKILL.md`.
-- Requirement gap scan, SMART check, dependency/impact review, or analysis report: `.github/agents/business-requirements-analyst.agent.md`.
-- Sprint scope email or backlog push/pull sync via MCP: `.github/agents/backlog-manager.agent.md` and `.github/skills/sync-backlog/SKILL.md`.
-- Project wiki update, durable facts distillation, or OKF maintenance: `.github/skills/update-project-knowledge/SKILL.md`.
-- API requirements clarification or contract readiness: `.github/agents/api-requirements-analyst.agent.md`.
-- Pre-sales red-hat estimation inputs, assumptions, risks, or Q&A pack: `.github/agents/presales-analyst.agent.md`.
-- Document processing: `.github/skills/pdf/SKILL.md`, `.github/skills/pptx/SKILL.md`, `.github/skills/xlsx/SKILL.md`, `.github/skills/docx/SKILL.md`.
-
-If a request spans multiple artifact types, follow each relevant agent or skill.
+Always read and follow the matching `.github/agents/*.agent.md` or `.github/skills/*/SKILL.md` file when the user asks to analyze, create, revise, review, or convert a BA artifact. Use the owning file's procedure and output format; for requests spanning multiple artifact types, follow each relevant owner.
 
 ## Startup & Output Offloading
 
-When beginning a request:
-1. Read relevant source material in the workspace.
-2. Apply the Elicitor-First Gate for BA work unless an exception applies.
-3. Follow the matching agent or skill file.
-4. Produce the requested output, keeping assumptions, risks, dependencies, exclusions, and open questions separated.
-5. **Output Offloading**: When an intermediate chat response contains a large working table or list of more than 7 items, write the full working content to a Markdown file in `.github/memory/` and provide a concise summary inline with a file link. Primary deliverable artifacts (user stories, GUI specs, API specs, diagrams, wireframes, WBS) are written directly to `requirements/output/` per `.github/skills/manage-requirement-artifacts/SKILL.md`.
+When beginning a request, read the relevant source material and the owning agent or skill. Keep assumptions, risks, dependencies, exclusions, and open questions separate. When an intermediate response contains a table or list of more than 7 items, write the full working content to Markdown in `.github/memory/` and provide a concise inline summary. Write primary BA deliverables directly to `requirements/output/` under the placement rules owned by `.github/skills/manage-requirement-artifacts/SKILL.md`.
 
