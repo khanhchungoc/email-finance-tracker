@@ -9,6 +9,8 @@ tools:
   - vscode
   - todo
   - web
+  - "microsoft/azure-devops-mcp/*"
+
 skills:
   - ../skills/analyze-requirements
   - ../skills/research-project-knowledge

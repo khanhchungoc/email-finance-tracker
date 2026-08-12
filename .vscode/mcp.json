@@ -10,22 +10,8 @@
       "args": [
         "-y",
         "@azure-devops/mcp@latest",
-        "${input:ado_org}",
-        "-d",
-        "${input:ado_domain}"
+        "NTG-Projects"
       ]
     }
-  },
-  "inputs": [
-    {
-      "type": "promptString",
-      "id": "ado_org",
-      "description": "Azure DevOps organization name"
-    },
-    {
-      "type": "promptString",
-      "id": "ado_domain",
-      "description": "Azure DevOps domain, for example dev.azure.com"
-    }
-  ]
+  }
 }
