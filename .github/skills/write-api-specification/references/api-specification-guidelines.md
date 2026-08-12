@@ -29,12 +29,12 @@ Rules for creating a generic BA-friendly API specification.
 
 ## Processing Rules
 
-Cover:
-- Validation and error branches.
-- Business rules and decision points.
+Must use explicit `IF / ELSE` logic for:
+- Validation and error branches (e.g., `IF <field>` is missing, `THEN` return `400 Bad Request`).
+- Business rules and decision points (e.g., `IF <status> == 'ACTIVE'`, `THEN` call Provider A, `ELSE` call Provider B).
 - Data lookups, source-system calls, or downstream calls when relevant.
 - Transformation, defaulting, filtering, sorting, aggregation, pagination, or idempotency behavior when relevant.
-- Required vs optional source calls, and what happens when a source call fails.
+- Required vs optional source calls, and what happens when a source call fails (e.g., `IF <downstream call>` times out, `THEN` execute retry or return `502 Bad Gateway`).
 
 If multiple data sources are involved, define simple aliases in the specification and reuse the same aliases in mapping tables.
 
@@ -43,7 +43,7 @@ If multiple data sources are involved, define simple aliases in the specificatio
 - Break responses down by meaningful HTTP status code.
 - For each response, explain when it occurs and show the body shape if applicable.
 - If there is a structured success response body, document the full body in one response body data dictionary.
-- Use one response body mapping when response fields are sourced or transformed from databases, services, upstream APIs, or internal calculations.
+- Use one response body mapping when response fields are sourced or transformed from databases, services, upstream APIs, or internal calculations. Include explicit `IF NULL` fallback rules.
 - Omit response mapping when fields are static, self-explanatory, or no source mapping is needed.
 
 ## Error Responses
@@ -57,9 +57,18 @@ If multiple data sources are involved, define simple aliases in the specificatio
 
 Do not create a standalone optional operational details section by default. Include authentication, authorization, rate limiting, idempotency, pagination, caching, audit, logging, performance, timeout, retry, fallback, versioning, compliance, retention, sensitive data handling, or supporting diagram references only where they affect the relevant contract, processing rule, error response, assumption, or open question.
 
-## Documentation Standards
+## Documentation & Formatting Standards
 
+- **Zero-Fluff & Unambiguous Logic**:
+  - Document "what", never "why". Omit justifications, rationale, conversational filler ("Here is...", "Note that..."), or design history.
+  - State rules using absolute, declarative language.
+  - Avoid vague verbs (`process`, `handle`, `resolve`). Use concrete verbs (`look up X in Y`, `match X to Y`, `return X when Y`).
+  - Keep rules self-contained without relying on implicit row evaluation order.
+- **AI Token & Compact Table Formatting**:
+  - Use minimal 3-dash dividers (`|---|---|`) for table headers. Never extend dashes to match column widths (avoid `|---------------------|`).
+  - Do not append extra whitespace inside cells to visually align pipe (`|`) characters across rows.
 - Prefer tables for fields, parameters, mappings, and errors.
 - Keep examples realistic but clearly non-production.
 - Use `TBD` only for optional unknowns. Ask questions for required or critical unknowns.
 - Keep assumptions and open questions visible at the end of the spec.
+

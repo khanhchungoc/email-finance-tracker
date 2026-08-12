@@ -10,6 +10,14 @@ Rules for documenting request and response body fields for a single API.
 - Use paths such as `customer.id`, `customer.address.postcode`, and `items[].quantity`.
 - If there is no request body or no structured response body, omit the corresponding dictionary.
 
+## Zero-Fluff & Formatting Standards
+
+- **Document "what", never "why"**: Keep field descriptions and constraints technical and direct. Omit conversational filler or historical rationale.
+- **Concrete Constraints**: State data types, required/nullable flags, formats (`ISO-8601`, `UUIDv4`), and validation bounds (`min 1, max 100`) directly.
+- **Compact Table Formatting & AI Token Optimization**:
+  - Use minimal 3-dash dividers (`|---|---|`) for table headers. Never extend dashes to match column widths.
+  - Do not append extra whitespace inside cells to visually align pipe (`|`) characters across rows.
+
 ## Field Descriptions
 
 For each field, explain:
@@ -36,6 +44,6 @@ Avoid generic descriptions such as "status field" or "unique identifier" unless 
 
 ## Validation Rules
 
-- Put consumer-facing validation behavior in the API spec, not hidden in notes.
+- Put consumer-facing validation behavior in the API spec processing rules, not hidden in notes.
 - For required fields with unknown rules, ask a targeted question.
 - For optional fields with unclear rules, mark `TBD` and list the question.

@@ -9,6 +9,12 @@ Create clear, implementation-ready API specifications for any custom software pr
 
 ## Core Rules
 
+- **Solution & Provider Research Gate**: Before proposing new endpoints, dictionary fields, or mappings, mandate running `research-project-knowledge` (Tiers 1 & 2) to inspect existing API contracts, domain models, solution context, and intake materials.
+- **DRY / SSOT Impact Analysis**: Before creating `api-<slug>.md` under `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`, search existing initiative/epic folders and `project-knowledge-base/solution-context/` to verify if the endpoint, data model, or dictionary already exists. Ensure single source of truth and eliminate duplicate definitions.
+- **Elicitation-First & Change Plan Gate**: Default to `Elicitation-Only` mode. Do not create or edit spec files while discussing or clarifying requirements. Present a formal **Change Plan** (Target File Path, Impacted APIs/Models, DRY Rationale, Assumptions, Downstream Consumer Impact) and obtain **Explicit User Approval** before switching to file authoring/update mode.
+- **Strict `If/Else` Processing Rules**: Write processing rules using explicit `IF / ELSE` logic for validations, business rules, conditional branches, error handling, and transformation fallbacks.
+- **Zero-Fluff & Unambiguous Logic**: Document "what", never "why". Omit justifications, rationale, conversational filler ("Here is the logic", "Note that..."), and design history. Forbid vague verbs ("process", "handle", "resolve") — use concrete verbs ("match X to Y", "look up X in Y", "return X when Y"). State rules self-contained without implicit row precedence.
+- **Compact Table Formatting & AI Token Optimization**: Use minimal 3-dash dividers (`|---|---|`) for table headers (never extend dashes to align columns visually). Do not append extra whitespace inside cells to visually align pipe (`|`) characters across rows.
 - Do not assume a storage path, API version, headers, auth model, logging standard, source system, target system, or naming convention unless the user provides it.
 - Create one API specification per endpoint or operation.
 - Keep request/response body dictionaries and mappings in the API specification, or in one same-scope artifact per API if the user asks for files.
@@ -33,13 +39,29 @@ Load only what is needed:
 
 ## Procedure
 
-### 1. Collect Context
+### 1. Solution & Provider Research
 
-Collect the supplied API purpose, consumer, operation name, HTTP method, endpoint path, headers, path/query parameters, request body, response body, source/target systems, business rules, errors, examples, and confirmed API-specific NFRs.
+Run `research-project-knowledge` to search `project-knowledge-base/` (solution-context, wiki, glossary) and `requirements/` (input files, output initiatives/epics) to discover existing API contracts, schemas, domain terms, and provider boundaries before framing questions.
+
+### 2. Elicit Context & Edge Cases
+
+Operate in **Elicitation-Only** mode. Collect supplied API purpose, consumer, operation name, HTTP method, endpoint path, headers, path/query parameters, request/response bodies, business rules, happy path, edge cases (timeouts, invalid input, missing configs, provider errors), and confirmed NFRs.
 
 If the user provides existing OpenAPI/Swagger, technical docs, payload samples, database fields, or source-system schemas, use those as source evidence. Do not invent endpoints or fields.
 
-### 2. Create the API Specification
+### 3. DRY / SSOT Check & Change Plan Gate
+
+Identify target specification path under `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`. 
+- **DRY / SSOT Check**: Search existing specs to ensure the logic isn't already defined elsewhere.
+- **Change Plan Presentation**: Output a Change Plan containing:
+  - Target file path
+  - Affected APIs, models, and mapping tables
+  - DRY/SSOT Rationale
+  - Impacted downstream consumers / systems
+  - Key assumptions
+- **Explicit Approval**: Wait for user confirmation before modifying or generating files.
+
+### 4. Create or Update the API Specification
 
 Use `assets/api-specification-template.md` (read using your file-reading tools). Keep the order:
 
@@ -47,12 +69,12 @@ Use `assets/api-specification-template.md` (read using your file-reading tools).
 2. Summary
 3. Description
 4. Request contract
-5. Processing rules
+5. Processing rules (written with explicit `IF / ELSE` logic)
 6. Response contract
 7. Error responses
 8. Open questions and assumptions
 
-### 3. Define the Request Contract
+### 5. Define the Request Contract
 
 Document headers, path parameters, query parameters, and request body if applicable.
 
@@ -61,43 +83,42 @@ For request bodies:
 - Use one `Request Body Mapping` section when mapping from the API request to another system, service, workflow, database, or downstream API is needed.
 - Represent nested fields inline with paths; do not create child model files.
 
-### 4. Define Processing Rules
+### 6. Define Processing Rules with Strict `IF / ELSE` Logic
 
-Describe business logic, validation, data lookups, orchestration, conditional branches, and transformation rules. Keep BA-level clarity: enough for delivery teams to understand behavior, without pretending to own low-level solution design.
+Describe business and integration behavior step by step using explicit `IF / ELSE` logic:
+- `IF <field>` is missing or invalid, `THEN` return `<HTTP status and error code>`.
+- `IF <condition>` is met, `THEN` query `<Source System / Alias>`, `ELSE` fallback to `<Default / Backup>`.
+- `IF <provider call>` fails or times out, `THEN` execute `<retry / error mapping rule>`.
 
 If external or internal data sources are involved, define clear aliases in the spec and reuse those aliases in mapping tables.
 
-### 5. Define the Response Contract
+### 7. Define the Response Contract
 
 Document each meaningful response status separately.
 
 For structured response bodies:
 - Use one `Response Body Data Dictionary` section for the full body.
-- Use one `Response Body Mapping` section when mapping from a source system, database, service, or upstream API to the API response is needed.
+- Use one `Response Body Mapping` section when mapping from a source system, database, service, or upstream API to the API response is needed. Include explicit `IF NULL` fallback rules.
 - Represent nested fields inline with paths; do not create child model files.
 
-### 6. Define Errors
+### 8. Define Errors
 
-Document standard and API-specific errors only when known or provided. Include authentication, authorization, audit, tracking, logging, rate limit, idempotency, pagination, caching, versioning, compliance, or other NFR details only inside the relevant contract, processing rule, error, assumption, or open question when supplied or confirmed and when they affect the API contract or user request.
+Document standard and API-specific errors only when known or provided. Include status code, error code, message, and explicit triggering conditions. Include authentication, authorization, audit, tracking, logging, rate limit, idempotency, pagination, caching, versioning, compliance, or other NFR details where they affect the API contract.
 
-### 7. Generate Samples
+### 9. Generate Samples
 
 Provide realistic request and response examples when enough information exists. Mark example values clearly as examples.
 
-### 8. Review
+### 10. Review & Quality Check
 
 Check that required fields are documented, mappings are complete, assumptions are visible, and all unresolved items are listed as open questions.
 
 ## Quality Checklist
 
-- [ ] API endpoint and method are explicitly provided or verified.
-- [ ] Headers, path parameters, query parameters, and body fields are documented when applicable.
-- [ ] No endpoint, field, header, status code, source system, or business rule is invented.
-- [ ] Request body has at most one full-body data dictionary and one full-body mapping.
-- [ ] Response body has at most one full-body data dictionary and one full-body mapping.
-- [ ] Nested objects use field paths instead of separate model files.
-- [ ] Required fields, nullability, validation, and examples are clear.
-- [ ] Processing rules cover main success, validation, and exception branches.
-- [ ] Confirmed API-specific NFRs are documented where they affect the contract or behavior, and missing critical NFRs are listed as open questions.
-- [ ] Mapping gaps are marked with questions or `TBD` according to criticality.
-- [ ] Project-specific terminology appears only when supplied by the user.
+- [ ] **Research & DRY Check**: `research-project-knowledge` ran; target path verified for DRY/SSOT (no duplicate specs or models).
+- [ ] **Approval Gate**: Elicitation-first Change Plan presented and explicitly approved before file creation/modification.
+- [ ] **Contract Accuracy**: Endpoint, method, headers, parameters, and inline data dictionaries are explicit without inventing unconfirmed facts.
+- [ ] **Explicit `IF / ELSE` Logic**: Processing rules use clear conditional logic for validations, business branches, and error fallbacks.
+- [ ] **Gaps & Assumptions**: Nullability, NFR impact, and unresolved items are clearly listed as assumptions or open questions.
+
+

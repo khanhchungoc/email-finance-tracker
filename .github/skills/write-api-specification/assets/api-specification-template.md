@@ -74,11 +74,26 @@ Omit this section when no request body mapping or transformation is needed.
 
 ## 5. Processing Rules
 
-Describe the business and integration behavior step by step.
+Describe the business and integration behavior step by step using numbered steps and explicit `IF / THEN / ELSE` logic.
 
-| Step | Rule / Behavior | Outcome |
-|---|---|---|
-| 1 | `<validation, lookup, branch, transformation, or call>` | `<result>` |
+1. **Input & Pre-Condition Validation**
+   - **IF** `<field.path>` is missing, null, or fails format validation (`<validation rule>`):
+     - **THEN** halt execution and return `400 Bad Request` with error code `<code>` and message `"<message>"`.
+   - **ELSE** proceed to Step 2.
+
+2. **Core Business Logic & Orchestration**
+   - **IF** `<business condition>` is met (e.g. `<status> == 'ACTIVE'`):
+     - **THEN** execute `<action / call target system X>`.
+   - **ELSE IF** `<alternative condition>`:
+     - **THEN** execute `<alternative action / fallback rule>`.
+   - **ELSE**
+     - **THEN** halt execution and return `422 Unprocessable Entity` with error code `<code>`.
+
+3. **Downstream Integration & Exception Handling**
+   - **IF** call to `<Source/Target System>` fails or times out:
+     - **THEN** execute retry strategy (`<retry rule / N/A>`).
+     - **IF** retries are exhausted or non-retryable error occurs:
+       - **THEN** return `502 Bad Gateway` with error code `<code>` and details.
 
 ---
 

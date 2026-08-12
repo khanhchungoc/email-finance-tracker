@@ -11,6 +11,20 @@ Rules for documenting request and response body mappings for a single API.
 - Required or critical mappings unclear -> ask the user.
 - Optional mappings unclear -> use `TBD` and list a review question.
 
+## Zero-Fluff & Unambiguous Mapping Rules
+
+- **Document "what", never "why"**: State mapping rules directly. Omit justifications, rationale, or design history inside mapping cells.
+- **Concrete Mapping Verbs**: Forbid vague verbs (`process`, `handle`, `resolve`). Use concrete verbs:
+  - `Direct map <source.path>`
+  - `Look up <source.value> in <Table/Enum alias>`
+  - `Match <source.path> against <pattern>`
+  - `Set to <static value>`
+  - `Return <value> when <condition>`
+- **Self-Contained Cell Rules**: State the source field first, followed by the transformation and null/fallback behavior. Do not rely on implicit row evaluation order across different table rows.
+- **Compact Table Formatting & AI Token Optimization**:
+  - Use minimal 3-dash dividers (`|---|---|`) for table headers. Never extend dashes to match column widths (avoid `|---------------------|`).
+  - Do not append extra whitespace inside cells to visually align pipe (`|`) characters across rows. Use single spaces around contents (`| value |`).
+
 ## Request Mapping
 
 Use when fields from the API request are transformed, validated, enriched, or passed to another system, service, workflow, database, or downstream API.
@@ -36,19 +50,19 @@ Recommended columns:
 
 ## Transformation Rules
 
-- Direct pass-through: `Direct map <source field path>`.
+- Direct pass-through: `Direct map <source.path>`.
 - Static value: `Set to <value>`.
-- Derived value: describe the formula or business rule.
-- Lookup/code conversion: name the lookup table, enum, or business rule if known.
+- Derived value: `Compute <formula>` or `Concatenate <field1> and <field2>`.
+- Lookup/code conversion: `Look up <source.path> in <Lookup Alias>`.
 - Unmapped/not applicable: `-`.
 - Unknown but optional: `TBD`.
 
-## Multiple Sources
+## Multiple Sources & Null Fallbacks
 
-When a field depends on multiple sources:
-- Put the primary source in the source column.
-- Describe additional sources and precedence in the transformation column.
-- Explain correlation keys, merge rules, fallback order, and failure behavior when relevant.
+When a field depends on multiple sources or has null fallbacks:
+- Put the primary source in the Source column.
+- In Transformation/Fallback columns, write explicit logic: `IF <primary.source> IS NULL THEN fallback to <secondary.source>, ELSE map <primary.source>`.
+- Explain correlation keys, merge rules, fallback order, and failure behavior using explicit conditional logic.
 
 ## Validation
 
