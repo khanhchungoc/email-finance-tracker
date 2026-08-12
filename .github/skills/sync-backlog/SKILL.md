@@ -56,7 +56,7 @@ Read the appropriate reference for the connected backlog tool:
 
 ## Attachment Handling
 
-- Markdown artifacts (`.md` files for specs, diagrams, wireframes, WBS) are natively supported and should be appended directly to the work item description instead of uploaded.
+- Markdown artifacts (`.md` files for specs, diagrams, wireframes, WBS) should be included as complete Markdown text in the work item description instead of uploaded.
 - Non-markdown files (`.bpmn`, `.html`) should be uploaded as attachments.
 - When re-pushing a story, compare the current spec file content against the previously appended content in the work item description. If they differ, overwrite the appended section with the current spec file content.
 - If a spec file that was previously appended no longer exists in the workspace, notify the agent that the appended content on the work item may be stale. Do not automatically remove it — flag it for the agent to decide.
@@ -85,7 +85,7 @@ Read `assets/sprint-scope-template.md` for the sprint scope template (used for b
 ### Story Points
 
 - Jira: use `customfield_10036`. If null or empty, display as "–".
-- ADO: use `Microsoft.VSTS.Scheduling.StoryPoints` (Agile/CMMI process) or `Microsoft.VSTS.Scheduling.Effort` (Scrum process). Check the project process template to select the correct field.
+- ADO: use `Microsoft.VSTS.Scheduling.StoryPoints` (Agile/CMMI process) or `Microsoft.VSTS.Scheduling.Effort` (Scrum process). Check the project process template to select the correct field. Acceptance criteria use `Microsoft.VSTS.Common.AcceptanceCriteria`.
 - Verify total USPs matches sum of individual story points before finalizing.
 
 ### JQL Pattern (Jira)
