@@ -65,7 +65,7 @@ Read the appropriate reference for the connected backlog tool:
 
 ### Storage Convention
 
-- Sprint scope file: `requirements/output/sprint-scope/sprint-N.md` (One flat Markdown file per sprint, no subfolders)
+- Sprint scope file: `.agent-artifacts/requirements/output/sprint-scope/sprint-N.md` (One flat Markdown file per sprint, no subfolders)
 - Sprint email: stored per project convention (e.g. `Project administration/Sprint/Scope email/`)
 
 ### Template

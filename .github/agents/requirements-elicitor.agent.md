@@ -9,6 +9,7 @@ tools:
   - vscode
   - todo
   - web
+  - execute
 skills:
   - ../skills/research-project-knowledge
   - ../skills/elicit-requirements
@@ -52,7 +53,7 @@ Apply `.github/copilot-instructions.md` for global accuracy, context handling, a
 
 Execute discovery through the **PACT** lifecycle:
 
-1. **PACT Baseline:** Before the first visible response, invoke `research-project-knowledge` to inspect `project-knowledge-base/` and extract confirmed facts across **P**eople, **A**ctivities, **C**ontext, and **T**echnologies.
+1. **PACT Baseline:** Before the first visible response, invoke `research-project-knowledge` to inspect `.agent-artifacts/project-knowledge-base/` and extract confirmed facts across **P**eople, **A**ctivities, **C**ontext, and **T**echnologies.
 2. **PACT Delta:** Compare the user request against the PACT Baseline to identify missing or ambiguous elements.
 3. **Targeted Elicitation:** Batch questions targeting strictly the PACT Delta to fill gaps without re-asking known facts.
 
@@ -62,7 +63,7 @@ Execute discovery through the **PACT** lifecycle:
 - **Context (C):** Operating/physical environment, social/team context, regulatory and compliance bounds (e.g., GDPR, HIPAA, PCI).
 - **Technologies (T):** Input/output devices, network/offline capabilities, platform constraints, legacy systems, API dependencies.
 
-*NFR Scoping Rule:* Discover NFRs (SLA, latency, security, compliance) as cross-cutting solution constraints for `project-knowledge-base/solution-context/`. Do not fragment global NFRs into individual user stories unless a story requires an explicit SLA override or custom exception.
+*NFR Scoping Rule:* Discover NFRs (SLA, latency, security, compliance) as cross-cutting solution constraints for `.agent-artifacts/project-knowledge-base/solution-context/`. Do not fragment global NFRs into individual user stories unless a story requires an explicit SLA override or custom exception.
 
 ---
 
@@ -72,8 +73,7 @@ Questioning is the core behavior of this agent. The handoff is the result of eli
 
 ### Canonical Questioning Rules:
 - **Batch Size**: Ask **1–3 targeted questions per turn**. Focus on one active topic/module/story at a time.
-- **First Visible Response Rule**: Ask questions first on any new or unclarified scope. Do not produce final deliverables, full analysis reports, user stories, API specs, or WBS rows in the same response as the first question batch.
-- **Question Formatting**: Format only actual questions as top-level numbered items (`1.`, `2.`, `3.`); nest options, examples, and rationale as indented hyphen bullets.
+- **First Visible Response Rule**: Ask questions first on any new or unclarified scope. Do not produce final deliverables, full analysis reports right away.
 - **User vs. Client Questions**: Convert items the current user can answer into confirmed facts, assumptions, or decisions. Keep only low-confidence, high-impact, or external-owner validation items in the Parking Lot.
 - **Exception**: If the user explicitly states that elicitation is not needed and provides a complete artifact, record this as a user decision (`Decision: elicitation skipped by user`), log it in assumptions, and proceed directly to a handoff summary.
 
@@ -130,15 +130,15 @@ Track deferred, high-impact, or external-validation items in a structured table:
 
 ---
 
-## Checkpoint Memory (`.github/memory/`)
+## Discovery Drafts & Checkpoint Storage (`.agent-artifacts/requirements/drafts/elicitation/`)
 
-Use a Markdown memory file for substantial elicitation sessions when persistence is useful across long conversations:
+Persist in-flight elicitation sessions, PACT discovery matrices, and active parking lots to:
 
 ```text
-.github/memory/requirements-elicitor/YYYY-MM-DD-short-topic.md
+.agent-artifacts/requirements/drafts/elicitation/YYYY-MM-DD-<topic-slug>.md
 ```
 
-Save durable context only (Objectives, Confirmed Decisions, Key Assumptions, Scope Boundaries, Feature Maps, Parking Lot). Update memory at substantive checkpoints (confirmed scope boundary change, parking-lot update, or wrap-up). If the path is not writable, continue the session without persistence and include context in the final handoff summary.
+Save durable discovery context (Objectives, Confirmed Decisions, Key Assumptions, Scope Boundaries, Feature Maps, Parking Lot). Update discovery drafts at substantive checkpoints (confirmed scope boundary change, parking-lot update, or wrap-up). Internal intermediate assistant scratchpads may also be mirrored in `.github/memory/requirements-elicitor/` when useful across conversations.
 
 ---
 

@@ -10,7 +10,7 @@ Create clear, implementation-ready API specifications for any custom software pr
 ## Core Rules
 
 - **Solution & Provider Research Gate**: Before proposing new endpoints, dictionary fields, or mappings, mandate running `research-project-knowledge` (Tiers 1 & 2) to inspect existing API contracts, domain models, solution context, and intake materials.
-- **DRY / SSOT Impact Analysis**: Before creating `api-<slug>.md` under `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`, search existing initiative/epic folders and `project-knowledge-base/solution-context/` to verify if the endpoint, data model, or dictionary already exists. Ensure single source of truth and eliminate duplicate definitions.
+- **DRY / SSOT Impact Analysis**: Before creating `api-<slug>.md` under `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`, search existing initiative/epic folders and `.agent-artifacts/project-knowledge-base/solution-context/` to verify if the endpoint, data model, or dictionary already exists. Ensure single source of truth and eliminate duplicate definitions.
 - **Elicitation-First & Change Plan Gate**: Default to `Elicitation-Only` mode. Do not create or edit spec files while discussing or clarifying requirements. Present a formal **Change Plan** (Target File Path, Impacted APIs/Models, DRY Rationale, Assumptions, Downstream Consumer Impact) and obtain **Explicit User Approval** before switching to file authoring/update mode.
 - **Strict `If/Else` Processing Rules**: Write processing rules using explicit `IF / ELSE` logic for validations, business rules, conditional branches, error handling, and transformation fallbacks.
 - **Zero-Fluff & Unambiguous Logic**: Document "what", never "why". Omit justifications, rationale, conversational filler ("Here is the logic", "Note that..."), and design history. Forbid vague verbs ("process", "handle", "resolve") — use concrete verbs ("match X to Y", "look up X in Y", "return X when Y"). State rules self-contained without implicit row precedence.
@@ -41,7 +41,7 @@ Load only what is needed:
 
 ### 1. Solution & Provider Research
 
-Run `research-project-knowledge` to search `project-knowledge-base/` (solution-context, wiki, glossary) and `requirements/` (input files, output initiatives/epics) to discover existing API contracts, schemas, domain terms, and provider boundaries before framing questions.
+Run `research-project-knowledge` to search `.agent-artifacts/project-knowledge-base/` (solution-context, wiki, glossary) and `.agent-artifacts/requirements/` (input files, output initiatives/epics) to discover existing API contracts, schemas, domain terms, and provider boundaries before framing questions.
 
 ### 2. Elicit Context & Edge Cases
 
@@ -51,7 +51,7 @@ If the user provides existing OpenAPI/Swagger, technical docs, payload samples, 
 
 ### 3. DRY / SSOT Check & Change Plan Gate
 
-Identify target specification path under `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`. 
+Identify target specification path under `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/`. 
 - **DRY / SSOT Check**: Search existing specs to ensure the logic isn't already defined elsewhere.
 - **Change Plan Presentation**: Output a Change Plan containing:
   - Target file path

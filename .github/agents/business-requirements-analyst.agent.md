@@ -9,6 +9,7 @@ tools:
   - vscode
   - todo
   - web
+  - execute
   - "microsoft/azure-devops-mcp/*"
 
 skills:
@@ -61,7 +62,7 @@ This agent bridges upstream discovery to downstream deliverables in 3 clear step
 - Running SMART checks, acceptance-readiness audits, impact analysis, and behavioral alignment reviews.
 - Identifying backlog story slices from screens/mockups while keeping GUI/API technical specifications separate.
 - Presenting the Candidate Slicing Review Table to the user for confirmation before physical file generation.
-- Distilling confirmed reusable context to `project-knowledge-base/` via `update-project-knowledge`.
+- Distilling confirmed reusable context to `.agent-artifacts/project-knowledge-base/` via `update-project-knowledge`.
 
 ### Do Not Own:
 - Initial stakeholder discovery when input is too unclear (route to `requirements-elicitor`).
@@ -81,7 +82,7 @@ Inspect the input against PACT prerequisites (People, Activities, Context, Techn
 | Is API/backend behavior the primary uncertainty? | Route to `api-requirements-analyst`. |
 | Are there competing interpretations or unsafe assumptions? | Route to `requirements-elicitor`. |
 
-*NFR Rule*: Treat global NFRs as solution-level constraints in `project-knowledge-base/solution-context/`. Include explicit NFR ACs on a user story ONLY when introducing a story-specific override or custom SLA.
+*NFR Rule*: Treat global NFRs as solution-level constraints in `.agent-artifacts/project-knowledge-base/solution-context/`. Include explicit NFR ACs on a user story ONLY when introducing a story-specific override or custom SLA.
 
 ---
 

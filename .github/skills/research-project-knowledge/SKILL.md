@@ -15,12 +15,13 @@ Use `update-project-knowledge` only after artifact work when the user confirms t
 
 - Read the knowledge base before broad-scanning the workspace.
 - Follow the multi-tier research fallback sequence when facts or system behaviors are incomplete:
-  1. **Primary Knowledge Base**: `project-knowledge-base/` (`index.md`, `solution-context/`, `wiki/`, `glossary/`).
-  2. **Requirements Fallback**: `requirements/` folder (`requirements/input/` raw client material and `requirements/output/` initiative/epic/story hierarchy).
-  3. **Implementation & Technical Fallback**: Project implementation artifacts (source code, database schemas, API specs, ETL scripts, config files, or low-code integration definitions) when domain/technical behavior is unconfirmed in KB or requirements.
+  1. **Primary Knowledge Base**: `.agent-artifacts/project-knowledge-base/` (`index.md`, `solution-context/`, `wiki/`, `glossary/`).
+  2. **Requirements Fallback**: `.agent-artifacts/requirements/` folder (`.agent-artifacts/requirements/input/` raw client material and `.agent-artifacts/requirements/output/` initiative/epic/story hierarchy).
+  3. **Implementation & Codebase Fallback (User-Confirmed)**: Search implementation artifacts (source code, database schemas, API routes, ETL scripts, config files) **only after asking the user for confirmation**.
+- **Ignore In-Flight Drafts**: Never scan or treat `.agent-artifacts/requirements/drafts/` (`elicitation/`, `candidate-specs/`) as knowledge-base evidence or confirmed project facts. In-flight notes and un-sliced drafts are not canonical deliverables.
 - Start from indexes and progress to detail files only when relevant.
 - Explicitly trace and relate existing **features**, **system behaviors**, **business rules**, and **state transitions** relevant to the target task.
-- Use specified `requirements/input/` files for source evidence and citations.
+- Use specified `.agent-artifacts/requirements/input/` files for source evidence and citations.
 - Do not treat generated delivery output as durable project wiki unless its file or source says it is confirmed or the user confirms it.
 - Do not invent missing facts. Report gaps as open questions or assumptions, specifying which fallback tier was used.
 
@@ -28,61 +29,67 @@ Use `update-project-knowledge` only after artifact work when the user confirms t
 
 Execute research according to the target task type defined in **Task Routing**, strictly progressing through this 3-tier fallback sequence:
 
-1. **Tier 1 — Primary Knowledge Base**: Search `project-knowledge-base/` (`index.md`, `solution-context/`, `wiki/`, `glossary/`).
-2. **Tier 2 — Requirements Fallback**: If Tier 1 context is missing or incomplete, search `requirements/` (`requirements/input/` raw intake and `requirements/output/` initiative/epic/story hierarchy).
-3. **Tier 3 — Technical & Implementation Evidence**: If Tiers 1 & 2 lack technical context or require behavioral verification, search project implementation artifacts across all project types (application code, database schemas/migrations, API contracts, ETL data pipelines, configuration files, or low-code definitions in `src/`, `app/`, `db/`, `api/`, `pipelines/`, `configs/`).
+1. **Tier 1 — Primary Knowledge Base**: Search `.agent-artifacts/project-knowledge-base/` (`index.md`, `solution-context/`, `wiki/`, `glossary/`).
+2. **Tier 2 — Requirements Fallback**: If Tier 1 context is missing or incomplete, search `.agent-artifacts/requirements/` (`.agent-artifacts/requirements/input/` raw intake and `.agent-artifacts/requirements/output/` initiative/epic/story hierarchy). Skip `.agent-artifacts/requirements/drafts/`.
+3. **Tier 3 — Codebase & Implementation Evidence (Requires User Confirmation)**: If Tiers 1 & 2 lack technical context or require behavioral verification, **prompt and ask the user whether they want you to research the codebase too** before searching application code, database schemas/migrations, API contracts, ETL data pipelines, configuration files, or low-code definitions in `src/`, `app/`, `db/`, `api/`, `pipelines/`, `configs/`.
+   - If user confirms: proceed with focused codebase search in the relevant directories.
+   - If user declines or skips: proceed with research findings from Tiers 1 & 2, logging remaining technical gaps as assumptions or open questions.
 
-Stop at the earliest tier that provides sufficient evidence. If no relevant facts exist across all three tiers, report what was checked in each tier and proceed relying on direct user input and explicitly labeled assumptions.
+Stop at the earliest tier that provides sufficient evidence. If no relevant facts exist across available tiers, report what was checked and proceed relying on direct user input and explicitly labeled assumptions.
 
 ## Workspace Folder Structure Reference
 
 ```text
-requirements/
-|-- index.md
-|-- input/                      <-- Raw client intake, briefs, tickets, screenshots
-|   `-- index.md
-`-- output/                     <-- Generated BA deliverables
-    |-- index.md
-    `-- initiatives/
-        |-- index.md
-        `-- <initiative-slug>/
-            |-- index.md
-            `-- epics/
-                |-- index.md
-                `-- <epic-slug>/
-                    |-- index.md
-                    |-- <user-story-id-or-slug>.md
-                    |-- gui-<screen-slug>.md
-                    |-- api-<api-slug>.md
-                    |-- wireframes/
-                    `-- diagrams/
-
-project-knowledge-base/
-|-- index.md
-|-- wiki/                       <-- Durable scope, stakeholders, delivery, risk, UX flows
+.agent-artifacts/
+|-- requirements/
 |   |-- index.md
-|   |-- diagrams/               <-- Shared cross-area diagrams & visual models
-|   `-- <knowledge-area>/
+|   |-- input/                      <-- Raw client intake, briefs, tickets, screenshots
+|   |   `-- index.md
+|   |-- drafts/                     <-- IGNORED by research (in-flight discovery & drafts)
+|   |   |-- index.md
+|   |   |-- elicitation/            <-- IGNORED
+|   |   `-- candidate-specs/        <-- IGNORED
+|   `-- output/                     <-- Generated BA deliverables (Tier 2 search)
 |       |-- index.md
-|       `-- diagrams/           <-- Area-specific diagrams
-|-- solution-context/           <-- Technical/domain/system/API/data/screen context
-|   `-- index.md
-`-- glossary/                   <-- Terms, acronyms, definitions
-    `-- index.md
+|       `-- initiatives/
+|           |-- index.md
+|           `-- <initiative-slug>/
+|               |-- index.md
+|               `-- epics/
+|                   |-- index.md
+|                   `-- <epic-slug>/
+|                       |-- index.md
+|                       |-- <user-story-id-or-slug>.md
+|                       |-- gui-<screen-slug>.md
+|                       |-- api-<api-slug>.md
+|                       |-- wireframes/
+|                       `-- diagrams/
+`-- project-knowledge-base/
+    |-- index.md
+    |-- wiki/                       <-- Durable scope, stakeholders, delivery, risk, UX flows
+    |   |-- index.md
+    |   |-- diagrams/               <-- Shared cross-area diagrams & visual models
+    |   `-- <knowledge-area>/
+    |       |-- index.md
+    |       `-- diagrams/           <-- Area-specific diagrams
+    |-- solution-context/           <-- Technical/domain/system/API/data/screen context
+    |   `-- index.md
+    `-- glossary/                   <-- Terms, acronyms, definitions
+        `-- index.md
 ```
 
 ## Task Routing
 
 Follow the 3-tier research fallback progression for each specific task type:
 
-| Task | Tier 1: Primary KB | Tier 2: Requirements Fallback | Tier 3: Technical & Implementation Evidence |
+| Task | Tier 1: Primary KB | Tier 2: Requirements Fallback | Tier 3: Codebase & Implementation Evidence (On User Confirmation) |
 |---|---|---|---|
-| **Elicitation** | `project-knowledge-base/wiki/` (scope/stakeholders), `solution-context/` (domain/systems) | Specified `requirements/input/` files, `requirements/output/initiatives/<initiative-slug>/` | Technical architecture specs, environment configs, repository structures |
-| **Requirements Analysis** | `project-knowledge-base/solution-context/` (behavior/API/data), `wiki/` (scope/risk) | Specified `requirements/input/` files, related `requirements/output/.../epics/<epic-slug>/` | Business rules in code/scripts/pipelines, validation logic, API route handlers |
-| **API / Data Requirements** | `project-knowledge-base/solution-context/` (systems, APIs, schemas, integrations) | `requirements/output/.../api-*.md`, input files | API controllers, DTOs, OpenAPI specs, SQL schemas, ETL pipelines |
-| **User Story Drafting** | `project-knowledge-base/solution-context/` (UI/API behavior), `wiki/` | Target epic folder (`requirements/output/.../epics/<epic-slug>/`), parent `index.md` | Implementation contracts, entity schemas, state/event handlers, service interfaces |
-| **GUI / Wireframe** | `project-knowledge-base/solution-context/` (screens, workflow, permissions), `wiki/` (brand guidelines, UX flows, `wiki/diagrams/`) | Target story/epic wireframes (`wireframe-*.html/md`) & GUI specs (`gui-*.md`) | UI components, page templates/views, layout structures, screen route definitions |
-| **Diagram** | `project-knowledge-base/solution-context/` (actors, systems, data flow), `wiki/` (process flows, `wiki/<area>/diagrams/`) | Target story/epic diagrams (`diagram-*.md/bpmn`) & input diagrams | Workflow state machines, event handlers, ETL/service data pipelines, DB ERDs |
+| **Elicitation** | `.agent-artifacts/project-knowledge-base/wiki/` (scope/stakeholders), `solution-context/` (domain/systems) | Specified `.agent-artifacts/requirements/input/` files, `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/` | Technical architecture specs, environment configs, repository structures |
+| **Requirements Analysis** | `.agent-artifacts/project-knowledge-base/solution-context/` (behavior/API/data), `wiki/` (scope/risk) | Specified `.agent-artifacts/requirements/input/` files, related `.agent-artifacts/requirements/output/.../epics/<epic-slug>/` | Business rules in code/scripts/pipelines, validation logic, API route handlers |
+| **API / Data Requirements** | `.agent-artifacts/project-knowledge-base/solution-context/` (systems, APIs, schemas, integrations) | `.agent-artifacts/requirements/output/.../api-*.md`, input files | API controllers, DTOs, OpenAPI specs, SQL schemas, ETL pipelines |
+| **User Story Drafting** | `.agent-artifacts/project-knowledge-base/solution-context/` (UI/API behavior), `wiki/` | Target epic folder (`.agent-artifacts/requirements/output/.../epics/<epic-slug>/`), parent `index.md` | Implementation contracts, entity schemas, state/event handlers, service interfaces |
+| **GUI / Wireframe** | `.agent-artifacts/project-knowledge-base/solution-context/` (screens, workflow, permissions), `wiki/` (brand guidelines, UX flows, `wiki/diagrams/`) | Target story/epic wireframes (`wireframe-*.html/md`) & GUI specs (`gui-*.md`) | UI components, page templates/views, layout structures, screen route definitions |
+| **Diagram** | `.agent-artifacts/project-knowledge-base/solution-context/` (actors, systems, data flow), `wiki/` (process flows, `wiki/<area>/diagrams/`) | Target story/epic diagrams (`diagram-*.md/bpmn`) & input diagrams | Workflow state machines, event handlers, ETL/service data pipelines, DB ERDs |
 
 
 
@@ -128,8 +135,12 @@ No relevant project knowledge-base content was found for this task. Proceeding m
 
 ## Boundaries
 
-- **Read-Only**: Do not create, edit, or delete files. Do not modify `project-knowledge-base/` (use `update-project-knowledge` for updates).
+- **Read-Only**: Do not create, edit, or delete files. Do not modify `.agent-artifacts/project-knowledge-base/` (use `update-project-knowledge` for updates).
+- **Ignore In-Flight Drafts**: Never scan, read, or treat `.agent-artifacts/requirements/drafts/` (`elicitation/`, `candidate-specs/`) as knowledge base evidence or requirement context.
+- **Codebase Search Confirmation**: Never scan or search project implementation codebases (Tier 3) without explicitly prompting and obtaining confirmation from the user first.
 - **No Deliverables or Direct Elicitation**: Do not write final BA artifacts (stories, GUI specs, diagrams) or engage in user elicitation; return structured research findings and gaps to the calling agent.
 - **Structured Fallback Execution**: Follow the 3-tier fallback sequence rather than unguided workspace scanning.
+
+
 
 

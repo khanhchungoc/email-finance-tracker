@@ -1,7 +1,7 @@
 ---
 type: Requirement Initiative
 status: draft
-description: "Template for the canonical initiative folder index under requirements/output/initiatives."
+description: "Template for the canonical initiative folder index under .agent-artifacts/requirements/output/initiatives."
 tags: [requirement, initiative]
 timestamp: "<ISO-8601 timestamp>"
 ---

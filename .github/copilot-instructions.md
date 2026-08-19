@@ -22,16 +22,16 @@ Project-specific context must come from the user, accessible source files, or cl
 
 - `.github/copilot-instructions.md` owns global workspace principles, high-level routing pointers, and runtime boundaries.
 - `.github/agents/requirements-elicitor.agent.md` is the **Single Source of Truth (SSOT)** for Elicitor-First Gate rules, question batching (1–3 questions), intake triage, and discovery handoffs.
-- `.github/skills/manage-requirement-artifacts/SKILL.md` is the **SSOT** for the `requirements/` folder structure, deliverable file placement rules, and output hierarchy indexing.
-- `.github/skills/update-project-knowledge/SKILL.md` is the **SSOT** for `project-knowledge-base/` structure and durable wiki maintenance.
+- `.github/skills/manage-requirement-artifacts/SKILL.md` is the **SSOT** for the `.agent-artifacts/requirements/` folder structure, deliverable file placement rules, and output hierarchy indexing.
+- `.github/skills/update-project-knowledge/SKILL.md` is the **SSOT** for `.agent-artifacts/project-knowledge-base/` structure and durable wiki maintenance.
 
 Avoid duplicating detailed agent logic or skill templates here.
 
 ## Workspace Assumptions
 
 Known workspace roots include:
-- `requirements/`: Delivery workbench for raw intake (`input/`) and generated BA deliverables (`output/`).
-- `project-knowledge-base/`: Durable project wiki, solution context, and glossary.
+- `.agent-artifacts/requirements/`: Delivery workbench for raw intake (`input/`) and generated BA deliverables (`output/`).
+- `.agent-artifacts/project-knowledge-base/`: Durable project wiki, solution context, and glossary.
 - `.github/`: Workspace configuration, agents, skills, and memory logs.
 
 ## Reference Handling
@@ -46,7 +46,7 @@ For BA requests involving requirements, scope, estimation, or artifact creation,
 
 ## Lifecycle Hooks and Workflow Gates
 
-`.github/hooks/ba-workflow.json` runs post-write checks for changes under `requirements/` and `project-knowledge-base/`, including index reminders, status-frontmatter checks, complex-logic prompts, and BPMN post-processing.
+`.github/hooks/ba-workflow.json` runs post-write checks for changes under `.agent-artifacts/requirements/` and `.agent-artifacts/project-knowledge-base/`, including index reminders, status-frontmatter checks, complex-logic prompts, and BPMN post-processing.
 
 The intake gate remains an agent workflow rule because it depends on conversation context. Downstream handoffs must follow the receiving agent or skill's schema, including any required status fields. `requirements-elicitor` is the entry point and must not route to itself.
 
@@ -56,5 +56,5 @@ Always read and follow the matching `.github/agents/*.agent.md` or `.github/skil
 
 ## Startup & Output Offloading
 
-When beginning a request, read the relevant source material and the owning agent or skill. Keep assumptions, risks, dependencies, exclusions, and open questions separate. When an intermediate response contains a table or list of more than 7 items, write the full working content to Markdown in `.github/memory/` and provide a concise inline summary. Write primary BA deliverables directly to `requirements/output/` under the placement rules owned by `.github/skills/manage-requirement-artifacts/SKILL.md`.
+When beginning a request, read the relevant source material and the owning agent or skill. Keep assumptions, risks, dependencies, exclusions, and open questions separate. When an intermediate response contains a table or list of more than 7 items, write the full working content to Markdown in `.github/memory/` and provide a concise inline summary. Write primary BA deliverables directly to `.agent-artifacts/requirements/output/` under the placement rules owned by `.github/skills/manage-requirement-artifacts/SKILL.md`.
 

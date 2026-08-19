@@ -66,8 +66,7 @@ jobs:
             "README.md",
             "package.json",
             "package-lock.json",
-            "project-knowledge-base",
-            "requirements",
+            ".agent-artifacts",
             ".vscode"
           )
 

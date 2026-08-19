@@ -1,6 +1,6 @@
 # AI Assistant Configuration
 
-This repository contains BA agent and skill configuration for different AI assistant environments. Each tool has its own self-contained set (instruction file + `agents/` + `skills/`) plus the shared `project-knowledge-base/` and `requirements/` starter structures:
+This repository contains BA agent and skill configuration for different AI assistant environments. Each tool has its own self-contained set (instruction file + `agents/` + `skills/`) plus the shared `.agent-artifacts/project-knowledge-base/` and `.agent-artifacts/requirements/` starter structures:
 
 - GitHub Copilot: `.github/copilot-instructions.md` with `.github/agents/` and `.github/skills/`.
 - Codex: `AGENTS.md` (repo root) with `.codex/agents/` and `.codex/skills/`.
@@ -15,8 +15,8 @@ Each instruction file holds the shared global rules and routes to its own tool's
   - Gemini: `ba-agents-gemini-<version>.zip`
   - GitHub Copilot: `ba-agents-github-copilot-<version>.zip`
 - Extract the downloaded package into your project or workspace folder.
-- Each package includes `project-knowledge-base/` as the starter project Wiki and `requirements/` as the requirement intake/output structure.
-- Set up the project knowledge base by populating the `project-knowledge-base/` folder with your project's specific Wiki, domain model, and existing documentation, using the `update-project-knowledge` skill.
+- Each package includes `.agent-artifacts/project-knowledge-base/` as the starter project Wiki and `.agent-artifacts/requirements/` as the requirement intake/output structure.
+- Set up the project knowledge base by populating the `.agent-artifacts/project-knowledge-base/` folder with your project's specific Wiki, domain model, and existing documentation, using the `update-project-knowledge` skill.
 - **IMPORTANT**: Customize all custom agents and skills (as well as `AGENTS.md`, `GEMINI.md`, or `.github/copilot-instructions.md`) as needed to align with your project's specific BA workflow, terminology, and communication style.
 
 ### Sharing The Repository
@@ -92,7 +92,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 
 ### Core BA Artifact Skills
 
-- `manage-requirement-artifacts`: maintains the `requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, backlog-ready user stories, 3-tier acceptance criteria, and GUI specifications (`gui-*.md`) with UI component tables and screen change logs.
+- `manage-requirement-artifacts`: maintains the `.agent-artifacts/requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, backlog-ready user stories, 3-tier acceptance criteria, and GUI specifications (`gui-*.md`) with UI component tables and screen change logs.
 - `write-api-specification`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
 - `generate-diagram`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
 - `generate-wireframe`: HTML/text wireframes and responsive screen layout artifacts.
@@ -111,8 +111,8 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 - If requirements are still unclear: start with `requirements-elicitor`.
 - To produce requirement artifacts after assessing readiness, gaps, and impact: use `business-requirements-analyst`.
 - If an artifact is clearly requested: use the matching skill directly.
-- If the `requirements/` folder hierarchy, initiative/epic indexes, or generated artifact placement needs maintenance: use `manage-requirement-artifacts`.
-- If durable Wiki should be updated after artifact work: ask the user whether to update `project-knowledge-base/`, then use `update-project-knowledge` if they confirm.
+- If the `.agent-artifacts/requirements/` folder hierarchy, initiative/epic indexes, or generated artifact placement needs maintenance: use `manage-requirement-artifacts`.
+- If durable Wiki should be updated after artifact work: ask the user whether to update `.agent-artifacts/project-knowledge-base/`, then use `update-project-knowledge` if they confirm.
 
 ## Suggested VS Code Extensions
 

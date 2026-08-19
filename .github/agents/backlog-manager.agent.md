@@ -98,7 +98,7 @@ The user can override readiness and force-push. If they do, push with a warning 
 2. Query the backlog tool via MCP for work items in the target sprint:
    - Jira: `Atlassian:search` with sprint JQL (see `sync-backlog` skill for JQL pattern).
    - ADO: WIQL query for iteration path.
-3. Write or update `requirements/output/sprint-scope/sprint-N.md` following the sprint scope template in the `sync-backlog` skill.
+3. Write or update `.agent-artifacts/requirements/output/sprint-scope/sprint-N.md` following the sprint scope template in the `sync-backlog` skill.
 4. Cross-reference external keys with local story files — report any stories in the sprint that don't exist locally.
 5. If the user asks, generate the sprint scope email using the email generation rules in the `sync-backlog` skill.
 
@@ -147,7 +147,7 @@ These are the only two sync fields. Do not add `external_url`, `external_type`, 
 
 When generating a sprint scope email:
 
-1. Read or generate `requirements/output/sprint-scope/sprint-N.md` first (the durable record).
+1. Read or generate `.agent-artifacts/requirements/output/sprint-scope/sprint-N.md` first (the durable record).
 2. Read the email template from `sync-backlog` skill (`assets/sprint-scope-template.md`).
 3. Follow the email generation rules in the `sync-backlog` skill (ticket table rules, goal generation rules, story point handling, JQL pattern, storage convention).
 4. Verify that the total USPs in the email match the sum of individual story points.

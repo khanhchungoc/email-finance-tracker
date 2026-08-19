@@ -6,7 +6,7 @@ Read this file only when creating or refining user stories, acceptance criteria,
 
 - Purpose: define a backlog-ready behavior slice with acceptance criteria.
 - Owner: `manage-requirement-artifacts`.
-- Location: `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<story-id-or-slug>.md`.
+- Location: `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<story-id-or-slug>.md`.
 - Must include: minimal frontmatter, role, goal, value, assumptions, preconditions, flow summary, GUI/API/detail references when relevant, 3-tier Gherkin acceptance criteria, open questions, and citations when available.
 - Avoid: full UI field dictionaries, full screen component tables, raw endpoint payloads, or generic filler.
 
@@ -38,7 +38,7 @@ Use `assets/user-story-template.md` for the story body.
 Place each user story in:
 
 ```text
-requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<user-story-id-or-slug>.md
+.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<user-story-id-or-slug>.md
 ```
 
 Prefer the story ID in the filename when available, for example `us-001-customer-login.md`.

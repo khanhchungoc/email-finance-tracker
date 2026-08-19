@@ -29,8 +29,8 @@ Create stakeholder-readable wireframes as static HTML/CSS files or structured te
 ## Requirement Output Placement
 
 Follow the deliverable folder placement and index update rules owned by `manage-requirement-artifacts`:
-- Put user-story-related wireframes in `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/wireframes/`.
-- Put cross-epic or initiative-level wireframes in `requirements/output/initiatives/<initiative-slug>/`.
+- Put user-story-related wireframes in `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/wireframes/`.
+- Put cross-epic or initiative-level wireframes in `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/`.
 
 Placement rules:
 

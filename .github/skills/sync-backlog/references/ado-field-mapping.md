@@ -20,7 +20,7 @@ Use this reference when mapping BA workspace artifacts to Azure DevOps work item
 | Open questions table | `System.Description` (Open Questions section) | HTML table under `<h3>Open Questions</h3>` | Preserve question IDs, questions, and impacts; readiness rules still belong to the backlog-manager agent |
 | Citations table | `System.Description` (Citations section) | HTML table under `<h3>Citations</h3>` | Preserve source IDs, source references, and relevant evidence |
 | GUI/API/diagram/wireframe/WBS content (`.md`) | `System.Description` (append section) | Markdown text under `Related Specifications` | Include the complete Markdown text for every selected `.md` artifact; preserve artifact names and source links |
-| Workspace file path | `System.Description` (footer) | `<em>Source: requirements/output/initiatives/.../us-001.md</em>` | Always include for traceability |
+| Workspace file path | `System.Description` (footer) | `<em>Source: .agent-artifacts/requirements/output/initiatives/.../us-001.md</em>` | Always include for traceability |
 
 ### Frontmatter And Non-Field Metadata
 

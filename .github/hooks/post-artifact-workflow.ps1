@@ -9,7 +9,7 @@ if ($toolName -and ($writeTools -notcontains $toolName)) { exit 0 }
 
 # Extract and normalize candidate paths
 $paths = @([string]$payload.toolInput.TargetFile, [string]$payload.toolInput.filePath, [string]$payload.toolInput.path, [string]$payload.toolInput.oldPath, [string]$payload.toolInput.newPath) | Where-Object { $_ -and $_ -ne "" }
-$artifactPaths = $paths | Where-Object { $_ -match '(^|[\\/])requirements[\\/]' -or $_ -match '(^|[\\/])project-knowledge-base[\\/]' }
+$artifactPaths = $paths | Where-Object { $_ -match '(^|[\\/])requirements[\\/]' -or $_ -match '(^|[\\/])project-knowledge-base[\\/]' -or $_ -match '(^|[\\/])\.agent-artifacts[\\/]' }
 if (-not $artifactPaths) { exit 0 }
 
 $messages = @()
@@ -19,8 +19,8 @@ foreach ($rawPath in $artifactPaths) {
     $normalized = $rawPath -replace '\\', '/'
     
     # Process requirement deliverables
-    if ($normalized -match '(^|/)requirements/') {
-        $messages += 'Sync nearest index.md and traceability links under requirements/output/.'
+    if ($normalized -match '(^|/)requirements/' -or $normalized -match '(^|/)\.agent-artifacts/requirements/') {
+        $messages += 'Sync nearest index.md and traceability links under .agent-artifacts/requirements/output/.'
         
         if (Test-Path $rawPath) {
             # Auto-layout for BPMN diagram XML files
@@ -40,7 +40,7 @@ foreach ($rawPath in $artifactPaths) {
             if ($normalized -match '\.md$' -and $normalized -notmatch '/index\.md$') {
                 $content = Get-Content -Path $rawPath -Raw
                 if ($content -match '(?i)status:\s*signed-off') { 
-                    $messages += "Signed-off story updated (${rawPath}): run update-project-knowledge to distill durable facts into project-knowledge-base/." 
+                    $messages += "Signed-off story updated (${rawPath}): run update-project-knowledge to distill durable facts into .agent-artifacts/project-knowledge-base/." 
                 }
                 if ($content -notmatch '(?m)^status:') { 
                     $messages += "Missing 'status:' frontmatter in ${rawPath}. Please add status frontmatter." 
@@ -53,8 +53,8 @@ foreach ($rawPath in $artifactPaths) {
     }
     
     # Process project knowledge base updates
-    if ($normalized -match '(^|/)project-knowledge-base/') {
-        $messages += 'Sync nearest index.md and project-knowledge-base/log.md.'
+    if ($normalized -match '(^|/)project-knowledge-base/' -or $normalized -match '(^|/)\.agent-artifacts/project-knowledge-base/') {
+        $messages += 'Sync nearest index.md and .agent-artifacts/project-knowledge-base/log.md.'
     }
 }
 

@@ -1,21 +1,21 @@
 ---
 name: manage-requirement-artifacts
-description: Use when creating, refining, placing, and indexing requirement artifacts (initiatives, epics, user stories, acceptance criteria, GUI specifications, UI component tables, screen change logs, and output indexes) under requirements/.
+description: Use when creating, refining, placing, and indexing requirement artifacts (initiatives, epics, user stories, acceptance criteria, GUI specifications, UI component tables, screen change logs, and output indexes) under .agent-artifacts/requirements/.
 ---
 
 # Requirement Artifact Management Skill
 
 ## Purpose & Scope
 
-Maintain `requirements/` as the BA delivery workbench. Create backlog-ready user stories (`us-*.md`), implementation-ready GUI specifications (`gui-*.md`), and canonical initiative/epic folder indexes (`index.md`).
+Maintain `.agent-artifacts/requirements/` as the BA delivery workbench. Create backlog-ready user stories (`us-*.md`), implementation-ready GUI specifications (`gui-*.md`), and canonical initiative/epic folder indexes (`index.md`).
 
-This skill is the **Single Source of Truth (SSOT)** for deliverable placement and folder indexing rules under `requirements/output/`.
+This skill is the **Single Source of Truth (SSOT)** for deliverable placement and folder indexing rules under `.agent-artifacts/requirements/output/`.
 
 ---
 
 ## Artifact Traceability & Structure Scope
 
-This diagram illustrates the artifact relationships and indexing structure managed within `requirements/output/`:
+This diagram illustrates the artifact relationships and indexing structure managed within `.agent-artifacts/requirements/output/`:
 
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}}}%%
@@ -43,20 +43,26 @@ flowchart TD
 - **To `write-api-specification`**: When backend endpoint contracts or schemas are required.
 - **To `generate-diagram`**: When visual workflow or state transition diagrams are required.
 - **To `sync-backlog`**: When backlog-ready items are ready for Jira or Azure DevOps sprint synchronization.
-- **To `update-project-knowledge`**: When stable domain concepts emerge to distill into `project-knowledge-base/`.
+- **To `update-project-knowledge`**: When stable domain concepts emerge to distill into `.agent-artifacts/project-knowledge-base/`.
 
 ---
 
-## Ownership (SSOT for `requirements/`)
+## Ownership (SSOT for `.agent-artifacts/requirements/`)
 
 This skill manages files within the canonical folder hierarchy:
 
 ```text
-requirements/
+.agent-artifacts/requirements/
 |-- index.md
-|-- input/
+|-- input/                          <-- Raw client intake, briefs, tickets, screenshots
 |   `-- index.md
-`-- output/
+|-- drafts/                         <-- Discovery workbench, session notes, candidate PRDs
+|   |-- index.md
+|   |-- elicitation/                <-- Elicitor interview records, PACT matrices, parking lots
+|   |   `-- index.md
+|   `-- candidate-specs/            <-- Pre-slicing draft PRDs, monolithic feature drafts
+|       `-- index.md
+`-- output/                         <-- Canonical delivery hierarchy (using frontmatter status)
     |-- index.md
     `-- initiatives/
         |-- index.md
@@ -105,6 +111,6 @@ requirements/
 
 ## Artifact Boundaries
 
-- **Owns**: Story placement, GUI component tables, screen change logs, and `requirements/` folder indexing.
+- **Owns**: Story placement, GUI component tables, screen change logs, and `.agent-artifacts/requirements/` folder indexing.
 - **Does Not Own**: Endpoint schemas (`write-api-specification`), Mermaid/BPMN rendering (`generate-diagram`), or HTML mockups (`generate-wireframe`).
-- Do not move deliverables to `project-knowledge-base/` or edit raw files in `requirements/input/`.
+- Do not move deliverables to `.agent-artifacts/project-knowledge-base/` or edit raw files in `.agent-artifacts/requirements/input/`.

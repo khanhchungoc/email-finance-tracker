@@ -8,7 +8,7 @@ Read this guide when creating or updating GUI specification Markdown files (`gui
 
 - **User Story (`us-*.md`)**: Owns the user journey, business intent, workflow steps, preconditions, 3-tier acceptance criteria, and behavioral edge cases.
 - **GUI Specification (`gui-*.md`)**: Owns the screen-level structure, UI component tables, field types, defaults, validation rules with exact user-facing error copy, component visual states, API/accessibility notes, and the cumulative Screen Change Log.
-- **Location**: In the same epic folder as related user stories: `requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/gui-<screen-slug>.md`.
+- **Location**: In the same epic folder as related user stories: `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/gui-<screen-slug>.md`.
 
 ---
 

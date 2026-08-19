@@ -9,6 +9,7 @@ tools:
   - vscode
   - todo
   - web
+  - execute
 skills:
   - ../skills/research-project-knowledge
   - ../skills/write-api-specification

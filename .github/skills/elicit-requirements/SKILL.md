@@ -57,3 +57,16 @@ Use when eliciting screens, forms, workflows, approvals, or data-capture feature
 - **Source of Truth Rule**: Use domain-specific rules only when stated by the user or present verbatim in source material. Never invent regulatory frameworks, industry jargon, or fictitious third-party systems.
 - **Unknown Domain Handling**: If the business domain or regulatory framework is ambiguous and materially affects scope, compliance, or architecture, ask a focused clarifying question before assuming industry standards.
 - **Domain Considerations as Hypotheses**: Treat domain patterns (e.g., standard banking KYC, retail checkout patterns, HIPAA audit trails) as hypotheses to validate with the user, not confirmed facts.
+
+---
+
+## 5. Discovery Session Storage & Drafts
+
+- **Drafts Folder**: Store active elicitation session notes, interview transcripts, PACT matrices, and parking lots in:
+  ```text
+  .agent-artifacts/requirements/drafts/elicitation/YYYY-MM-DD-<topic-slug>.md
+  ```
+- **Handoff & Promotion**:
+  - Distill stable, reusable facts (domain models, system behaviors, glossary) into `.agent-artifacts/project-knowledge-base/` via `update-project-knowledge`.
+  - Pass confirmed candidate feature scopes and PACT summaries to `business-requirements-analyst` for DoR checks and backlog slicing.
+
