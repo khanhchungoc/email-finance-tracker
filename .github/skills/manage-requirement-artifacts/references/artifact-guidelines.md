@@ -63,14 +63,15 @@ Read `references/user-story-guidelines.md`. Do not create or refine user stories
 
 - **Purpose**: evaluate readiness, gaps, dependencies, SMART quality, or impact.
 - **Owner**: `analyze-requirements`.
-- **Location**: relevant epic folder as `analysis-<analysis-slug>.md`.
+- **Location**: relevant epic folder as `analysis-<analysis-slug>.md` for scoped analysis, or `.agent-artifacts/requirements/drafts/candidate-specs/` for pre-slicing draft PRDs.
 - **Must include**: analysis mode, findings, risks, gaps, assumptions, decisions needed, recommended next actions, and source references.
 - **Avoid**: silently converting analysis findings into approved scope.
 
 ## Elicitation Output
 
-- **Purpose**: document elicitation results, open questions, assumptions, and handoff readiness.
-- **Owner**: `requirements-elicitor`.
-- **Location**: relevant epic folder, or a higher output folder only when the elicitation spans multiple initiatives/epics.
-- **Must include**: elicitation scope, answered questions, assumptions, unresolved questions, risks, decisions, and recommended next step.
-- **Avoid**: producing downstream artifacts inside the elicitation output unless explicitly requested after the elicitor checkpoint.
+- **Purpose**: document discovery findings, interview transcripts, PACT matrices, open questions, and active parking lots during discovery.
+- **Owner**: `requirements-elicitor` & `elicit-requirements`.
+- **Location**: `.agent-artifacts/requirements/drafts/elicitation/YYYY-MM-DD-<topic-slug>.md`.
+- **Must include**: elicitation scope, PACT baseline & delta, answered questions, assumptions, unresolved parking-lot items, risks, decisions, and recommended next step.
+- **Avoid**: authoring physical user stories or GUI specs directly during elicitation before user confirmation and DoR checks.
+
