@@ -1,13 +1,16 @@
 ---
 name: elicit-requirements
-description: Comprehensive playbook for scope boundaries, discovery phasing, domain reality checks, and UI/data detail checklists.
+description: "Use when a user wants to elicit, clarify, or refine requirements; brainstorm a product or feature idea; define an MVP; identify users, workflows, scope, rules, assumptions, risks, dependencies, or open questions; or prepare a PACT discovery handoff."
+argument-hint: "Describe the product idea, brief, feature, workflow, screen, process, API, or data need to explore."
+user-invocable: true
+disable-model-invocation: false
 ---
 
 # Elicit Requirements Skill
 
 ## Purpose
 
-Technique playbook and checklist library for requirements elicitation across scope levels, discovery lenses, domain constraints, and UI details.
+Technique playbook and checklist library for requirements elicitation across scope levels, discovery lenses, domain constraints, and UI details. Trigger and routing decisions belong to the calling agent (`requirements-elicitor`'s `Trigger Contract`); this skill only owns the discovery checklists, execution steps, and output formats below.
 
 ---
 
@@ -60,13 +63,27 @@ Use when eliciting screens, forms, workflows, approvals, or data-capture feature
 
 ---
 
-## 5. Discovery Session Storage & Drafts
+## 5. Execution Contract
 
-- **Drafts Folder**: Store active elicitation session notes, interview transcripts, PACT matrices, and parking lots in:
-  ```text
-  .agent-artifacts/requirements/drafts/elicitation/YYYY-MM-DD-<topic-slug>.md
-  ```
-- **Handoff & Promotion**:
-  - Distill stable, reusable facts (domain models, system behaviors, glossary) into `.agent-artifacts/project-knowledge-base/` via `update-project-knowledge`.
-  - Pass confirmed candidate feature scopes and PACT summaries to `business-requirements-analyst` for DoR checks and backlog slicing.
+1. Read the project-knowledge research skill and inspect the primary knowledge-base indexes before broad workspace exploration. Record the source documents used for the response.
+2. Classify the request by scope level and record the user's stated objective without adding domain facts.
+3. Build the PACT Baseline and compare it with the request to identify only material gaps.
+4. Ask targeted questions to clarify impact gaps. Use structured modal questions during an interactive session; use unanswered Markdown questions for stateless invocation or when the modal is unavailable.
+5. Convert answers into confirmed facts, decisions, assumptions, risks, dependencies, exclusions, or Parking-Lot items. Do not silently promote proposals to requirements.
+6. Recalculate the PACT Delta after each batch. Continue with another 1-3 questions when material gaps remain; otherwise proceed to the last stage below.
+7. Persist the session output per **Authoritative Session Output** (the last stage), then state remaining open questions or hand over the complete authoritative session output.
+
+---
+
+## 6. Authoritative Session Output (Last Stage)
+
+Save each elicitation session's discovery record, PACT matrix, and parking lot to one authoritative output file:
+
+```text
+.agent-artifacts/requirements/output/elicitation/YYYY-MM-DD-<topic-slug>.md
+```
+
+The first persistence point is reached when the user answers a discovery batch or confirms a meaningful direction such as target users, MVP scope, platform, storage, reminder behavior, or workflow. Create one authoritative session output using [elicitation-session-template.md](./assets/elicitation-session-template.md) (Skill SSOT) and update that same file throughout the session. Follow [elicitation-output-guidance.md](./references/elicitation-output-guidance.md) for information boundaries, parking-lot, and handoff rules. The template's section boundaries and typed table fields are the canonical information model: objective, boundary, PACT context, rules/data, decisions/constraints, and unresolved questions have distinct homes, while Type, Area, and Status preserve the required classifications without creating a heading for every category. The calling agent applies the template and guidance as-is; it still owns the judgment calls — whether an item is parked versus confirmed, the lifecycle and readiness statuses in session frontmatter, and the actual routing decision in `next_route` and `Next Step`.
+
+Update the same session output when scope changes, an open question is answered or parked, or a handoff is prepared. Do not create a session output for a pure meta question unless the user asks for one. If writing is unavailable or fails, report that limitation instead of implying persistence.
 

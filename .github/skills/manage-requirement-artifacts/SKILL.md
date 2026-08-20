@@ -56,14 +56,14 @@ This skill manages files within the canonical folder hierarchy:
 |-- index.md
 |-- input/                          <-- Raw client intake, briefs, tickets, screenshots
 |   `-- index.md
-|-- drafts/                         <-- Discovery workbench, session notes, candidate PRDs
+|-- drafts/                         <-- Candidate PRDs awaiting slicing
 |   |-- index.md
-|   |-- elicitation/                <-- Elicitor interview records, PACT matrices, parking lots
-|   |   `-- index.md
 |   `-- candidate-specs/            <-- Pre-slicing draft PRDs, monolithic feature drafts
 |       `-- index.md
 `-- output/                         <-- Canonical delivery hierarchy (using frontmatter status)
     |-- index.md
+    |-- elicitation/                <-- Authoritative elicitation session records
+    |   `-- index.md
     `-- initiatives/
         |-- index.md
         `-- <initiative-slug>/

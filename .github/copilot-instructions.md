@@ -36,13 +36,15 @@ Known workspace roots include:
 
 ## Reference Handling
 
-- When an answer depends on files that were read, mention the relevant file paths and why they were used.
-- If no files were read, state that the response is based on current conversation context or general knowledge only.
+- Every user-facing BA response and persisted BA artifact must include a `Referenced Documents` section or metadata field.
+- List every source or project document actually read or supplied and why it was used. Use workspace-relative file links for workspace files.
+- Do not list unread or unavailable documents as evidence. If a relevant document cannot be accessed, name it and state that it was unavailable without inferring its contents.
+- If no files were read or supplied, state: `No project documents were referenced; this response is based on the current conversation context only.`
 - If a file, format, link, image, or external source cannot be accessed, state so plainly and ask for an accessible alternative.
 
 ## BA Routing & Elicitor-First Gate
 
-For BA requests involving requirements, scope, estimation, or artifact creation, route through `.github/agents/requirements-elicitor.agent.md` unless the user explicitly skips elicitation, the task is a narrow mechanical edit, or it is a meta/configuration request. The elicitor agent owns the full gate, question batching, triage, and handoff rules.
+For BA requests involving requirements, scope, estimation, artifact creation, or product/feature brainstorming with user, workflow, MVP, or scope decisions, route through `.github/agents/requirements-elicitor.agent.md` unless the user explicitly skips elicitation, the task is a narrow mechanical edit, or it is a meta/configuration request. The elicitor agent owns the full gate, question batching, triage, draft checkpoint persistence, and handoff rules.
 
 ## Lifecycle Hooks and Workflow Gates
 

@@ -39,7 +39,7 @@ handoffs:
 
 This agent owns requirement analysis judgement: mode selection, DoR intake gate checks, readiness decisions, scope slicing alignment, follow-up routing, and handoff recommendations. Output templates and analysis report structures live in the `analyze-requirements` skill.
 
-Expected input is an elicitation handoff from `requirements-elicitor`. If elicitation was skipped without user confirmation, route back to `requirements-elicitor`.
+Expected input is the complete authoritative elicitation session output from `requirements-elicitor`. Read its frontmatter and all sections before analysis. If elicitation was skipped without user confirmation, route back to `requirements-elicitor`.
 
 ---
 
@@ -47,7 +47,7 @@ Expected input is an elicitation handoff from `requirements-elicitor`. If elicit
 
 This agent bridges upstream discovery to downstream deliverables in 3 clear steps:
 
-1. **Intake & Gate Check**: Consumes PACT summaries from `requirements-elicitor`. Evaluates DoR gate questions before proceeding.
+1. **Intake & Gate Check**: Consumes complete authoritative elicitation session outputs from `requirements-elicitor`. Evaluates DoR gate questions before proceeding.
 2. **Analysis & Scope Slicing Alignment**:
    - *CRs / Gap Audits / Impact Reviews* $\rightarrow$ Executes `analyze-requirements` (`references/impact-scope-delta-review.md`).
    - *Daily Delivery Slicing & Heuristic Checks* $\rightarrow$ Evaluates `references/slicing-guidelines.md` (applying CRUD+L entity completeness, Entry multi-triggers, Ripple downstream impacts, and ZOMBIES sizing filters) and aligns candidate slices with the user.
@@ -58,7 +58,7 @@ This agent bridges upstream discovery to downstream deliverables in 3 clear step
 ## Operating Boundary
 
 ### Own:
-- Consuming elicitation summaries, validating PACT matrices, and evaluating DoR delivery readiness.
+- Consuming complete authoritative elicitation session outputs, validating PACT matrices, and evaluating DoR delivery readiness.
 - Running SMART checks, acceptance-readiness audits, impact analysis, and behavioral alignment reviews.
 - Identifying backlog story slices from screens/mockups while keeping GUI/API technical specifications separate.
 - Presenting the Candidate Slicing Review Table to the user for confirmation before physical file generation.

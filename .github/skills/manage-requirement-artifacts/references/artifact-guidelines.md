@@ -69,9 +69,10 @@ Read `references/user-story-guidelines.md`. Do not create or refine user stories
 
 ## Elicitation Output
 
-- **Purpose**: document discovery findings, interview transcripts, PACT matrices, open questions, and active parking lots during discovery.
+- **Purpose**: maintain the authoritative record of one elicitation session's discovery findings, PACT matrix, open questions, and parking lot.
 - **Owner**: `requirements-elicitor` & `elicit-requirements`.
-- **Location**: `.agent-artifacts/requirements/drafts/elicitation/YYYY-MM-DD-<topic-slug>.md`.
-- **Must include**: elicitation scope, PACT baseline & delta, answered questions, assumptions, unresolved parking-lot items, risks, decisions, and recommended next step.
+- **Location**: `.agent-artifacts/requirements/output/elicitation/YYYY-MM-DD-<topic-slug>.md`.
+- **Must include**: `status: authoritative`, elicitation scope, PACT baseline & delta, answered questions, assumptions, unresolved parking-lot items, risks, decisions, and recommended next step.
+- **Lifecycle**: create one file at the first substantive checkpoint and update that same file for the remainder of the session.
 - **Avoid**: authoring physical user stories or GUI specs directly during elicitation before user confirmation and DoR checks.
 

@@ -10,6 +10,8 @@ Required hierarchy:
 
 ```text
 output/
+|-- elicitation/
+|   `-- YYYY-MM-DD-<topic-slug>.md
 `-- initiatives/
     |-- index.md
     `-- <initiative-slug>/
@@ -23,7 +25,7 @@ output/
 
 Examples:
 
-* Elicitation summaries.
+* Authoritative elicitation session outputs.
 * Requirements analysis outputs.
 * User stories and acceptance criteria.
 * API specifications.

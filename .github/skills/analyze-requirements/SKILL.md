@@ -7,7 +7,7 @@ description: Use when analyzing business requirements, evaluating readiness gate
 
 ## Purpose
 
-Analyze business requirements for delivery readiness, apply INVEST scope slicing guidelines across project types (Full-Stack, API-Only, Data), and produce high-density Impact Matrices and Gap Audit reports for Change Requests (CRs), commercial baseline reviews, and system migrations. Consumes in-flight discovery notes from `.agent-artifacts/requirements/drafts/elicitation/` or candidate feature drafts from `.agent-artifacts/requirements/drafts/candidate-specs/`.
+Analyze business requirements for delivery readiness, apply INVEST scope slicing guidelines across project types (Full-Stack, API-Only, Data), and produce high-density Impact Matrices and Gap Audit reports for Change Requests (CRs), commercial baseline reviews, and system migrations. Consumes authoritative elicitation session outputs from `.agent-artifacts/requirements/output/elicitation/` or candidate feature drafts from `.agent-artifacts/requirements/drafts/candidate-specs/`.
 
 For physical user story creation (`us-*.md`), GUI specification authoring (`gui-*.md`), and index file updates, hand off to `manage-requirement-artifacts`.
 
