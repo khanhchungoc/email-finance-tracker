@@ -35,7 +35,8 @@ flowchart TD
 ```
 
 ### Incoming Handoffs:
-- **From `business-requirements-analyst`**: Receives confirmed slicing handoff payload (`target_epic`, `confirmed_slices`) $\rightarrow$ generates backlog-ready user stories (`us-*.md`), GUI specs (`gui-*.md`), and updates epic folder indexes.
+- **From `ba-functional-decomposition` / `functional-decomposition.md`**: Reads `.agent-artifacts/requirements/output/functional-decomposition.md` to extract target `<epic-slug>` rows, then authors `<epic-slug>/index.md`, physical `us-*.md` user stories, and `gui-*.md` screen specs directly from the decomposition table.
+- **From `business-requirements-analyst` / `analyze-requirements`**: Receives confirmed slicing handoff payload (`target_epic`, `confirmed_slices`) $\rightarrow$ generates backlog-ready user stories (`us-*.md`), GUI specs (`gui-*.md`), and updates epic folder indexes.
 - **From `generate-wireframe`**: Receives rendered wireframe mockups $\rightarrow$ authors or updates cumulative `gui-<screen>.md` specifications and links them to user stories.
 - **From `generate-diagram`**: Receives process/state flow diagrams $\rightarrow$ embeds diagram links into user story reference tables and GUI screen change logs.
 
@@ -81,15 +82,14 @@ This skill manages files within the canonical folder hierarchy:
 ### Reference Guidelines & Templates
 - **User Stories**: `assets/user-story-template.md` & `references/user-story-guidelines.md`
 - **GUI Specs**: `assets/gui-specification-template.md` & `references/gui-specification-guidelines.md`
-- **Scope Slicing**: `../analyze-requirements/references/slicing-guidelines.md`
 - **Folder Placement & Indexing**: `assets/epic-index-template.md` & `references/artifact-guidelines.md`
 
 ---
 
 ## Workflow
 
-1. **Verify Confirmed Slicing Context**:
-   - Confirm target epic and story slice bounds ($\le 1$ week) before generating physical files.
+1. **Consume Decomposed Slices**:
+   - Read the target `<epic-slug>` section from `functional-decomposition.md` (or confirmed slicing handoff) to retrieve pre-sliced stories, actor goals, and GUI actions.
 
 2. **Folder & Naming Conventions**:
    - Use stable lowercase hyphenated slugs (e.g., `epic-01-user-auth`, `us-001-customer-login.md`, `gui-order-detail.md`).
@@ -105,6 +105,6 @@ This skill manages files within the canonical folder hierarchy:
 
 ## Artifact Boundaries
 
-- **Owns**: Story placement, GUI component tables, screen change logs, and `.agent-artifacts/requirements/` folder indexing.
-- **Does Not Own**: Endpoint schemas (`write-api-specification`), Mermaid/BPMN rendering (`generate-diagram`), or HTML mockups (`generate-wireframe`).
+- **Owns**: Physical story authoring (`us-*.md`), GUI component tables (`gui-*.md`), screen change logs, and `.agent-artifacts/requirements/` folder indexing.
+- **Does Not Own**: System/domain capability decomposition (owned by `ba-functional-decomposition`), endpoint schemas (`write-api-specification`), Mermaid/BPMN rendering (`generate-diagram`), or HTML mockups (`generate-wireframe`).
 - Do not move deliverables to `.agent-artifacts/project-knowledge-base/` or edit raw files in `.agent-artifacts/requirements/input/`.

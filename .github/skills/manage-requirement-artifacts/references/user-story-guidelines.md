@@ -47,10 +47,9 @@ Place related GUI specification files in the same epic folder as the user story.
 
 ## Writing Workflow & Quality Standards
 
-1. Identify the user role, target behavior, expected outcome, and business value.
-2. Read and apply `../../analyze-requirements/references/slicing-guidelines.md` to slice the requirement into 1-sprint scope slices (<= 1 week).
-3. Draft story using `assets/user-story-template.md`. Use `N/A` for non-applicable sections. Avoid filler narrative.
-4. Authoritative & Concise Delivery: Write direct, high-density story statements and Gherkin ACs without conversational narrative or meta-commentary.
+1. Consume the pre-sliced story definition, actor role, goal, and GUI/API links from `functional-decomposition.md` (or slicing handoff).
+2. Draft the story using `assets/user-story-template.md`. Apply 3-tier Gherkin ACs, quote-delimited user-facing error copy, and the 6-column RAID log.
+3. Authoritative & Concise Delivery: Write direct, high-density story statements and Gherkin ACs without conversational narrative or meta-commentary.
 
 ---
 
