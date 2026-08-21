@@ -9,7 +9,7 @@ Examples:
 * Ticket exports.
 * Meeting notes.
 * Screenshots or screenshot notes.
-* Raw user stories, epics, initiatives, or requirement descriptions.
+* Raw user stories, epics, features, or requirement descriptions.
 * API, data, report, workflow, or screen requests.
 
 Rules:

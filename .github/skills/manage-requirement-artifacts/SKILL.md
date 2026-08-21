@@ -1,13 +1,13 @@
 ---
 name: manage-requirement-artifacts
-description: Use when creating, refining, placing, and indexing requirement artifacts (initiatives, epics, user stories, acceptance criteria, GUI specifications, UI component tables, screen change logs, and output indexes) under .agent-artifacts/requirements/.
+description: Use when creating, refining, placing, and indexing requirement artifacts (epics, user stories, acceptance criteria, GUI specifications, UI component tables, screen change logs, and output indexes) under .agent-artifacts/requirements/.
 ---
 
 # Requirement Artifact Management Skill
 
 ## Purpose & Scope
 
-Maintain `.agent-artifacts/requirements/` as the BA delivery workbench. Create backlog-ready user stories (`us-*.md`), implementation-ready GUI specifications (`gui-*.md`), and canonical initiative/epic folder indexes (`index.md`).
+Maintain `.agent-artifacts/requirements/` as the BA delivery workbench. Create backlog-ready user stories (`us-*.md`), implementation-ready GUI specifications (`gui-*.md`), and canonical epic folder indexes (`index.md`).
 
 This skill is the **Single Source of Truth (SSOT)** for deliverable placement and folder indexing rules under `.agent-artifacts/requirements/output/`.
 
@@ -27,7 +27,7 @@ flowchart TD
         GUI <-->|"Screen Change Log"| DIAG_F
         GUI <-->|"Screen Change Log"| WF_F
         
-        US --> IDX["Initiative / Epic Indexes (index.md)"]
+        US --> IDX["Epic Indexes (index.md)"]
         GUI --> IDX
         DIAG_F --> IDX
         WF_F --> IDX
@@ -35,7 +35,7 @@ flowchart TD
 ```
 
 ### Incoming Handoffs:
-- **From `business-requirements-analyst`**: Receives confirmed slicing handoff payload (`target_initiative`, `target_epic`, `confirmed_slices`) $\rightarrow$ generates backlog-ready user stories (`us-*.md`), GUI specs (`gui-*.md`), and updates initiative/epic folder indexes.
+- **From `business-requirements-analyst`**: Receives confirmed slicing handoff payload (`target_epic`, `confirmed_slices`) $\rightarrow$ generates backlog-ready user stories (`us-*.md`), GUI specs (`gui-*.md`), and updates epic folder indexes.
 - **From `generate-wireframe`**: Receives rendered wireframe mockups $\rightarrow$ authors or updates cumulative `gui-<screen>.md` specifications and links them to user stories.
 - **From `generate-diagram`**: Receives process/state flow diagrams $\rightarrow$ embeds diagram links into user story reference tables and GUI screen change logs.
 
@@ -56,53 +56,47 @@ This skill manages files within the canonical folder hierarchy:
 |-- index.md
 |-- input/                          <-- Raw client intake, briefs, tickets, screenshots
 |   `-- index.md
-|-- drafts/                         <-- Candidate PRDs awaiting slicing
-|   |-- index.md
-|   `-- candidate-specs/            <-- Pre-slicing draft PRDs, monolithic feature drafts
-|       `-- index.md
-`-- output/                         <-- Canonical delivery hierarchy (using frontmatter status)
-    |-- index.md
-    |-- elicitation/                <-- Authoritative elicitation session records
-    |   `-- index.md
-    `-- initiatives/
-        |-- index.md
-        `-- <initiative-slug>/
-            |-- index.md
-            `-- epics/
-                |-- index.md
-                `-- <epic-slug>/
-                    |-- index.md
-                    |-- <user-story-id-or-slug>.md
-                    |-- gui-<screen-slug>.md
-                    |-- api-<api-slug>.md
-                    |-- wireframes/
-                    |   |-- wireframe-<screen-or-flow-slug>.html
-                    |   `-- wireframe-<screen-or-flow-slug>.md
-                    |-- diagrams/
-                    |   |-- diagram-<diagram-slug>.md
-                    |   `-- diagram-<diagram-slug>.bpmn
-                    `-- analysis-<analysis-slug>.md
+`-- output/                         <-- Canonical delivery hierarchy (using frontmatter status: draft / in-progress / authoritative)
+    |-- index.md                    <-- Master index linking epics & root artifacts
+    |-- vision-scope.md             <-- Overall product vision & scope
+    |-- functional-decomposition.md <-- Overall capability breakdown
+    |-- elicitation/                <-- Project-wide discovery notes & interview sessions
+    |   |-- index.md
+    |   `-- elicitation-<session-slug>.md
+    `-- <epic-slug>/                <-- Epic delivery folder
+        |-- index.md                <-- Epic Index linking all child artifacts
+        |-- elicitation-<session-slug>.md  <-- Epic discovery & Q&A notes
+        |-- <user-story-id-or-slug>.md
+        |-- gui-<screen-slug>.md
+        |-- api-<api-slug>.md
+        |-- wireframes/
+        |   |-- wireframe-<screen-or-flow-slug>.html
+        |   `-- wireframe-<screen-or-flow-slug>.md
+        |-- diagrams/
+        |   |-- diagram-<diagram-slug>.md
+        |   `-- diagram-<diagram-slug>.bpmn
+        `-- analysis-<analysis-slug>.md
 ```
 
 ### Reference Guidelines & Templates
 - **User Stories**: `assets/user-story-template.md` & `references/user-story-guidelines.md`
 - **GUI Specs**: `assets/gui-specification-template.md` & `references/gui-specification-guidelines.md`
 - **Scope Slicing**: `../analyze-requirements/references/slicing-guidelines.md`
-- **Folder Placement & Indexing**: `assets/*-index-template.md` & `references/artifact-guidelines.md`
+- **Folder Placement & Indexing**: `assets/epic-index-template.md` & `references/artifact-guidelines.md`
 
 ---
 
 ## Workflow
 
 1. **Verify Confirmed Slicing Context**:
-   - Confirm target initiative, epic, and story slice bounds ($\le 1$ week) before generating physical files.
+   - Confirm target epic and story slice bounds ($\le 1$ week) before generating physical files.
 
 2. **Folder & Naming Conventions**:
-   - Use stable lowercase hyphenated slugs (e.g., `us-001-customer-login.md`, `gui-order-detail.md`).
+   - Use stable lowercase hyphenated slugs (e.g., `epic-01-user-auth`, `us-001-customer-login.md`, `gui-order-detail.md`).
    - Place GUI specs, wireframes (`./wireframes/`), and diagrams (`./diagrams/`) in the same epic folder as their related user stories.
 
-3. **Draft Artifacts with 3-Tier ACs & UI Component Tables**:
-   - Apply 3-tier Gherkin ACs for stories and 4-column tables (`UI Element`, `Component Type`, `Description`, `Validation`) for GUI specs.
+3. **Draft Artifacts with 3-Tier ACs, RAID Logs & UI Component Tables**:
+   - Apply 3-tier Gherkin ACs and structured RAID logs for stories, and 4-column tables (`UI Element`, `Component Type`, `Description`, `Validation`) for GUI specs.
 
 4. **Synchronize Indexes & Relative Links**:
    - Update parent `index.md` files and ensure all relative links resolve without dead paths.

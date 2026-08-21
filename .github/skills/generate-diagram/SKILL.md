@@ -30,7 +30,7 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 
 - **Target Format:** [ .drawio | .md | .bpmn ]
 - **Diagram Type:** [ Business Process Swimlane | Sequence | System Context | ERD | State Transition ]
-- **Target File Path:** `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/diagrams/diagram-<slug>.<ext>`
+- **Target File Path:** `.agent-artifacts/requirements/output/<epic-slug>/diagrams/diagram-<slug>.<ext>`
 - **Actors / Swimlanes:**
   - Lane 1: <System or Role Name>
   - Lane 2: <System or Role Name>
@@ -112,8 +112,8 @@ When invoked by an **AI Agent**, **Subagent**, or **Upstream Skill** (e.g. `user
 ## Output Placement
 
 Follow the deliverable folder placement and index update rules owned by `manage-requirement-artifacts`:
-- Place user-story or epic-level diagram files in `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/diagrams/`.
-- Place cross-epic initiative diagram files directly in `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/`.
+- Place user-story or epic-level diagram files in `.agent-artifacts/requirements/output/<epic-slug>/diagrams/`.
+- Place project-wide diagram files directly in `.agent-artifacts/requirements/output/diagrams/`.
 
 ---
 

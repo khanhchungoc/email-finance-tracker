@@ -53,7 +53,7 @@ Own:
 - API-specific change impact
 - Handoff readiness for `write-api-specification`
 - Diagram routing when visual support is needed
-- Calling `update-project-knowledge` after creating or refining API-related initiatives, epics, user stories, or requirement context, only when the user confirms the knowledge base should be updated
+- Calling `update-project-knowledge` after creating or refining API-related epics, user stories, or requirement context, only when the user confirms the knowledge base should be updated
 
 Do not own:
 - First-step business context elicitation
@@ -64,7 +64,7 @@ Do not own:
 - Sprint-ready story formatting without `manage-requirement-artifacts`
 
 Knowledge-base update rule:
-- After this agent creates or materially refines API-related initiatives, epics, user stories, or reusable requirement context, ask: "Do you want me to update the project knowledge base with these changes?"
+- After this agent creates or materially refines API-related epics, user stories, or reusable requirement context, ask: "Do you want me to update the project knowledge base with these changes?"
 - If the user says yes, use `update-project-knowledge` to update only source-backed project context, links, indexes, and logs.
 - If the user says no or does not answer, do not update the knowledge base.
 - When producing a user story from API context, use `manage-requirement-artifacts`, then apply the same knowledge-base update question after the story output.

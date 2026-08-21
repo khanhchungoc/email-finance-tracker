@@ -112,7 +112,6 @@ When input is a screen, mockup, wireframe, design flow, or requirement draft:
 handoff_context:
   from_agent: business-requirements-analyst
   to_skill: manage-requirement-artifacts
-  target_initiative: "<initiative-slug>"
   target_epic: "<epic-slug>"
   confirmed_slices:
     - story_id: "us-001"

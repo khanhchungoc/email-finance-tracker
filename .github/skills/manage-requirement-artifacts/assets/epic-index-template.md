@@ -1,17 +1,12 @@
 ---
 type: Requirement Epic
-initiative: "<Initiative Name or TBD>"
 status: draft
-description: "Template for the canonical epic folder index under an initiative."
+description: "Template for the canonical epic folder index under output."
 tags: [requirement, epic]
 timestamp: "<ISO-8601 timestamp>"
 ---
 
 # Epic
-
-TBD
-
-# Parent Initiative
 
 TBD
 

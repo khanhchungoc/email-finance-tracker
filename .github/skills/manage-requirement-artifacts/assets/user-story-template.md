@@ -15,10 +15,13 @@ As a `<user role>` I want to `<goal>` so that I can `<business value>`
 
 ---
 
-### Assumptions
-| Assumption ID | Description |
-|---------------|-------------|
-| A01           | `<Low-risk assumption needed to draft the story, or N/A>` |
+### Risk, Assumption, Issue, Dependency (RAID) Log
+| RAID ID | Type | Description | Impact | Owner | Status |
+|---|---|---|---|---|---|
+| R01 | Risk | `<Identified delivery, technical, or business risk, or N/A>` | `<Low / Medium / High>` | `<Owner / TBD>` | `<Open / Mitigated>` |
+| A01 | Assumption | `<Low-risk assumption needed to draft the story, or N/A>` | `<Low / Medium / High>` | `<Owner / TBD>` | `<Open / Validated>` |
+| I01 | Issue | `<Current known blocker or defect affecting this story, or N/A>` | `<Low / Medium / High>` | `<Owner / TBD>` | `<Open / In Progress / Resolved>` |
+| D01 | Dependency | `<Prerequisite service, external API, data model, or story, or N/A>` | `<Low / Medium / High>` | `<Owner / TBD>` | `<Open / Ready>` |
 
 ---
 

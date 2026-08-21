@@ -51,7 +51,7 @@ Use this reference when mapping BA workspace artifacts to Jira work items via th
 
 ## Description Body Content
 
-Directly use the complete Markdown user story body content from the output folder (`.agent-artifacts/requirements/output/initiatives/<initiative>/epics/<epic>/us-*.md`), excluding the YAML frontmatter.
+Directly use the complete Markdown user story body content from the output folder (`.agent-artifacts/requirements/output/<epic-slug>/us-*.md`), excluding the YAML frontmatter.
 
 Append the source traceability line at the bottom:
 
@@ -59,5 +59,5 @@ Append the source traceability line at the bottom:
 <Direct Markdown content from us-*.md body>
 
 ---
-_Source: .agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/us-001-story.md_
+_Source: .agent-artifacts/requirements/output/<epic-slug>/us-001-story.md_
 ```

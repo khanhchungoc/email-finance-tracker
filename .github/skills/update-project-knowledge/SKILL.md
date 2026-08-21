@@ -29,7 +29,7 @@ After changing project knowledge under `wiki/`, `solution-context/`, or `glossar
 
 ## Do Not Use When
 
-- Creating or editing requirements, initiatives, epics, user stories, API specs, GUI specs, diagrams, WBS, backlog sync outputs, or analysis reports.
+- Creating or editing requirements, epics, user stories, API specs, GUI specs, diagrams, WBS, backlog sync outputs, or analysis reports.
 - The requested file belongs under top-level `.agent-artifacts/requirements/`.
 - The user has not confirmed that generated delivery output should update durable wiki context.
 

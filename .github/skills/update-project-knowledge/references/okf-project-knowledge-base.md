@@ -19,10 +19,10 @@ This reference owns the reusable framework rules for the starter `.agent-artifac
 
 Outsourcing project knowledge bases usually need these concept families:
 
-- Requirement hierarchy files under initiatives, epics, and user stories, owned by requirements/artifact agents.
+- Requirement hierarchy files under epics and user stories, owned by requirements/artifact agents.
 - Solution context: domains, systems, modules, APIs, integrations, data, screens, and environments.
 - Wiki: durable project wiki for engagement, stakeholders, ownership, scope boundaries, assumptions, exclusions, dependencies, delivery model, acceptance, handover, support, decisions, and risks.
-- Requirements, initiatives, epics, user stories, and BA artifact references.
+- Requirements, epics, user stories, and BA artifact references.
 - Decisions and rationale.
 - Integrations and dependencies.
 - Data entities, source-of-truth notes, and mappings.
@@ -34,6 +34,7 @@ Outsourcing project knowledge bases usually need these concept families:
 
 ```text
 .agent-artifacts/
+|-- sprint-scope/
 |-- project-knowledge-base/
 |   |-- index.md
 |   |-- log.md
@@ -56,15 +57,13 @@ Outsourcing project knowledge bases usually need these concept families:
     |-- index.md
     |-- input/
     `-- output/
-        `-- initiatives/
+        |-- index.md
+        |-- vision-scope.md
+        |-- functional-decomposition.md
+        |-- elicitation/
+        `-- <epic-slug>/
             |-- index.md
-            `-- <initiative-slug>/
-                |-- index.md
-                `-- epics/
-                    |-- index.md
-                    `-- <epic-slug>/
-                        |-- index.md
-                        `-- <user-story-id-or-slug>.md
+            `-- <user-story-id-or-slug>.md
 ```
 
 Add more directories only when there is actual project knowledge to store.
@@ -130,7 +129,7 @@ When producing BA deliverables, research in this order:
 
 Use only user-specified or calling-agent-supplied input paths from `.agent-artifacts/requirements/input/`. If no input path or source material is specified and the task depends on source evidence, ask which input to use; do not scan the whole input folder to discover it.
 
-1. Open `.agent-artifacts/requirements/output/initiatives/` and the relevant initiative or epic subfolder only for related generated requirement knowledge.
+1. Open `.agent-artifacts/requirements/output/<epic-slug>/` only for related generated requirement knowledge.
 2. Open `.agent-artifacts/project-knowledge-base/solution-context/` only when the deliverable depends on domain rules, systems, APIs, integrations, data, screens, or technical ownership.
 3. Open `.agent-artifacts/project-knowledge-base/wiki/` only when the deliverable depends on scope boundaries, assumptions, exclusions, stakeholders, acceptance, risk, handover, support, or delivery commitments.
 4. Use specified `.agent-artifacts/requirements/input/` files for source evidence and citations.
@@ -140,7 +139,7 @@ Do not make agents read project governance folders by default for every requirem
 
 ## Delivery Vs Wiki Rule
 
-- Use top-level `.agent-artifacts/requirements/` as the delivery workbench: raw client inputs go in `.agent-artifacts/requirements/input/`; generated BA deliverables, specs, initiatives, epics, and user stories go in `.agent-artifacts/requirements/output/`.
+- Use top-level `.agent-artifacts/requirements/` as the delivery workbench: raw client inputs go in `.agent-artifacts/requirements/input/`; generated BA deliverables, specs, epics, and user stories go in `.agent-artifacts/requirements/output/`.
 - Use `.agent-artifacts/project-knowledge-base/wiki/` as the durable project wiki: confirmed business rules, system behavior, known issues, limitations, important notes, scope boundaries, decisions, assumptions, risks, dependencies, and reusable project facts live there.
 - Keep wiki pages under knowledge-area folders. The starter uses `knowledge-area-1/` and `knowledge-area-2/` as placeholders; rename them to project-specific areas when enough context exists.
 - Use `.agent-artifacts/project-knowledge-base/wiki/<knowledge-area>/diagrams/` for area-specific copied requirement diagrams and `.agent-artifacts/project-knowledge-base/wiki/diagrams/` for shared copied diagrams. Link to the copied diagram from the wiki page and cite the original `.agent-artifacts/requirements/` path.
@@ -152,7 +151,6 @@ Do not make agents read project governance folders by default for every requirem
 
 - Use listing `index.md` files for navigation and child links.
 - Use `.agent-artifacts/project-knowledge-base/index.md` as the root project entrypoint: include a concise project description, highest-level business requirements, and links to detailed concepts.
-- Use `<initiative-slug>/index.md` to describe the initiative and link child epics.
 - Use `<epic-slug>/index.md` to describe the epic and link child stories.
 - Store user stories as individual Markdown files inside the epic folder.
 

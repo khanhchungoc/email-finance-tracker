@@ -6,8 +6,8 @@ Read this file only when creating or refining user stories, acceptance criteria,
 
 - Purpose: define a backlog-ready behavior slice with acceptance criteria.
 - Owner: `manage-requirement-artifacts`.
-- Location: `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<story-id-or-slug>.md`.
-- Must include: minimal frontmatter, role, goal, value, assumptions, preconditions, flow summary, GUI/API/detail references when relevant, 3-tier Gherkin acceptance criteria, open questions, and citations when available.
+- Location: `.agent-artifacts/requirements/output/<epic-slug>/<story-id-or-slug>.md`.
+- Must include: minimal frontmatter, role, goal, value, RAID log (Risks, Assumptions, Issues, Dependencies), preconditions, flow summary, GUI/API/detail references when relevant, 3-tier Gherkin acceptance criteria, open questions, and citations when available.
 - Avoid: full UI field dictionaries, full screen component tables, raw endpoint payloads, or generic filler.
 
 ## Output Contract & Metadata
@@ -38,7 +38,7 @@ Use `assets/user-story-template.md` for the story body.
 Place each user story in:
 
 ```text
-.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/<user-story-id-or-slug>.md
+.agent-artifacts/requirements/output/<epic-slug>/<user-story-id-or-slug>.md
 ```
 
 Prefer the story ID in the filename when available, for example `us-001-customer-login.md`.
@@ -151,5 +151,6 @@ Before saving or certifying any user story file, verify against this quality che
 - [ ] **Independent & Small**: Story is sliced to fit within 1 sprint (<= 1 week) without blocking dependencies. No pure technical tasks.
 - [ ] **No AC Bloat**: Form field dictionaries are delegated to GUI specifications (`gui-*.md`), while story ACs capture business-level outcomes and messages.
 - [ ] **Heuristic Scoping Applied**: ZOMBIES, CRUD+L exceptions, Entry multi-triggers, and Ripple downstream effects mapped cleanly across tiers without story bloat.
+- [ ] **RAID Log & Governance**: Risks, assumptions, issues, and dependencies are categorized with explicit impact, owner, and resolution status.
 - [ ] **Traceable & Ready**: Affected GUI/API specs, wireframes, and diagrams are linked with relative Markdown links.
-- [ ] **Index Synced**: Story is listed in parent `epics/<epic-slug>/index.md`.
+- [ ] **Index Synced**: Story is listed in parent `<epic-slug>/index.md` (and `output/index.md`).

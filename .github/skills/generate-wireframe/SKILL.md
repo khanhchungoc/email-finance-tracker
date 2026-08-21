@@ -29,18 +29,17 @@ Create stakeholder-readable wireframes as static HTML/CSS files or structured te
 ## Requirement Output Placement
 
 Follow the deliverable folder placement and index update rules owned by `manage-requirement-artifacts`:
-- Put user-story-related wireframes in `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/epics/<epic-slug>/wireframes/`.
-- Put cross-epic or initiative-level wireframes in `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/`.
+- Put user-story or epic-related wireframes in `.agent-artifacts/requirements/output/<epic-slug>/wireframes/`.
+- Put project-wide wireframes in `.agent-artifacts/requirements/output/wireframes/`.
 
 Placement rules:
 
 - Put user-story-related wireframes in the `wireframes/` folder under the same epic as the related user story.
-- Put cross-epic or initiative-level wireframes in the initiative folder, not under a single epic.
+- Put project-wide wireframes in `.agent-artifacts/requirements/output/wireframes/`, not under a single epic.
 - If a wireframe relates to multiple user stories in the same epic, keep one shared wireframe file in that epic's `wireframes/` folder and link each story to it.
-- If related stories span multiple epics, stop and ask whether the wireframe is initiative-level or which epic owns it.
 - Use stable lowercase filenames: `wireframe-<screen-or-flow-slug>.html` or `wireframe-<screen-or-flow-slug>.md`.
 - After creating or updating a user-story-related wireframe, update the related user story to include a relative link such as `./wireframes/wireframe-order-detail.html`.
-- Update the nearest index: the epic `index.md` for epic-level wireframes, or the initiative `index.md` for cross-epic wireframes.
+- Update the nearest index: the epic `index.md` for epic-level wireframes, or the master `output/index.md` for project-wide wireframes.
 
 ## HTML Wireframe Rules
 

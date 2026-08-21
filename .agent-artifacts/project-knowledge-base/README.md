@@ -14,7 +14,7 @@ Use this folder for confirmed, reusable project context:
 The sibling `../requirements/` folder is the delivery workbench:
 
 - `../requirements/input/` - Raw client or stakeholder requirement material.
-- `../requirements/output/` - Generated BA deliverables, initiatives, epics, user stories, specs, diagrams, and WBS outputs.
+- `../requirements/output/` - Generated BA deliverables, epics, user stories, specs, diagrams, and WBS outputs.
 
 Do not store generated BA deliverables in this folder. After the user confirms a knowledge-base update, distill only stable reusable facts from `../requirements/output/` into `wiki/`, `solution-context/`, or `glossary/`. Related diagrams may be copied from `../requirements/` into the relevant wiki `diagrams/` folder, while the original requirement files stay unchanged.
 

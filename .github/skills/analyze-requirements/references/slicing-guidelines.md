@@ -1,6 +1,6 @@
 # Requirements Slicing Guidelines
 
-Use when slicing elicited business requirements, briefs, mockups, or system specifications into backlog-ready Initiatives, Epics, Features, and User Stories across different project architectures.
+Use when slicing elicited business requirements, briefs, mockups, or system specifications into backlog-ready Epics, Features, and User Stories across different project architectures.
 
 ---
 
@@ -25,7 +25,7 @@ Adapt slicing strategy to the project's technical architecture and delivery scop
 ## 2. The 3-Step Slicing Decision Flow
 
 1. **Step 1: Scope Sizing Audit**
-   - If feature effort > 1 month $\rightarrow$ Group into an **Initiative / Epic**.
+   - If feature effort > 1 month $\rightarrow$ Group into an **Epic**.
    - If story effort > 1 week $\rightarrow$ Apply **INVEST Slicing Patterns** (Section 3). Decompose to <= 1 week per story.
 
 2. **Step 2: Apply Slicing Patterns**

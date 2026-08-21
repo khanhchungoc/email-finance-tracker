@@ -9,7 +9,7 @@ Store in-flight discovery sessions, PACT interview notes, parking lots, candidat
 
 ## Lifecycle Rules
 
-1. **Discovery & Elicitation**: The equirements-elicitor agent and elicit-requirements skill save in-flight session notes and PACT summaries to elicitation/ (e.g., YYYY-MM-DD-<topic>.md).
-2. **Analysis & Scope Slicing**: The usiness-requirements-analyst agent and nalyze-requirements skill consume notes from elicitation/ or candidate drafts in candidate-specs/, then present candidate slices to the user.
-3. **Canonical Delivery Placement**: Once slices are approved, manage-requirement-artifacts generates physical us-*.md and gui-*.md files directly in ../output/initiatives/<initiative>/epics/<epic>/ with frontmatter status: draft.
+1. **Discovery & Elicitation**: The equirements-elicitor agent and elicit-requirements skill save in-flight session notes and PACT summaries to elicitation/ (e.g., YYYY-MM-DD-<topic>.md).
+2. **Analysis & Scope Slicing**: The  usiness-requirements-analyst agent and  nalyze-requirements skill consume notes from elicitation/ or candidate drafts in candidate-specs/, then present candidate slices to the user.
+3. **Canonical Delivery Placement**: Once slices are approved, `manage-requirement-artifacts` generates physical `us-*.md` and `gui-*.md` files directly in `../output/<epic-slug>/` with frontmatter `status: draft`.
 4. **Durable Knowledge Promotion**: When stable domain rules, system behaviors, or glossaries emerge, update-project-knowledge distills them into ../../project-knowledge-base/.

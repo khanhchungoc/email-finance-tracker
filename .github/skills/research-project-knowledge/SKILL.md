@@ -41,29 +41,24 @@ Stop at the earliest tier that provides sufficient evidence. If no relevant fact
 
 ```text
 .agent-artifacts/
+|-- sprint-scope/                   <-- Sprint scope records (sprint-N.md)
 |-- requirements/
 |   |-- index.md
 |   |-- input/                      <-- Raw client intake, briefs, tickets, screenshots
 |   |   `-- index.md
-|   |-- drafts/                     <-- IGNORED by research (in-flight discovery & drafts)
-|   |   |-- index.md
-|   |   |-- elicitation/            <-- IGNORED
-|   |   `-- candidate-specs/        <-- IGNORED
 |   `-- output/                     <-- Generated BA deliverables (Tier 2 search)
 |       |-- index.md
-|       `-- initiatives/
+|       |-- vision-scope.md
+|       |-- functional-decomposition.md
+|       |-- elicitation/            <-- Project-wide discovery notes
+|       `-- <epic-slug>/
 |           |-- index.md
-|           `-- <initiative-slug>/
-|               |-- index.md
-|               `-- epics/
-|                   |-- index.md
-|                   `-- <epic-slug>/
-|                       |-- index.md
-|                       |-- <user-story-id-or-slug>.md
-|                       |-- gui-<screen-slug>.md
-|                       |-- api-<api-slug>.md
-|                       |-- wireframes/
-|                       `-- diagrams/
+|           |-- elicitation-<slug>.md
+|           |-- <user-story-id-or-slug>.md
+|           |-- gui-<screen-slug>.md
+|           |-- api-<api-slug>.md
+|           |-- wireframes/
+|           `-- diagrams/
 `-- project-knowledge-base/
     |-- index.md
     |-- wiki/                       <-- Durable scope, stakeholders, delivery, risk, UX flows
@@ -84,10 +79,10 @@ Follow the 3-tier research fallback progression for each specific task type:
 
 | Task | Tier 1: Primary KB | Tier 2: Requirements Fallback | Tier 3: Codebase & Implementation Evidence (On User Confirmation) |
 |---|---|---|---|
-| **Elicitation** | `.agent-artifacts/project-knowledge-base/wiki/` (scope/stakeholders), `solution-context/` (domain/systems) | Specified `.agent-artifacts/requirements/input/` files, `.agent-artifacts/requirements/output/initiatives/<initiative-slug>/` | Technical architecture specs, environment configs, repository structures |
-| **Requirements Analysis** | `.agent-artifacts/project-knowledge-base/solution-context/` (behavior/API/data), `wiki/` (scope/risk) | Specified `.agent-artifacts/requirements/input/` files, related `.agent-artifacts/requirements/output/.../epics/<epic-slug>/` | Business rules in code/scripts/pipelines, validation logic, API route handlers |
+| **Elicitation** | `.agent-artifacts/project-knowledge-base/wiki/` (scope/stakeholders), `solution-context/` (domain/systems) | Specified `.agent-artifacts/requirements/input/` files, `.agent-artifacts/requirements/output/` | Technical architecture specs, environment configs, repository structures |
+| **Requirements Analysis** | `.agent-artifacts/project-knowledge-base/solution-context/` (behavior/API/data), `wiki/` (scope/risk) | Specified `.agent-artifacts/requirements/input/` files, related `.agent-artifacts/requirements/output/<epic-slug>/` | Business rules in code/scripts/pipelines, validation logic, API route handlers |
 | **API / Data Requirements** | `.agent-artifacts/project-knowledge-base/solution-context/` (systems, APIs, schemas, integrations) | `.agent-artifacts/requirements/output/.../api-*.md`, input files | API controllers, DTOs, OpenAPI specs, SQL schemas, ETL pipelines |
-| **User Story Drafting** | `.agent-artifacts/project-knowledge-base/solution-context/` (UI/API behavior), `wiki/` | Target epic folder (`.agent-artifacts/requirements/output/.../epics/<epic-slug>/`), parent `index.md` | Implementation contracts, entity schemas, state/event handlers, service interfaces |
+| **User Story Drafting** | `.agent-artifacts/project-knowledge-base/solution-context/` (UI/API behavior), `wiki/` | Target epic folder (`.agent-artifacts/requirements/output/<epic-slug>/`), parent `index.md` | Implementation contracts, entity schemas, state/event handlers, service interfaces |
 | **GUI / Wireframe** | `.agent-artifacts/project-knowledge-base/solution-context/` (screens, workflow, permissions), `wiki/` (brand guidelines, UX flows, `wiki/diagrams/`) | Target story/epic wireframes (`wireframe-*.html/md`) & GUI specs (`gui-*.md`) | UI components, page templates/views, layout structures, screen route definitions |
 | **Diagram** | `.agent-artifacts/project-knowledge-base/solution-context/` (actors, systems, data flow), `wiki/` (process flows, `wiki/<area>/diagrams/`) | Target story/epic diagrams (`diagram-*.md/bpmn`) & input diagrams | Workflow state machines, event handlers, ETL/service data pipelines, DB ERDs |
 

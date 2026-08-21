@@ -2,7 +2,7 @@
 type: Requirement Epic Index
 title: Sample Epic
 description: Placeholder epic page showing where user story files belong.
-tags: [requirement, epic, requirement-hierarchy, parent-initiative]
+tags: [requirement, epic, requirement-hierarchy]
 timestamp: 2026-07-09T00:00:00Z
 source_refs: []
 ---
@@ -12,10 +12,6 @@ source_refs: []
 ## Summary
 
 Placeholder for the epic goal, functional boundary, and expected outcome.
-
-## Parent Initiative
-
-* [Sample Initiative](../../index.md)
 
 ## User Stories
 

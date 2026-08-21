@@ -4,23 +4,26 @@ Store generated BA deliverables here.
 
 Generated requirement hierarchy:
 
-* [Initiatives](initiatives/) - Root folder for generated initiative folders.
+* [Elicitation](elicitation/) - Project-wide discovery notes & interview sessions.
+* [Sample Epic](sample-epic/) - Sample epic delivery folder.
 
 Required hierarchy:
 
 ```text
 output/
+|-- index.md
+|-- vision-scope.md
+|-- functional-decomposition.md
 |-- elicitation/
-|   `-- YYYY-MM-DD-<topic-slug>.md
-`-- initiatives/
+|   `-- <session-slug>.md
+`-- <epic-slug>/
     |-- index.md
-    `-- <initiative-slug>/
-        |-- index.md
-        `-- epics/
-            |-- index.md
-            `-- <epic-slug>/
-                |-- index.md
-                `-- <user-story-id-or-slug>.md
+    |-- elicitation-<slug>.md
+    |-- <user-story-id-or-slug>.md
+    |-- gui-<screen-slug>.md
+    |-- api-<api-slug>.md
+    |-- wireframes/
+    `-- diagrams/
 ```
 
 Examples:
