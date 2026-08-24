@@ -47,7 +47,7 @@ Place related GUI specification files in the same epic folder as the user story.
 
 ## Writing Workflow & Quality Standards
 
-1. Consume the pre-sliced story definition, actor role, goal, and GUI/API links from `functional-decomposition.md` (or slicing handoff).
+1. Consume the pre-sliced story definition, actor role, and goal from `functional-decomposition.md` (or slicing handoff). Determine the GUI Spec CRUD Action and any GUI/API links yourself when the story involves a screen or endpoint — `functional-decomposition.md` does not carry them.
 2. Draft the story using `assets/user-story-template.md`. Apply 3-tier Gherkin ACs, quote-delimited user-facing error copy, and the 6-column RAID log.
 3. Authoritative & Concise Delivery: Write direct, high-density story statements and Gherkin ACs without conversational narrative or meta-commentary.
 
@@ -135,7 +135,7 @@ When a User Story is an **enhancement** to an existing screen (e.g., adding a fi
 - Link every related wireframe or US-level diagram from the story body using a relative Markdown link.
 - If `generate-diagram` was triggered before or during story work, or the user mentions a diagram while asking for the user story, the story must reference the related diagram file.
 - Put US-related wireframes in the story epic's `wireframes/` folder and US-related diagrams in the story epic's `diagrams/` folder.
-- Put cross-epic or initiative-level wireframes and diagrams in the initiative folder, then link to them from the relevant story or epic index using the correct relative path.
+- Put cross-epic or initiative-level wireframes and diagrams in the initiative folder, then link to them from the relevant story or `epic.md` using the correct relative path.
 - Use stable filenames and folder-aware links such as `./wireframes/wireframe-order-detail.html`, `./wireframes/wireframe-order-detail.md`, or `./diagrams/diagram-order-approval-flow.md`.
 - If a wireframe or diagram spans multiple epics, do not place it under one epic by default; ask whether it should be initiative-level or which epic owns it.
 - When creating or updating a story because of a wireframe or diagram, add or refresh the story's reference link to that artifact.
@@ -152,4 +152,4 @@ Before saving or certifying any user story file, verify against this quality che
 - [ ] **Heuristic Scoping Applied**: ZOMBIES, CRUD+L exceptions, Entry multi-triggers, and Ripple downstream effects mapped cleanly across tiers without story bloat.
 - [ ] **RAID Log & Governance**: Risks, assumptions, issues, and dependencies are categorized with explicit impact, owner, and resolution status.
 - [ ] **Traceable & Ready**: Affected GUI/API specs, wireframes, and diagrams are linked with relative Markdown links.
-- [ ] **Index Synced**: Story is listed in parent `<epic-slug>/index.md` (and `output/index.md`).
+- [ ] **Epic Synced**: Story is listed in parent `<epic-slug>/epic.md` and the navigation `output/index.md`.

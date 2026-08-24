@@ -50,19 +50,12 @@
 
 - First update the authoritative session output, then hand over the complete file to the downstream agent.
 - Do not render a separate summary or payload. The session file is the complete handoff artifact.
-- Set `elicitation_status`, `pact_status`, and `next_route` in the session frontmatter before handoff.
-- The downstream agent must read the whole session file, including its frontmatter, rather than treating a chat summary as the source of truth.
+- Set `elicitation_status` in the session frontmatter, and write the routing decision as prose in `## Next Step`, before handoff.
+- The downstream agent must read the whole session file, including its frontmatter and `## Next Step`, rather than treating a chat summary as the source of truth.
 
 ### Handoff Status
 
-- `elicitation_status: IN_PROGRESS` means material elicitation questions remain active.
-- `elicitation_status: COMPLETE` means the questioning phase is finished because material questions were answered or intentionally parked.
-- `pact_status: COMPLETE` means no material PACT gaps remain.
-- Use `pact_status: INCOMPLETE` when material PACT gaps remain, even if the elicitation phase is complete.
-- Do not set either status to `COMPLETE` merely because a handoff was requested. Set `next_route: NONE` until a downstream route is selected.
-
-### Routing
-
-- API or backend clarification routes to `api-requirements-analyst`.
-- Requirement quality, readiness, impact, dependency, or backlog analysis routes to `business-requirements-analyst`.
-- User stories, GUI specifications, diagrams, wireframes, or delivery artifacts use `business-requirements-analyst` unless a more specific downstream route is selected.
+- `elicitation_status` is the one machine-readable readiness gate: `COMPLETE` means no material questions remain active — every material question was either answered or intentionally parked with an acknowledged risk; `IN_PROGRESS` means material questions are still open and unaddressed.
+- Do not set `elicitation_status: COMPLETE` merely because a handoff was requested. It must reflect the Parking Lot's actual state: any row still `Open` (not `Deferred` or `Closed`) that materially blocks confident downstream use keeps elicitation `IN_PROGRESS`.
+- A `Deferred` Parking Lot row does not block `COMPLETE`, provided the user has knowingly accepted proceeding with that gap as a stated risk (recorded as an `Assumption` or `Risk` row in `Decisions & Constraints`).
+- `## Next Step` carries the routing decision as prose (target agent/skill and the primary reason). There is no separate frontmatter routing field — the session file is the complete handoff artifact, so the routing record lives in the body, not a duplicate machine enum.

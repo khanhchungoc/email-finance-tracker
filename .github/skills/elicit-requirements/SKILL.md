@@ -1,16 +1,77 @@
 ---
 name: elicit-requirements
-description: "Use when a user wants to elicit, clarify, or refine requirements; brainstorm a product or feature idea; define an MVP; identify users, workflows, scope, rules, assumptions, risks, dependencies, or open questions; or prepare a PACT discovery handoff."
-argument-hint: "Describe the product idea, brief, feature, workflow, screen, process, API, or data need to explore."
-user-invocable: true
-disable-model-invocation: false
+description: "Use when eliciting or clarifying product, feature, epic, user-story, API, screen, process, or data requirements; defining MVP scope, actors, workflows, rules, assumptions, risks, and open questions; researching feature impact or inconsistent existing rules; or preparing the authoritative elicitation session. Discovery only: do not author final delivery artifacts."
 ---
 
 # Elicit Requirements Skill
 
 ## Purpose
 
-Technique playbook and checklist library for requirements elicitation across scope levels, discovery lenses, domain constraints, and UI details. Trigger and routing decisions belong to the calling agent (`requirements-elicitor`'s `Trigger Contract`); this skill only owns the discovery checklists, execution steps, and output formats below.
+Conduct requirements elicitation across scope levels, discovery lenses, domain constraints, and UI details. This skill owns the activation criteria, interviewing rules, session lifecycle, and authoritative output format; the calling BA orchestrator owns scenario classification, cross-skill routing, and the later Artifact Plan.
+
+---
+
+## Activation And Interview Contract
+
+Apply this skill when a BA request explores what to build, who it serves, how it works, MVP boundaries, scope, user journeys, workflows, screens, processes, APIs, assumptions, or open questions. Do not start elicitation for a pure explanation, narrow mechanical edit, or a complete artifact when the user explicitly skips elicitation.
+
+Before the first visible response, apply `research-project-knowledge` to establish the PACT Baseline (People, Activities, Context, Technologies) from confirmed project context. Compare the request against that baseline and ask only questions needed to close material gaps.
+
+Use the PACT lifecycle consistently:
+1. **PACT Baseline**: extract confirmed People, Activities, Context, and Technologies from project context.
+2. **PACT Delta**: identify only the missing, ambiguous, or contradictory elements in the current request.
+3. **Targeted Elicitation**: ask questions strictly against the PACT Delta without re-asking known facts.
+
+| Pillar | Capture |
+|---|---|
+| People | Personas, roles, permissions, accessibility needs, and digital literacy. |
+| Activities | Workflows, triggers, frequency, urgency, criticality, inputs/outputs, and SLAs. |
+| Context | Operating environment, team/social context, regulatory/compliance bounds. |
+| Technologies | Platforms, devices, network/offline needs, legacy systems, and API dependencies. |
+
+Discover NFRs (for example, latency, security, compliance, and service levels) as cross-cutting solution constraints. Do not fragment global NFRs into individual user stories unless a story requires an explicit SLA override or custom exception.
+
+- Ask all material questions currently needed for one topic in a single batch. Do not mix topics in one batch; start a new batch when moving to another topic.
+- During active elicitation, display only a short context line and the questions. Do not create final requirements or a full handoff summary while material questions remain.
+- Use the VS Code question modal for live interactive questions when available; use unanswered Markdown questions in stateless invocations or if the modal is unavailable.
+- Treat each answered batch as a checkpoint: recalculate the PACT Delta, then either ask the next material batch for the current topic or state why the scope is sufficient for the requested output.
+- Convert questions the current user can answer into confirmed fields, `Candidate` entries, assumptions, or decisions. Keep only low-confidence, high-impact, or external-owner validation questions in the Parking Lot.
+- If the user provides a complete artifact and explicitly skips elicitation, record `Decision: elicitation skipped by user` plus resulting assumptions in the session output before continuing.
+
+### Targeted Research Loop
+
+Targeted research may run between question batches when the conversation raises a concrete question about current project impact or rule consistency. It supplements the PACT baseline; it does not replace stakeholder elicitation or become an unrestricted codebase audit.
+
+| Trigger | Research Focus | Elicitation Follow-up |
+|---|---|---|
+| Proposed feature may affect existing work | Related epics, stories, screens, flows, shared entities, dependencies, and state transitions | Confirm affected scope and whether each observed impact is intended. |
+| Similar business rule may already exist | Existing validation, permission, calculation, lifecycle, or exception rules | Present apparent matches/conflicts and ask which rule is authoritative. |
+| Current behavior is unclear | Documented behavior and, only with user confirmation, focused implementation evidence | Separate observed behavior from intended behavior; record defects or legacy behavior as such. |
+| Shared resource or integration may ripple | Consumers, source of truth, in-flight/future item effects, and invalidation/state-lock risks | Confirm whether the change is local, cascading, or out of scope. |
+
+When a trigger occurs:
+
+1. Pause the current question sequence and formulate one bounded research question for the relevant target epic, feature, entity, rule, or artifact.
+2. Apply `research-project-knowledge`; it owns tier selection, stopping rules, evidence reporting, and permission before any Tier 3 codebase search.
+3. Present the research packet, distinguish observed behavior from intended behavior, ask the user to confirm the interpretation, record the result in the same session output, then recalculate the PACT Delta and continue elicitation.
+
+### Guardrails
+
+- Treat hedged statements (for example, "maybe", "I think", or "not sure") as unconfirmed. Ask the user to confirm, revise, or park them when they affect scope, behavior, data, security, compliance, effort, or timeline.
+- Challenge vague actors, missing exception paths, hidden manual work, untestable requirements, unbounded scope, risky integrations, and security/compliance gaps.
+- When new input contradicts an existing confirmed fact or decision, name both statements and ask one resolving question before changing the record.
+- In a stateless invocation, never invent stakeholder answers. Return only unanswered Open Questions and state that interactive elicitation is required.
+
+### Question Rendering And Response Economy
+
+| Condition | Output |
+|---|---|
+| Live user-facing question | Present all material questions for the current topic in one VS Code question batch with structured options when available. |
+| Modal unavailable, or writing a transcript/summary | Use numbered Markdown questions with lettered options where useful. |
+| Stakeholder/external validation item | Record it in the Markdown Parking Lot; do not present it as an interactive question. |
+| Stateless invocation | Return unanswered Markdown Open Questions only. |
+
+Keep the `Referenced Documents` section compact during active questioning. Hand over the complete authoritative session only when the user asks to wrap up/hand over or all material questions are answered or intentionally parked.
 
 ---
 
@@ -31,14 +92,10 @@ Technique playbook and checklist library for requirements elicitation across sco
 ## 2. Structured Discovery Phasing & Lenses
 
 ### Default Greenfield Discovery Sequence:
-1. **Problem & Goal**: Business objective, success metric, problem root cause.
-2. **Actors & Ownership**: Target personas, decision makers, operational owners.
-3. **Scope Boundaries**: In-scope MVP, explicit exclusions, dependencies.
-4. **Journey & Process**: Core workflows, decision branches, exception handling.
-5. **Rules & Permissions**: Validation rules, calculation formulas, access control matrix.
-6. **Integrations & Data**: Legacy systems, 3rd-party APIs, data sync mechanisms.
-7. **NFRs & Compliance**: Security, compliance (GDPR/HIPAA/PCI), accessibility, SLAs.
-8. **Delivery & Risks**: Rollout phasing, technical debt, assumptions, handoff readiness.
+1. **Objective, Actors & Ownership**: Business goal, success signals, personas, decision makers, and operational owners.
+2. **Scope, Journey & Process**: MVP boundary, exclusions, core workflows, decision branches, and exception handling.
+3. **Rules, Data & Integrations**: Validation, permissions, calculations, source of truth, legacy systems, and data exchanges.
+4. **NFRs, Delivery & Risks**: Security, compliance, accessibility, SLAs, rollout phasing, assumptions, and handoff readiness.
 
 ---
 
@@ -65,25 +122,15 @@ Use when eliciting screens, forms, workflows, approvals, or data-capture feature
 
 ## 5. Execution Contract
 
-1. Read the project-knowledge research skill and inspect the primary knowledge-base indexes before broad workspace exploration. Record the source documents used for the response.
-2. Classify the request by scope level and record the user's stated objective without adding domain facts.
-3. Build the PACT Baseline and compare it with the request to identify only material gaps.
-4. Ask targeted questions to clarify impact gaps. Use structured modal questions during an interactive session; use unanswered Markdown questions for stateless invocation or when the modal is unavailable.
-5. Convert answers into confirmed facts, decisions, assumptions, risks, dependencies, exclusions, or Parking-Lot items. Do not silently promote proposals to requirements.
-6. Recalculate the PACT Delta after each batch. Continue with another 1-3 questions when material gaps remain; otherwise proceed to the last stage below.
-7. Persist the session output per **Authoritative Session Output** (the last stage), then state remaining open questions or hand over the complete authoritative session output.
+1. Read `research-project-knowledge` and establish the PACT Baseline from the primary knowledge-base indexes.
+2. Select the applicable scope-level checklist and identify the material PACT Delta.
+3. Ask one topic-batched set of questions, invoking targeted research when an impact or consistency question needs evidence.
+4. Convert answers into confirmed facts, decisions, assumptions, risks, dependencies, exclusions, or Parking-Lot items; recalculate the PACT Delta after each batch.
+5. Persist and hand over the authoritative session according to [elicitation-output-guidance.md](./references/elicitation-output-guidance.md).
 
 ---
 
-## 6. Authoritative Session Output (Last Stage)
+## 6. Authoritative Session Output
 
-Save each elicitation session's discovery record, PACT matrix, and parking lot to one authoritative output file:
-
-```text
-.agent-artifacts/requirements/output/elicitation/YYYY-MM-DD-<topic-slug>.md
-```
-
-The first persistence point is reached when the user answers a discovery batch or confirms a meaningful direction such as target users, MVP scope, platform, storage, reminder behavior, or workflow. Create one authoritative session output using [elicitation-session-template.md](./assets/elicitation-session-template.md) (Skill SSOT) and update that same file throughout the session. Follow [elicitation-output-guidance.md](./references/elicitation-output-guidance.md) for information boundaries, parking-lot, and handoff rules. The template's section boundaries and typed table fields are the canonical information model: objective, boundary, PACT context, rules/data, decisions/constraints, and unresolved questions have distinct homes, while Type, Area, and Status preserve the required classifications without creating a heading for every category. The calling agent applies the template and guidance as-is; it still owns the judgment calls — whether an item is parked versus confirmed, the lifecycle and readiness statuses in session frontmatter, and the actual routing decision in `next_route` and `Next Step`.
-
-Update the same session output when scope changes, an open question is answered or parked, or a handoff is prepared. Do not create a session output for a pure meta question unless the user asks for one. If writing is unavailable or fails, report that limitation instead of implying persistence.
+Use [elicitation-session-template.md](./assets/elicitation-session-template.md) for the output skeleton and [elicitation-output-guidance.md](./references/elicitation-output-guidance.md) for persistence, field boundaries, Parking Lot handling, status, and handoff rules. The session file is the sole authoritative handoff artifact; do not create a duplicate brief or payload.
 

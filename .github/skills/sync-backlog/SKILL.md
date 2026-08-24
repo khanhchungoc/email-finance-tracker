@@ -1,6 +1,6 @@
 ---
 name: sync-backlog
-description: Use when syncing BA requirement artifacts, user stories, and epics to Jira or Azure DevOps via MCP integrations.
+description: Use to assess readiness and push or pull Jira/Azure DevOps initiatives, epics, user stories, and linked specs; reconcile conflicts; create or update work items; or prepare sprint scope, goals, and commitment communications.
 ---
 
 # Backlog Sync Skill

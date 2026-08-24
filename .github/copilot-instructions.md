@@ -21,7 +21,8 @@ Project-specific context must come from the user, accessible source files, or cl
 ## Responsibility Boundary
 
 - `.github/copilot-instructions.md` owns global workspace principles, high-level routing pointers, and runtime boundaries.
-- `.github/agents/requirements-elicitor.agent.md` is the **Single Source of Truth (SSOT)** for Elicitor-First Gate rules, question batching (1–3 questions), intake triage, and discovery handoffs.
+- `.github/agents/ba.agent.md` is the **Single Source of Truth (SSOT)** for BA intake triage, scenario routing, the consolidated Artifact Plan, and cross-skill handoffs; specialist agents retain their own local routing gates.
+- `.github/skills/elicit-requirements/SKILL.md` is the **SSOT** for elicitation activation, question batching, interviewing guardrails, session lifecycle, and authoritative elicitation output.
 - `.github/skills/manage-requirement-artifacts/SKILL.md` is the **SSOT** for the `.agent-artifacts/requirements/` folder structure, deliverable file placement rules, and output hierarchy indexing.
 - `.github/skills/update-project-knowledge/SKILL.md` is the **SSOT** for `.agent-artifacts/project-knowledge-base/` structure and durable wiki maintenance.
 
@@ -42,15 +43,15 @@ Known workspace roots include:
 - If no files were read or supplied, state: `No project documents were referenced; this response is based on the current conversation context only.`
 - If a file, format, link, image, or external source cannot be accessed, state so plainly and ask for an accessible alternative.
 
-## BA Routing & Elicitor-First Gate
+## BA Routing & Elicitation-First Gate
 
-For BA requests involving requirements, scope, estimation, artifact creation, or product/feature brainstorming with user, workflow, MVP, or scope decisions, route through `.github/agents/requirements-elicitor.agent.md` unless the user explicitly skips elicitation, the task is a narrow mechanical edit, or it is a meta/configuration request. The elicitor agent owns the full gate, question batching, triage, draft checkpoint persistence, and handoff rules.
+For BA requests involving requirements, scope, estimation, artifact creation, or product/feature brainstorming with user, workflow, MVP, or scope decisions, start with `.github/agents/ba.agent.md` and follow its routing and handoff rules. Exceptions are an explicit user instruction to skip elicitation, a narrow mechanical edit, or a meta/configuration request.
 
 ## Lifecycle Hooks and Workflow Gates
 
 `.github/hooks/ba-workflow.json` runs post-write checks for changes under `.agent-artifacts/requirements/` and `.agent-artifacts/project-knowledge-base/`, including index reminders, status-frontmatter checks, complex-logic prompts, and BPMN post-processing.
 
-The intake gate remains an agent workflow rule because it depends on conversation context. Downstream handoffs must follow the receiving agent or skill's schema, including any required status fields. `requirements-elicitor` is the entry point and must not route to itself.
+The intake gate remains an agent workflow rule because it depends on conversation context. Downstream handoffs must follow the receiving agent or skill's schema, including any required status fields. `ba` is the entry point and must not route to itself.
 
 ## Mandatory Agent And Skill Triggers
 

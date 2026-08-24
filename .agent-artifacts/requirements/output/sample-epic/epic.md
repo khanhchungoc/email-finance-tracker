@@ -1,5 +1,5 @@
 ---
-type: Requirement Epic Index
+type: Requirement Epic
 title: Sample Epic
 description: Placeholder epic page showing where user story files belong.
 tags: [requirement, epic, requirement-hierarchy]
@@ -12,6 +12,18 @@ source_refs: []
 ## Summary
 
 Placeholder for the epic goal, functional boundary, and expected outcome.
+
+## Business Value
+
+Placeholder for the measurable value this epic provides to the business, users, or stakeholders.
+
+## High-Level Requirements
+
+* Placeholder for the epic-level capabilities and constraints.
+
+## Dependencies
+
+* Placeholder for upstream decisions, systems, teams, or delivery work required by this epic.
 
 ## User Stories
 

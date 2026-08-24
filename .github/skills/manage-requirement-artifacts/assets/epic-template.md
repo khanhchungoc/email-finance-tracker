@@ -1,7 +1,7 @@
 ---
 type: Requirement Epic
 status: draft
-description: "Template for the canonical epic folder index under output."
+description: "Template for the canonical epic file under output."
 tags: [requirement, epic]
 timestamp: "<ISO-8601 timestamp>"
 ---
@@ -9,6 +9,14 @@ timestamp: "<ISO-8601 timestamp>"
 # Epic
 
 TBD
+
+# Business Value
+
+TBD
+
+# High-Level Requirements
+
+- TBD
 
 # Business Outcome
 

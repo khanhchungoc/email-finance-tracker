@@ -2,12 +2,13 @@
 
 Use this as a lightweight checklist for artifact placement and minimum expected content. Detailed formats remain in the artifact-owning skills.
 
-## Epic Index
+## Epic
 
-- **Purpose**: define a deliverable epic and group child requirement artifacts.
+- **Purpose**: define a deliverable epic and group child requirement artifacts in one explicit epic file.
 - **Owner**: `manage-requirement-artifacts`.
-- **Location**: `.agent-artifacts/requirements/output/<epic-slug>/index.md`.
-- **Must include**: epic title, business outcome, child user stories/artifacts, business rules, dependencies, open questions, citations when available.
+- **Location**: `.agent-artifacts/requirements/output/<epic-slug>/epic.md`.
+- **Navigation**: the parent `.agent-artifacts/requirements/output/index.md` lists the epic file; `index.md` is reserved for navigation.
+- **Must include**: epic title, business value, high-level requirements, business outcome, dependencies, child user stories/artifacts, business rules, open questions, citations when available.
 - **Avoid**: duplicating full story bodies or detailed GUI/API tables.
 
 ## User Story
@@ -51,18 +52,10 @@ Read `references/user-story-guidelines.md`. Do not create or refine user stories
 - **Placement rules**: if a diagram supports a specific user story or epic, write it in the `diagrams/` folder under that story's epic and link the story to the diagram.
 - **Avoid**: diagrams without surrounding explanation, unlabeled decision points, or a missing link from related user stories.
 
-## Requirements Analysis
-
-- **Purpose**: evaluate readiness, gaps, dependencies, SMART quality, or impact.
-- **Owner**: `analyze-requirements`.
-- **Location**: relevant epic folder as `analysis-<analysis-slug>.md` for scoped analysis.
-- **Must include**: analysis mode, findings, risks, gaps, assumptions, decisions needed, recommended next actions, and source references.
-- **Avoid**: silently converting analysis findings into approved scope.
-
 ## Elicitation Output
 
 - **Purpose**: maintain the authoritative record of one elicitation session's discovery findings, PACT matrix, open questions, and parking lot.
-- **Owner**: `requirements-elicitor` & `elicit-requirements`.
+- **Owner**: `ba` & `elicit-requirements`.
 - **Location**: `.agent-artifacts/requirements/output/<epic-slug>/elicitation-<session-slug>.md` (for epic-scoped discovery) or `.agent-artifacts/requirements/output/elicitation/<session-slug>.md` (for project-wide discovery).
 - **Must include**: `status: draft | in-progress | authoritative`, elicitation scope, PACT baseline & delta, answered questions, assumptions, unresolved parking-lot items, risks, decisions, and recommended next step.
 - **Lifecycle**: create one file under the target epic or under `output/elicitation/` and update its frontmatter status as discovery progresses.

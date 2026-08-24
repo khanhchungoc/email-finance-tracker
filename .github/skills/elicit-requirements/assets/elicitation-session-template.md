@@ -2,13 +2,9 @@
 status: authoritative
 artifact_type: elicitation_session
 elicitation_status: IN_PROGRESS | COMPLETE
-pact_status: COMPLETE | INCOMPLETE
-next_route: <target-agent-or-skill | NONE>
 created_at: "<YYYY-MM-DDThh:mm:ssZ>"
 updated_at: "<YYYY-MM-DDThh:mm:ssZ>"
-session_id: "<YYYY-MM-DD>-<topic-slug>"
 topic: "<topic-slug>"
-source: "<User conversation | input file path>"
 ---
 
 # <Topic Title> - Elicitation Session

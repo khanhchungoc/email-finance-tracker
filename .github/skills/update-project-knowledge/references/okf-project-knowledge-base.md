@@ -120,7 +120,7 @@ Recommended:
 - Keep listing `index.md` files short; they are navigation, not full documentation.
 - Keep `.agent-artifacts/project-knowledge-base/index.md` short, but allow it to include a brief `Project Snapshot` section for the overall project description and highest-level business requirements.
 - Do not create a standalone `.agent-artifacts/project-knowledge-base/wiki/project-overview.md` by default. Use separate wiki pages only for detailed scope, stakeholder, delivery, risk, decision, or support context that would make the root index too long.
-- Use each initiative folder `index.md` as the canonical initiative page and each epic folder `index.md` as the canonical epic page.
+- Use each initiative folder `index.md` as the canonical initiative page and each requirement epic folder `epic.md` as the canonical epic page.
 - Add `# Citations` when claims depend on source material.
 
 ## Research Order For BA Deliverables
@@ -151,7 +151,7 @@ Do not make agents read project governance folders by default for every requirem
 
 - Use listing `index.md` files for navigation and child links.
 - Use `.agent-artifacts/project-knowledge-base/index.md` as the root project entrypoint: include a concise project description, highest-level business requirements, and links to detailed concepts.
-- Use `<epic-slug>/index.md` to describe the epic and link child stories.
+- Use `<epic-slug>/epic.md` to describe the requirement epic and link child stories; keep project-knowledge-base `index.md` files for navigation and knowledge-page entry points.
 - Store user stories as individual Markdown files inside the epic folder.
 
 ## Controlled Tags

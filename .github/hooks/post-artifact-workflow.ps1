@@ -20,7 +20,7 @@ foreach ($rawPath in $artifactPaths) {
     
     # Process requirement deliverables
     if ($normalized -match '(^|/)requirements/' -or $normalized -match '(^|/)\.agent-artifacts/requirements/') {
-        $messages += 'Sync nearest index.md and traceability links under .agent-artifacts/requirements/output/.'
+        $messages += 'Sync nearest navigation index, epic.md, and traceability links under .agent-artifacts/requirements/output/.'
         
         if (Test-Path $rawPath) {
             # Auto-layout for BPMN diagram XML files

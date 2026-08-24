@@ -1,6 +1,6 @@
 ---
 name: research-project-knowledge
-description: Read-only project knowledge research for BA tasks. Use to search wiki context, solution context, glossary, and project indexes before elicitation or requirements writing.
+description: Read-only project knowledge research for BA tasks. Use before or during elicitation and requirements writing to inspect related features, business rules, system behaviors, dependencies, and change impact. Implementation-code searches require explicit user confirmation.
 ---
 
 # Project Knowledge Research Skill
@@ -36,6 +36,26 @@ Execute research according to the target task type defined in **Task Routing**, 
    - If user declines or skips: proceed with research findings from Tiers 1 & 2, logging remaining technical gaps as assumptions or open questions.
 
 Stop at the earliest tier that provides sufficient evidence. If no relevant facts exist across available tiers, report what was checked and proceed relying on direct user input and explicitly labeled assumptions.
+
+## Targeted Research During Elicitation
+
+This skill may be invoked repeatedly during one elicitation session when a concrete research question emerges. It is not limited to the initial project-context pass. Use it for questions such as:
+
+- What existing epics, stories, screens, flows, or integrations could this change affect?
+- Is there an existing business rule, validation, permission, calculation, or lifecycle state that is similar or inconsistent?
+- What documented behavior, source of truth, dependency, or state transition must the proposed feature fit?
+- Does the change mutate a shared resource or create a downstream impact for in-flight or future work?
+
+For each targeted request:
+
+1. State one bounded research question and its target epic, feature, entity, rule, or artifact.
+2. Search Tier 1 and then Tier 2 only for evidence relevant to that question. Do not restart a full project scan or repeat the PACT baseline unnecessarily.
+3. Stop at the earliest sufficient tier and return the evidence, source paths, apparent conflicts, and remaining gaps.
+4. If documented evidence is insufficient and current implementation behavior is needed, explicitly ask the user to confirm a focused Tier 3 codebase search before performing it. The initial permission to research project context does not imply permission to inspect implementation code.
+5. Distinguish **observed current behavior** from **confirmed intended behavior**. Existing code or documentation may describe a defect, legacy rule, or accidental behavior; never silently convert it into a requirement.
+6. Return the findings to the calling agent so it can present the evidence and ask the user to confirm whether the observed rule is intended, should change, or should be treated as a risk/open question.
+
+Record the targeted research question, files actually read, and resulting confirmed fact, assumption, risk, decision, or open question in the authoritative elicitation session. Do not create a separate research artifact unless the user explicitly requests one.
 
 ## Workspace Folder Structure Reference
 
@@ -82,7 +102,7 @@ Follow the 3-tier research fallback progression for each specific task type:
 | **Elicitation** | `.agent-artifacts/project-knowledge-base/wiki/` (scope/stakeholders), `solution-context/` (domain/systems) | Specified `.agent-artifacts/requirements/input/` files, `.agent-artifacts/requirements/output/` | Technical architecture specs, environment configs, repository structures |
 | **Requirements Analysis** | `.agent-artifacts/project-knowledge-base/solution-context/` (behavior/API/data), `wiki/` (scope/risk) | Specified `.agent-artifacts/requirements/input/` files, related `.agent-artifacts/requirements/output/<epic-slug>/` | Business rules in code/scripts/pipelines, validation logic, API route handlers |
 | **API / Data Requirements** | `.agent-artifacts/project-knowledge-base/solution-context/` (systems, APIs, schemas, integrations) | `.agent-artifacts/requirements/output/.../api-*.md`, input files | API controllers, DTOs, OpenAPI specs, SQL schemas, ETL pipelines |
-| **User Story Drafting** | `.agent-artifacts/project-knowledge-base/solution-context/` (UI/API behavior), `wiki/` | Target epic folder (`.agent-artifacts/requirements/output/<epic-slug>/`), parent `index.md` | Implementation contracts, entity schemas, state/event handlers, service interfaces |
+| **User Story Drafting** | `.agent-artifacts/project-knowledge-base/solution-context/` (UI/API behavior), `wiki/` | Target epic folder (`.agent-artifacts/requirements/output/<epic-slug>/epic.md`), parent navigation `output/index.md` | Implementation contracts, entity schemas, state/event handlers, service interfaces |
 | **GUI / Wireframe** | `.agent-artifacts/project-knowledge-base/solution-context/` (screens, workflow, permissions), `wiki/` (brand guidelines, UX flows, `wiki/diagrams/`) | Target story/epic wireframes (`wireframe-*.html/md`) & GUI specs (`gui-*.md`) | UI components, page templates/views, layout structures, screen route definitions |
 | **Diagram** | `.agent-artifacts/project-knowledge-base/solution-context/` (actors, systems, data flow), `wiki/` (process flows, `wiki/<area>/diagrams/`) | Target story/epic diagrams (`diagram-*.md/bpmn`) & input diagrams | Workflow state machines, event handlers, ETL/service data pipelines, DB ERDs |
 
@@ -96,6 +116,11 @@ Return a concise research packet to the calling agent:
 
 ```markdown
 ## Knowledge Research Packet
+
+### Research Scope
+- **Question:** The bounded question this research answers.
+- **Tiers searched / stopping reason:** What was searched and why research stopped.
+- **Implementation search:** `Not requested` | `Confirmed` | `Declined`.
 
 ### Files Read
 - `path` - why it was read

@@ -1,13 +1,13 @@
 ---
 name: manage-requirement-artifacts
-description: Use when creating, refining, placing, and indexing requirement artifacts (epics, user stories, acceptance criteria, GUI specifications, UI component tables, screen change logs, and output indexes) under .agent-artifacts/requirements/.
+description: Use after slices are confirmed to inspect existing requirement artifacts and plan, create, or update physical epic files, user stories, GUI specifications, acceptance criteria, and screen change logs under .agent-artifacts/requirements/. Do not perform decomposition or create wireframes, diagrams, or API contracts.
 ---
 
 # Requirement Artifact Management Skill
 
 ## Purpose & Scope
 
-Maintain `.agent-artifacts/requirements/` as the BA delivery workbench. Create backlog-ready user stories (`us-*.md`), implementation-ready GUI specifications (`gui-*.md`), and canonical epic folder indexes (`index.md`).
+Maintain `.agent-artifacts/requirements/` as the BA delivery workbench. Create backlog-ready user stories (`us-*.md`), implementation-ready GUI specifications (`gui-*.md`), and canonical epic files (`epic.md`).
 
 This skill is the **Single Source of Truth (SSOT)** for deliverable placement and folder indexing rules under `.agent-artifacts/requirements/output/`.
 
@@ -27,16 +27,15 @@ flowchart TD
         GUI <-->|"Screen Change Log"| DIAG_F
         GUI <-->|"Screen Change Log"| WF_F
         
-        US --> IDX["Epic Indexes (index.md)"]
-        GUI --> IDX
-        DIAG_F --> IDX
-        WF_F --> IDX
+      US --> EPIC["Epic Files (epic.md)"]
+      GUI --> EPIC
+      DIAG_F --> EPIC
+      WF_F --> EPIC
     end
 ```
 
 ### Incoming Handoffs:
-- **From `ba-functional-decomposition` / `functional-decomposition.md`**: Reads `.agent-artifacts/requirements/output/functional-decomposition.md` to extract target `<epic-slug>` rows, then authors `<epic-slug>/index.md`, physical `us-*.md` user stories, and `gui-*.md` screen specs directly from the decomposition table.
-- **From `business-requirements-analyst` / `analyze-requirements`**: Receives confirmed slicing handoff payload (`target_epic`, `confirmed_slices`) $\rightarrow$ generates backlog-ready user stories (`us-*.md`), GUI specs (`gui-*.md`), and updates epic folder indexes.
+- **From `ba-functional-decomposition` / `functional-decomposition.md`**: Reads `.agent-artifacts/requirements/output/functional-decomposition.md` to extract target `<epic-slug>` rows (story title, actor, user goal, slicing rationale), then authors `<epic-slug>/epic.md`, physical `us-*.md` user stories, and any needed `gui-*.md` screen specs — determining the GUI Spec CRUD Action itself, since the decomposition file does not carry GUI actions or links.
 - **From `generate-wireframe`**: Receives rendered wireframe mockups $\rightarrow$ authors or updates cumulative `gui-<screen>.md` specifications and links them to user stories.
 - **From `generate-diagram`**: Receives process/state flow diagrams $\rightarrow$ embeds diagram links into user story reference tables and GUI screen change logs.
 
@@ -65,7 +64,7 @@ This skill manages files within the canonical folder hierarchy:
     |   |-- index.md
     |   `-- elicitation-<session-slug>.md
     `-- <epic-slug>/                <-- Epic delivery folder
-        |-- index.md                <-- Epic Index linking all child artifacts
+      |-- epic.md                 <-- Canonical epic definition and child artifact links
         |-- elicitation-<session-slug>.md  <-- Epic discovery & Q&A notes
         |-- <user-story-id-or-slug>.md
         |-- gui-<screen-slug>.md
@@ -73,33 +72,45 @@ This skill manages files within the canonical folder hierarchy:
         |-- wireframes/
         |   |-- wireframe-<screen-or-flow-slug>.html
         |   `-- wireframe-<screen-or-flow-slug>.md
-        |-- diagrams/
-        |   |-- diagram-<diagram-slug>.md
-        |   `-- diagram-<diagram-slug>.bpmn
-        `-- analysis-<analysis-slug>.md
+        `-- diagrams/
+            |-- diagram-<diagram-slug>.md
+            `-- diagram-<diagram-slug>.bpmn
 ```
 
 ### Reference Guidelines & Templates
 - **User Stories**: `assets/user-story-template.md` & `references/user-story-guidelines.md`
 - **GUI Specs**: `assets/gui-specification-template.md` & `references/gui-specification-guidelines.md`
-- **Folder Placement & Indexing**: `assets/epic-index-template.md` & `references/artifact-guidelines.md`
+- **Epic Placement & Navigation**: `assets/epic-template.md` & `references/artifact-guidelines.md`
 
 ---
 
 ## Workflow
 
-1. **Consume Decomposed Slices**:
-   - Read the target `<epic-slug>` section from `functional-decomposition.md` (or confirmed slicing handoff) to retrieve pre-sliced stories, actor goals, and GUI actions.
+1. **Read Current State**:
+   - Before drafting anything, read the target epic folder's current `epic.md`, its parent navigation index, and any existing `<user-story-id-or-slug>.md` / `gui-<screen-slug>.md` files, or confirm the epic folder does not exist yet for a brand-new epic.
+   - For each confirmed slice, determine whether a matching story/GUI spec already exists (`UPDATE`) or not (`CREATE`), and note existing story IDs so new ones continue numbering without collision or renumbering.
 
-2. **Folder & Naming Conventions**:
+2. **Consume Decomposed Slices**:
+   - Read the target `<epic-slug>` section from `functional-decomposition.md` (or confirmed slicing handoff) to retrieve pre-sliced stories and actor goals. Determine GUI Spec CRUD actions and screen linkage yourself — they are not part of the decomposition file.
+
+3. **Present Authoring Plan for Approval**:
+   - Before creating, editing, or overwriting any file, contribute this skill's Epic, User Story, and GUI Specification rows to the orchestrator's combined artifact plan. The combined plan also carries Wireframe and Diagram rows owned by `generate-wireframe` and `generate-diagram`.
+
+   | Artifact Type | Action | Owner | File Path | What Changes / Dependency |
+   |---|---|---|---|---|
+   | Epic \| User story \| GUI specification | `CREATE` \| `UPDATE` \| `NONE` | `manage-requirement-artifacts` | `<epic-slug>/<file>.md` | `<new epic / new story / new AC / new RAID row / new GUI component / supporting wireframe or diagram link, etc.>` |
+
+   - Do not write any file until the user confirms the combined plan, or explicitly says to proceed without a separate confirmation step. Do not create a wireframe or diagram yourself; route those approved rows to their owning skills.
+
+4. **Folder & Naming Conventions**:
    - Use stable lowercase hyphenated slugs (e.g., `epic-01-user-auth`, `us-001-customer-login.md`, `gui-order-detail.md`).
    - Place GUI specs, wireframes (`./wireframes/`), and diagrams (`./diagrams/`) in the same epic folder as their related user stories.
 
-3. **Draft Artifacts with 3-Tier ACs, RAID Logs & UI Component Tables**:
+5. **Draft Artifacts with 3-Tier ACs, RAID Logs & UI Component Tables**:
    - Apply 3-tier Gherkin ACs and structured RAID logs for stories, and 4-column tables (`UI Element`, `Component Type`, `Description`, `Validation`) for GUI specs.
 
-4. **Synchronize Indexes & Relative Links**:
-   - Update parent `index.md` files and ensure all relative links resolve without dead paths.
+6. **Synchronize Navigation & Relative Links**:
+   - Update the parent navigation `index.md` files and the relevant `epic.md`, ensuring all relative links resolve without dead paths.
 
 ---
 

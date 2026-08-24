@@ -39,7 +39,7 @@ Placement rules:
 - If a wireframe relates to multiple user stories in the same epic, keep one shared wireframe file in that epic's `wireframes/` folder and link each story to it.
 - Use stable lowercase filenames: `wireframe-<screen-or-flow-slug>.html` or `wireframe-<screen-or-flow-slug>.md`.
 - After creating or updating a user-story-related wireframe, update the related user story to include a relative link such as `./wireframes/wireframe-order-detail.html`.
-- Update the nearest index: the epic `index.md` for epic-level wireframes, or the master `output/index.md` for project-wide wireframes.
+- Update the nearest epic file: `epic.md` for epic-level wireframes, or the master `output/index.md` for project-wide wireframes.
 
 ## HTML Wireframe Rules
 

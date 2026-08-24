@@ -92,7 +92,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 
 ### Core BA Artifact Skills
 
-- `manage-requirement-artifacts`: maintains the `.agent-artifacts/requirements/` delivery workbench, initiative/epic indexes, generated artifact placement, backlog-ready user stories, 3-tier acceptance criteria, and GUI specifications (`gui-*.md`) with UI component tables and screen change logs.
+- `manage-requirement-artifacts`: maintains the `.agent-artifacts/requirements/` delivery workbench, initiative navigation and explicit epic files, generated artifact placement, backlog-ready user stories, 3-tier acceptance criteria, and GUI specifications (`gui-*.md`) with UI component tables and screen change logs.
 - `write-api-specification`: BA-oriented API contracts, schemas, mappings, processing rules, and sample payloads.
 - `generate-diagram`: BPMN, process flows, sequence/activity/state diagrams, use cases, and ERDs.
 - `generate-wireframe`: HTML/text wireframes and responsive screen layout artifacts.
@@ -111,7 +111,7 @@ Use skills for artifact-specific outputs after the elicitation and BA-analysis c
 - If requirements are still unclear: start with `requirements-elicitor`.
 - To produce requirement artifacts after assessing readiness, gaps, and impact: use `business-requirements-analyst`.
 - If an artifact is clearly requested: use the matching skill directly.
-- If the `.agent-artifacts/requirements/` folder hierarchy, initiative/epic indexes, or generated artifact placement needs maintenance: use `manage-requirement-artifacts`.
+- If the `.agent-artifacts/requirements/` folder hierarchy, initiative navigation, epic files, or generated artifact placement needs maintenance: use `manage-requirement-artifacts`.
 - If durable Wiki should be updated after artifact work: ask the user whether to update `.agent-artifacts/project-knowledge-base/`, then use `update-project-knowledge` if they confirm.
 
 ## Suggested VS Code Extensions

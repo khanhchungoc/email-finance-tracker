@@ -17,7 +17,7 @@ Use this reference when mapping BA workspace artifacts to Jira work items via th
 | Workspace Field | Jira Field | Format | Notes |
 |---|---|---|---|
 | Epic H1 title | `summary` | Plain text | |
-| Epic description/body | `description` | Markdown / ADF | Direct markdown content from epic `index.md` |
+| Epic description/body | `description` | Markdown / ADF | Direct markdown content from epic `epic.md` |
 | `tags` (controlled only) | `labels` | Array of strings | |
 | Child story links | `description` (section) | List of story issue keys | After push, reference pushed story keys |
 
