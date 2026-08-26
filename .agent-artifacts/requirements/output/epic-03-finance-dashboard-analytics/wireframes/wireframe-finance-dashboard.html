@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireframe - Offline Personal Finance Dashboard</title>
+  <style>
+    :root {
+      --bg-base: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --border-color: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-primary: #3b82f6;
+      --accent-primary-hover: #2563eb;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --accent-warning: #f59e0b;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Header */
+    header {
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      background: #334155;
+      color: #38bdf8;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: rgba(51, 65, 85, 0.5);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-success);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-primary-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border-color: var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    /* Main Content Container */
+    main {
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Dashboard Header Section */
+    .dashboard-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .page-title h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .page-title p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .timeframe-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* KPI Summary Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--border-color);
+    }
+
+    .kpi-card.spent::before { background: var(--accent-danger); }
+    .kpi-card.income::before { background: var(--accent-success); }
+    .kpi-card.net::before { background: var(--accent-primary); }
+    .kpi-card.accounts::before { background: var(--accent-warning); }
+
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-subtext {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-trend {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .badge-trend.up-red { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+    .badge-trend.up-green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+    /* Visual Charts Section */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 1024px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* Mock Spending Bar Chart */
+    .mock-bar-chart {
+      height: 220px;
+      display: flex;
+      align-items: flex-end;
+      gap: 18px;
+      padding-top: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .bars-container {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+      width: 100%;
+      height: 180px;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      transition: height 0.3s ease;
+      position: relative;
+    }
+
+    .bar-expense { background: linear-gradient(180deg, #f43f5e, #be123c); }
+    .bar-income { background: linear-gradient(180deg, #10b981, #047857); }
+
+    .bar-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Mock Donut Chart / Category Breakdown */
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cat-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .cat-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cat-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .cat-progress-bg {
+      flex: 1;
+      height: 6px;
+      background: var(--border-color);
+      border-radius: 9999px;
+      margin: 0 16px;
+      overflow: hidden;
+    }
+
+    .cat-progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+    }
+
+    .cat-amount {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Ledger Table Section */
+    .ledger-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ledger-toolbar {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .search-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      max-width: 650px;
+    }
+
+    .search-box {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      color: var(--text-primary);
+      font-size: 13px;
+      width: 100%;
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .filter-select {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background: rgba(15, 23, 42, 0.6);
+      padding: 12px 20px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+      color: var(--text-primary);
+    }
+
+    tr:hover {
+      background-color: rgba(51, 65, 85, 0.25);
+    }
+
+    .tag-category {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .tag-category:hover {
+      background: rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-bank {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .amount-debit {
+      color: #fb7185;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .amount-credit {
+      color: #34d399;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .table-footer {
+      padding: 14px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* Modal Styles for Settings & 1-Click OAuth */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .oauth-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      transition: background 0.15s ease;
+    }
+
+    .oauth-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: #475569;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider span {
+      padding: 0 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-group">
+      <div class="brand-badge">₫</div>
+      <div class="brand-title">Offline Finance Tracker</div>
+      <span class="brand-tag">Local Only</span>
+    </div>
+
+    <div class="header-actions">
+      <div class="sync-status">
+        <span class="status-dot"></span>
+        <span>Last synced: Today, 13:30</span>
+      </div>
+      <button class="btn btn-primary" onclick="alert('Manual sync triggered! Reading connected Gmail & IMAP inboxes...')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Sync Now
+      </button>
+      <button class="btn btn-outline" onclick="document.getElementById('settingsModal').style.display='flex'">
+        ⚙ Settings (OAuth)
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- Toolbar -->
+    <div class="dashboard-toolbar">
+      <div class="page-title">
+        <h1>Monthly Financial Overview</h1>
+        <p>Real-time spending insights extracted deterministically from your bank notification emails.</p>
+      </div>
+
+      <div>
+        <select class="timeframe-select">
+          <option selected>This Month (August 2026)</option>
+          <option>Last Month (July 2026)</option>
+          <option>Last 3 Months</option>
+          <option>Year to Date (2026)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KPI Metric Cards Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card spent">
+        <div class="kpi-header">
+          <span>Total Expenses</span>
+          <span>📉</span>
+        </div>
+        <div class="kpi-value">18.450.000 ₫</div>
+        <div class="kpi-subtext">
+          <span class="badge-trend up-red">+8.2%</span>
+          <span>vs last month</span>
+        </div>
+      </div>
+
+      <div class="kpi-card income">
+        <div class="kpi-header">
+          <span>Total Income</span>
+          <span>📈</span>
+        </div>
+        <div class="kpi-value">35.000.000 ₫</div>
+        <div class="kpi-subtext">
+          <span class="badge-trend up-green">+0%</span>
+          <span>Salary + freelance</span>
+        </div>
+      </div>
+
+      <div class="kpi-card net">
+        <div class="kpi-header">
+          <span>Net Savings / Cash Flow</span>
+          <span>💰</span>
+        </div>
+        <div class="kpi-value" style="color: #34d399;">+16.550.000 ₫</div>
+        <div class="kpi-subtext">
+          <span>47.2% savings rate</span>
+        </div>
+      </div>
+
+      <div class="kpi-card accounts">
+        <div class="kpi-header">
+          <span>Active Accounts</span>
+          <span>💳</span>
+        </div>
+        <div class="kpi-value">3 Accounts</div>
+        <div class="kpi-subtext">
+          <span>Techcombank, Vietcombank, VPBank</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <!-- Spending Trends -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <h3>Spending vs Income Trends (VND)</h3>
+          <div style="font-size: 12px; color: var(--text-muted); display: flex; gap: 14px;">
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; background:#f43f5e; border-radius:2px;"></span> Expense</span>
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; background:#10b981; border-radius:2px;"></span> Income</span>
+          </div>
+        </div>
+
+        <div class="mock-bar-chart">
+          <div class="bar-group">
+            <div class="bars-container">
+              <div class="bar bar-expense" style="height: 60%;"></div>
+              <div class="bar bar-income" style="height: 90%;"></div>
+            </div>
+            <span class="bar-label">Week 1</span>
+          </div>
+          <div class="bar-group">
+            <div class="bars-container">
+              <div class="bar bar-expense" style="height: 45%;"></div>
+              <div class="bar bar-income" style="height: 20%;"></div>
+            </div>
+            <span class="bar-label">Week 2</span>
+          </div>
+          <div class="bar-group">
+            <div class="bars-container">
+              <div class="bar bar-expense" style="height: 75%;"></div>
+              <div class="bar bar-income" style="height: 30%;"></div>
+            </div>
+            <span class="bar-label">Week 3</span>
+          </div>
+          <div class="bar-group">
+            <div class="bars-container">
+              <div class="bar bar-expense" style="height: 50%;"></div>
+              <div class="bar bar-income" style="height: 15%;"></div>
+            </div>
+            <span class="bar-label">Week 4 (Current)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Breakdown -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <h3>Spending by Category</h3>
+          <span style="font-size: 12px; color: var(--text-muted);">Top 5</span>
+        </div>
+
+        <div class="category-list">
+          <div class="cat-item">
+            <div class="cat-info">
+              <span class="cat-color" style="background: #3b82f6;"></span>
+              <span>Dining & Food</span>
+            </div>
+            <div class="cat-progress-bg">
+              <div class="cat-progress-fill" style="width: 38%; background: #3b82f6;"></div>
+            </div>
+            <span class="cat-amount">7.010.000 ₫</span>
+          </div>
+
+          <div class="cat-item">
+            <div class="cat-info">
+              <span class="cat-color" style="background: #10b981;"></span>
+              <span>Groceries & Mart</span>
+            </div>
+            <div class="cat-progress-bg">
+              <div class="cat-progress-fill" style="width: 25%; background: #10b981;"></div>
+            </div>
+            <span class="cat-amount">4.610.000 ₫</span>
+          </div>
+
+          <div class="cat-item">
+            <div class="cat-info">
+              <span class="cat-color" style="background: #f59e0b;"></span>
+              <span>Shopping & Gadgets</span>
+            </div>
+            <div class="cat-progress-bg">
+              <div class="cat-progress-fill" style="width: 18%; background: #f59e0b;"></div>
+            </div>
+            <span class="cat-amount">3.320.000 ₫</span>
+          </div>
+
+          <div class="cat-item">
+            <div class="cat-info">
+              <span class="cat-color" style="background: #8b5cf6;"></span>
+              <span>Bills & Utilities</span>
+            </div>
+            <div class="cat-progress-bg">
+              <div class="cat-progress-fill" style="width: 12%; background: #8b5cf6;"></div>
+            </div>
+            <span class="cat-amount">2.210.000 ₫</span>
+          </div>
+
+          <div class="cat-item">
+            <div class="cat-info">
+              <span class="cat-color" style="background: #64748b;"></span>
+              <span>Transportation / Grab</span>
+            </div>
+            <div class="cat-progress-bg">
+              <div class="cat-progress-fill" style="width: 7%; background: #64748b;"></div>
+            </div>
+            <span class="cat-amount">1.300.000 ₫</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction Ledger -->
+    <div class="ledger-panel">
+      <div class="ledger-toolbar">
+        <div class="search-filter-group">
+          <input type="text" class="search-box" placeholder="🔍 Search by merchant, description, or reference ID..." />
+          <select class="filter-select">
+            <option>All Banks</option>
+            <option>Techcombank (*1234)</option>
+            <option>Vietcombank (*9876)</option>
+            <option>VPBank (*5542)</option>
+          </select>
+          <select class="filter-select">
+            <option>All Categories</option>
+            <option>Dining & Food</option>
+            <option>Groceries</option>
+            <option>Shopping</option>
+            <option>Utilities</option>
+            <option>Transportation</option>
+          </select>
+        </div>
+
+        <div style="font-size: 13px; color: var(--text-secondary);">
+          Showing <strong>5</strong> of 142 transactions
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Bank / Card</th>
+              <th>Merchant / Description</th>
+              <th>Category</th>
+              <th>Amount (VND)</th>
+              <th>Balance</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: var(--text-secondary);">26/08/2026 12:45</td>
+              <td><span class="badge-bank">🏦 Techcombank (*1234)</span></td>
+              <td><strong>HIGHLANDS COFFEE BA DINH</strong></td>
+              <td><span class="tag-category" title="Click to recategorize">☕ Dining ▾</span></td>
+              <td class="amount-debit">-85.000 ₫</td>
+              <td style="color: var(--text-secondary);">14.250.000 ₫</td>
+              <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;">Edit</button></td>
+            </tr>
+
+            <tr>
+              <td style="color: var(--text-secondary);">26/08/2026 09:15</td>
+              <td><span class="badge-bank">🏦 Vietcombank (*9876)</span></td>
+              <td><strong>WINMART+ VINHOMES</strong></td>
+              <td><span class="tag-category" title="Click to recategorize">🛒 Groceries ▾</span></td>
+              <td class="amount-debit">-320.000 ₫</td>
+              <td style="color: var(--text-secondary);">28.910.000 ₫</td>
+              <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;">Edit</button></td>
+            </tr>
+
+            <tr>
+              <td style="color: var(--text-secondary);">25/08/2026 18:30</td>
+              <td><span class="badge-bank">🏦 VPBank (*5542)</span></td>
+              <td><strong>GRAB* TRANSPORT VN</strong></td>
+              <td><span class="tag-category" title="Click to recategorize">🚗 Transport ▾</span></td>
+              <td class="amount-debit">-62.000 ₫</td>
+              <td style="color: var(--text-secondary);">5.120.000 ₫</td>
+              <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;">Edit</button></td>
+            </tr>
+
+            <tr>
+              <td style="color: var(--text-secondary);">25/08/2026 08:00</td>
+              <td><span class="badge-bank">🏦 Techcombank (*1234)</span></td>
+              <td><strong>COMPANY PAYROLL SALARY</strong></td>
+              <td><span class="tag-category" style="background:rgba(16,185,129,0.15); color:#34d399;" title="Click to recategorize">💵 Income ▾</span></td>
+              <td class="amount-credit">+35.000.000 ₫</td>
+              <td style="color: var(--text-secondary);">14.717.000 ₫</td>
+              <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;">Edit</button></td>
+            </tr>
+
+            <tr>
+              <td style="color: var(--text-secondary);">24/08/2026 21:10</td>
+              <td><span class="badge-bank">🏦 Techcombank (*1234)</span></td>
+              <td><strong>SHOPEE PAY VN* ORDER 9821</strong></td>
+              <td><span class="tag-category" title="Click to recategorize">🛍️ Shopping ▾</span></td>
+              <td class="amount-debit">-450.000 ₫</td>
+              <td style="color: var(--text-secondary);">14.635.000 ₫</td>
+              <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <span>Page 1 of 29</span>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" disabled>Previous</button>
+          <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;">Next</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Interactive Settings Modal (1-Click OAuth) -->
+  <div id="settingsModal" class="modal-backdrop" onclick="if(event.target === this) this.style.display='none'">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Connected Email Accounts</h2>
+        <button onclick="document.getElementById('settingsModal').style.display='none'" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px;">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size:13px; color:var(--text-secondary);">Connect your email accounts with strict <strong>read-only</strong> access to ingest transaction emails. Tokens are encrypted in your OS Keyring.</p>
+
+        <!-- 1-Click OAuth Buttons -->
+        <button class="oauth-btn" onclick="alert('Launching browser for 1-click Google OAuth (scope: gmail.readonly)...')">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 12s.7 2.3 1.9 4.7l3.7-1.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.7C3.7 20.4 7.5 23 12 23z"/></svg>
+          Connect with Google (Gmail)
+        </button>
+
+        <button class="oauth-btn" onclick="alert('Launching browser for 1-click Microsoft OAuth (scope: Mail.Read)...')">
+          <svg width="18" height="18" viewBox="0 0 24 24"><rect fill="#F25022" x="1" y="1" width="10" height="10"/><rect fill="#7FBA00" x="13" y="1" width="10" height="10"/><rect fill="#00A4EF" x="1" y="13" width="10" height="10"/><rect fill="#FFB900" x="13" y="13" width="10" height="10"/></svg>
+          Connect with Microsoft 365 / Outlook
+        </button>
+
+        <div class="divider">
+          <span>Or configure manually</span>
+        </div>
+
+        <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="alert('Opening Custom IMAP / App Password form...')">
+          Add Custom IMAP Server (App Password)
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

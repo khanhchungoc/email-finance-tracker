@@ -1,0 +1,100 @@
+---
+type: Requirement Story
+epic: "Epic 01: Email Integration & Incremental Sync"
+status: draft
+description: "User can connect email accounts via 1-click OAuth 2.0 (Google/Microsoft) or manual IMAP, with tokens securely stored in native OS keyring."
+tags: [requirement, user-story, oauth2, imap, email-setup, os-keychain]
+timestamp: "2026-08-26T13:51:00Z"
+---
+
+# `us-001` - Configure Email Accounts & Secure Credentials
+
+### Epic: [Epic 01: Email Integration & Incremental Sync](./epic.md)
+
+As a **personal finance tracker**, I want to **connect my email accounts using 1-click OAuth 2.0 (Google/Microsoft) or manual IMAP settings and store credentials in the OS keyring** so that **the app can access my banking transaction notices without digging into complex security settings or exposing credentials**.
+
+---
+
+### Risk, Assumption, Issue, Dependency (RAID) Log
+| RAID ID | Type | Description | Impact | Owner | Status |
+|---|---|---|---|---|---|
+| R01 | Risk | Local port conflict during OAuth loopback redirect (`127.0.0.1:<port>`). | Low | Dev | Mitigated (Use dynamic available ephemeral port) |
+| A01 | Assumption | OS keyring service is accessible on user's operating system. | High | Architecture | Validated (`keyring-rs` cross-platform) |
+| D01 | Dependency | Desktop OAuth 2.0 Client ID for Google & Microsoft. | High | Architecture | Ready |
+
+---
+
+### Pre-conditions
+| Pre-condition ID | Description |
+|---|---|
+| PR01 | User opens the "Email Accounts" tab in Settings. |
+| PR02 | System default browser is available for OAuth authentication. |
+
+---
+
+### Workflow/Activity Diagram
+- [`Diagram: Email Sync & OAuth Flow`](./diagrams/diagram-email-sync-flow.md)
+
+---
+
+### Screen / GUI Specification References
+| Reference ID | Screen / Artifact | Reference | Story-Relevant Behavior |
+|---|---|---|---|
+| UI01 | Settings Modal / Email Accounts | [`GUI Finance Dashboard`](../epic-03-finance-dashboard-analytics/gui-finance-dashboard.md) | "Connect Google", "Connect Microsoft", and "Add Custom IMAP" options. |
+
+---
+
+### Business Acceptance Criteria
+
+**AC 1** [Happy Path] 1-Click OAuth 2.0 Authorization (Google / Microsoft)
+
+   **Given** the user is in the "Email Accounts" settings modal  
+   **When** the user clicks "Connect with Google" (or "Connect with Microsoft")  
+   **Then** the desktop app:
+   1. Spawns a temporary local loopback listener on `127.0.0.1:<port>`.
+   2. Opens the system browser to the official OAuth consent page with read-only scope (`gmail.readonly` or `Mail.Read`).
+   3. Captures the authorization code on loopback redirect, exchanges it for an Access Token & Refresh Token.
+   4. Securely encrypts the Refresh Token in the native OS Keyring.
+   5. Saves account metadata (Email Address, Provider: `Google`, Status: `Active`) to SQLite `email_accounts`.
+   6. Closes the browser tab and displays a success notification: "Google account [user@gmail.com] connected successfully!"
+
+**AC 2.1** [Happy Path] Fallback Manual IMAP Setup (Custom Provider)
+
+   **Given** the user chooses "Add Custom IMAP Account"  
+   **When** the user enters Email Address, IMAP Host (`imap.example.com`), Port (`993`), TLS (`true`), and App Password, then clicks "Test & Save"  
+   **Then** the system verifies the TLS handshake, stores the App Password in the OS Keyring, persists account metadata to SQLite, and adds the account to the active list.
+
+**AC 2.2** [Validation] OAuth Consent Cancelled or Timed Out
+
+   **Given** the user starts the OAuth flow in the browser  
+   **When** the user closes the browser tab or clicks "Cancel" on the Google/Microsoft consent screen  
+   **Then** the desktop app terminates the local loopback listener and displays: "Authentication was cancelled. No account was added."
+
+**AC 3** [Security / State] Disconnect Account & Revoke Credentials
+
+   **Given** an existing connected email account in the settings list  
+   **When** the user clicks "Disconnect / Remove Account" and confirms the prompt  
+   **Then** the system deletes the Refresh Token / Password from the OS Keyring, removes the account record from SQLite, and retains all previously parsed transactions in the database.
+
+---
+
+### Out of Scope
+| OOS ID | Description |
+|---|---|
+| OOS01 | Sending emails / SMTP configuration. |
+| OOS02 | Requesting full mailbox write/delete permissions. |
+
+---
+
+### Non-functional Requirements
+| Requirement | Description |
+|---|---|
+| Security | Tokens must NEVER be written to SQLite or log files in plain text. |
+| Scope Minimization | Only `readonly` email scopes are requested during OAuth consent. |
+
+---
+
+### Citations
+| Source ID | Source | Relevant Evidence |
+|---|---|---|
+| SRC01 | [Elicitation Session: 2026-08-26-email-transaction-dashboard.md](../elicitation/2026-08-26-email-transaction-dashboard.md) | Confirmed 1-click OAuth 2.0 for Google & Microsoft with OS Keyring storage. |
