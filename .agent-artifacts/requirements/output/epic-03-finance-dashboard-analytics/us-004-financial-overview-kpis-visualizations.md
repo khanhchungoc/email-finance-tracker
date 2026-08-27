@@ -72,11 +72,11 @@ As a **personal finance tracker**, I want **to view aggregated KPI cards, trend 
    **When** the dashboard renders  
    **Then** the KPI cards show `0 ₫`, and the chart areas display an empty state banner: "No transactions yet. Click 'Sync Now' in the header or configure your email accounts in Settings."
 
-**AC 3** [State / Interaction] Timeframe Filter Toggle
+**AC 3** [State / Interaction] Date Range Picker & Preset Filtering
 
    **Given** the user is viewing the dashboard  
-   **When** the user switches the timeframe dropdown (e.g., "This Month", "Last 3 Months", "Year to Date", "All Time")  
-   **Then** the system recalculates all KPI cards, trends, and category breakdown charts to reflect the selected period in real time.
+   **When** the user selects a date range preset ("This Month", "Last Month", "Last 30 Days", "Last 90 Days", "Year to Date", "All Time") or selects a custom Start Date and End Date in the calendar picker  
+   **Then** the system filters SQLite transaction records where `transaction_datetime >= startDate` and `transaction_datetime <= endDate`, and recalculates all KPI cards, trends, and category breakdown charts in real time (<100ms).
 
 ---
 

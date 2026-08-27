@@ -11,3 +11,6 @@ Store these topics here instead of keeping separate top-level folders:
 * Screen, workflow, reporting, notification, permission, validation, and backend/frontend touchpoints.
 
 For requirement analysis, open this folder after `../requirements/` only when the deliverable depends on domain, system, API, integration, data, or screen context.
+
+## Documents
+- [System Architecture Specification](./system-architecture.md)

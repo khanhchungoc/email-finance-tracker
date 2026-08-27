@@ -636,13 +636,24 @@
         <p>Real-time spending insights extracted deterministically from your bank notification emails.</p>
       </div>
 
-      <div>
-        <select class="timeframe-select">
-          <option selected>This Month (August 2026)</option>
-          <option>Last Month (July 2026)</option>
-          <option>Last 3 Months</option>
-          <option>Year to Date (2026)</option>
-        </select>
+      <!-- Date Range Picker Control Bar -->
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <!-- Quick Presets -->
+        <div style="display: flex; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 2px;">
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border: none; background: var(--bg-card-hover); color: var(--text-primary);">This Month</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border: none;">Last 30D</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border: none;">Last Month</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border: none;">YTD</button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border: none;">All Time</button>
+        </div>
+
+        <!-- Date Range Display Button & Inputs -->
+        <div style="display: flex; align-items: center; gap: 6px; background: var(--bg-surface); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: var(--radius-sm); font-size: 13px;">
+          <span style="color: var(--accent-primary);">📅</span>
+          <input type="date" value="2026-08-01" style="background: transparent; border: none; color: var(--text-primary); font-family: inherit; font-size: 12px; outline: none;" />
+          <span style="color: var(--text-muted); font-size: 11px;">to</span>
+          <input type="date" value="2026-08-27" style="background: transparent; border: none; color: var(--text-primary); font-family: inherit; font-size: 12px; outline: none;" />
+        </div>
       </div>
     </div>
 
