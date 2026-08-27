@@ -1,9 +1,9 @@
 ---
 type: Diagram
 status: authoritative
-description: "Sequence diagram illustrating the 1-Click OAuth 2.0 authorization flow and subsequent incremental sync, parsing, and SQLite persistence pipeline."
-tags: [requirement, diagram, sequence, oauth2, imap-sync, parsing]
-timestamp: "2026-08-26T13:51:00Z"
+description: "Sequence diagram illustrating the 1-Click OAuth 2.0 authorization flow and subsequent incremental REST API sync, parsing, and SQLite persistence pipeline."
+tags: [requirement, diagram, sequence, oauth2, rest-sync, parsing]
+timestamp: "2026-08-27T12:00:00Z"
 ---
 
 # Diagram: Email OAuth Authorization & Sync Pipeline
@@ -15,11 +15,11 @@ timestamp: "2026-08-26T13:51:00Z"
 ### Actors / Swimlanes
 1. **User**: Local Application User
 2. **Frontend**: React / Vite Desktop UI
-3. **Backend**: Tauri (Rust) Core Engine
+3. **Backend**: Python / Native Core Engine
 4. **Browser**: Default System Browser
 5. **OAuth Provider**: Google / Microsoft OAuth 2.0 Endpoint
-6. **OS Keyring**: Native OS Credential Storage (DPAPI / Keychain)
-7. **Email API / IMAP**: Gmail REST API / MS Graph / IMAP Server
+6. **OS Keyring**: Native OS Credential Storage (DPAPI / Keychain / Secret Service)
+7. **Email REST API**: Gmail REST API / MS Graph REST API
 8. **SQLite DB**: Embedded Local Storage (`app.db`)
 
 ---
@@ -31,14 +31,14 @@ sequenceDiagram
     autonumber
     actor User as User
     participant UI as Desktop UI
-    participant Core as Tauri Core (Rust)
+    participant Core as Core Engine
     participant Browser as System Browser
     participant OAuth as Google / Microsoft OAuth
     participant Keyring as OS Keyring
     participant DB as SQLite (app.db)
 
-    User->>UI: Click "Connect with Google"
-    UI->>Core: invoke("start_oauth_flow", { provider: "google" })
+    User->>UI: Click "Connect with Google" (or Microsoft)
+    UI->>Core: start_oauth_flow(provider="google")
     activate Core
     Core->>Core: Start local loopback listener on 127.0.0.1:port
     Core->>Browser: Open OAuth URL (scope=gmail.readonly)
@@ -55,7 +55,7 @@ sequenceDiagram
     Core->>Keyring: Store Refresh Token in OS Keyring
     Keyring-->>Core: OK (Encrypted)
 
-    Core->>DB: INSERT INTO email_accounts (email, provider, status)
+    Core->>DB: INSERT INTO email_accounts (email, provider, auth_type, status)
     DB-->>Core: OK
 
     Core-->>UI: Return OAuthSuccess { email: "user@gmail.com" }
@@ -73,13 +73,13 @@ sequenceDiagram
     autonumber
     actor User as User
     participant UI as Desktop UI
-    participant Core as Tauri Core (Rust)
+    participant Core as Core Engine
     participant Keyring as OS Keyring
-    participant MailAPI as Email Provider (Gmail / MS Graph / IMAP)
+    participant MailAPI as Provider REST API (Gmail / MS Graph)
     participant DB as SQLite (app.db)
 
     User->>UI: Click "Sync Now"
-    UI->>Core: invoke("sync_all_accounts")
+    UI->>Core: sync_all_accounts()
     activate Core
     UI->>UI: Set Button State = "Syncing..."
 
@@ -87,11 +87,11 @@ sequenceDiagram
     DB-->>Core: Return account metadata list
 
     loop For each configured Email Account
-        Core->>Keyring: Retrieve Refresh Token / App Password
-        Keyring-->>Core: Return credential
+        Core->>Keyring: Retrieve Refresh Token
+        Keyring-->>Core: Return Refresh Token
 
-        Core->>MailAPI: Query messages received after last_synced_timestamp (Allowlist senders)
-        MailAPI-->>Core: Return message list & MIME bodies (Read-Only)
+        Core->>MailAPI: Refresh Access Token & Query messages received after last_synced_timestamp
+        MailAPI-->>Core: Return message payloads & HTML bodies (Read-Only)
 
         loop For each Message
             Core->>Core: Match against bundled Bank Regex Templates

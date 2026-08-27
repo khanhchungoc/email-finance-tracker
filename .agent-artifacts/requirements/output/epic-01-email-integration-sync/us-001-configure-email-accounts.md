@@ -2,16 +2,16 @@
 type: Requirement Story
 epic: "Epic 01: Email Integration & Incremental Sync"
 status: draft
-description: "User can connect email accounts via 1-click OAuth 2.0 (Google/Microsoft) or manual IMAP, with tokens securely stored in native OS keyring."
-tags: [requirement, user-story, oauth2, imap, email-setup, os-keychain]
-timestamp: "2026-08-26T13:51:00Z"
+description: "User can connect email accounts via 1-click OAuth 2.0 (Google/Microsoft), with tokens securely stored in native OS keyring."
+tags: [requirement, user-story, oauth2, email-setup, os-keychain]
+timestamp: "2026-08-27T12:00:00Z"
 ---
 
 # `us-001` - Configure Email Accounts & Secure Credentials
 
 ### Epic: [Epic 01: Email Integration & Incremental Sync](./epic.md)
 
-As a **personal finance tracker**, I want to **connect my email accounts using 1-click OAuth 2.0 (Google/Microsoft) or manual IMAP settings and store credentials in the OS keyring** so that **the app can access my banking transaction notices without digging into complex security settings or exposing credentials**.
+As a **personal finance tracker**, I want to **connect my email accounts using 1-click OAuth 2.0 (Google/Microsoft) and store refresh tokens in the OS keyring** so that **the app can access my banking transaction notices without digging into complex security settings or exposing credentials**.
 
 ---
 
@@ -19,7 +19,7 @@ As a **personal finance tracker**, I want to **connect my email accounts using 1
 | RAID ID | Type | Description | Impact | Owner | Status |
 |---|---|---|---|---|---|
 | R01 | Risk | Local port conflict during OAuth loopback redirect (`127.0.0.1:<port>`). | Low | Dev | Mitigated (Use dynamic available ephemeral port) |
-| A01 | Assumption | OS keyring service is accessible on user's operating system. | High | Architecture | Validated (`keyring-rs` cross-platform) |
+| A01 | Assumption | OS keyring service is accessible on user's operating system. | High | Architecture | Validated (`keyring-rs` / Python `keyring`) |
 | D01 | Dependency | Desktop OAuth 2.0 Client ID for Google & Microsoft. | High | Architecture | Ready |
 
 ---
@@ -40,7 +40,7 @@ As a **personal finance tracker**, I want to **connect my email accounts using 1
 ### Screen / GUI Specification References
 | Reference ID | Screen / Artifact | Reference | Story-Relevant Behavior |
 |---|---|---|---|
-| UI01 | Settings Modal / Email Accounts | [`GUI Finance Dashboard`](../epic-03-finance-dashboard-analytics/gui-finance-dashboard.md) | "Connect Google", "Connect Microsoft", and "Add Custom IMAP" options. |
+| UI01 | Settings Modal / Email Accounts | [`GUI Finance Dashboard`](../epic-03-finance-dashboard-analytics/gui-finance-dashboard.md) | "Connect with Google" and "Connect with Microsoft" 1-click OAuth buttons. |
 
 ---
 
@@ -55,16 +55,10 @@ As a **personal finance tracker**, I want to **connect my email accounts using 1
    2. Opens the system browser to the official OAuth consent page with read-only scope (`gmail.readonly` or `Mail.Read`).
    3. Captures the authorization code on loopback redirect, exchanges it for an Access Token & Refresh Token.
    4. Securely encrypts the Refresh Token in the native OS Keyring.
-   5. Saves account metadata (Email Address, Provider: `Google`, Status: `Active`) to SQLite `email_accounts`.
+   5. Saves account metadata (Email Address, Provider: `Google`/`Microsoft`, Auth Type: `OAuth2`, Status: `Active`) to SQLite `email_accounts`.
    6. Closes the browser tab and displays a success notification: "Google account [user@gmail.com] connected successfully!"
 
-**AC 2.1** [Happy Path] Fallback Manual IMAP Setup (Custom Provider)
-
-   **Given** the user chooses "Add Custom IMAP Account"  
-   **When** the user enters Email Address, IMAP Host (`imap.example.com`), Port (`993`), TLS (`true`), and App Password, then clicks "Test & Save"  
-   **Then** the system verifies the TLS handshake, stores the App Password in the OS Keyring, persists account metadata to SQLite, and adds the account to the active list.
-
-**AC 2.2** [Validation] OAuth Consent Cancelled or Timed Out
+**AC 2** [Validation] OAuth Consent Cancelled or Timed Out
 
    **Given** the user starts the OAuth flow in the browser  
    **When** the user closes the browser tab or clicks "Cancel" on the Google/Microsoft consent screen  
@@ -74,7 +68,7 @@ As a **personal finance tracker**, I want to **connect my email accounts using 1
 
    **Given** an existing connected email account in the settings list  
    **When** the user clicks "Disconnect / Remove Account" and confirms the prompt  
-   **Then** the system deletes the Refresh Token / Password from the OS Keyring, removes the account record from SQLite, and retains all previously parsed transactions in the database.
+   **Then** the system deletes the Refresh Token from the OS Keyring, removes the account record from SQLite, and retains all previously parsed transactions in the database.
 
 ---
 
@@ -82,7 +76,8 @@ As a **personal finance tracker**, I want to **connect my email accounts using 1
 | OOS ID | Description |
 |---|---|
 | OOS01 | Sending emails / SMTP configuration. |
-| OOS02 | Requesting full mailbox write/delete permissions. |
+| OOS02 | Legacy basic password / IMAP authentication (all-in on OAuth 2.0). |
+| OOS03 | Requesting full mailbox write/delete permissions. |
 
 ---
 

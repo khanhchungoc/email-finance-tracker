@@ -23,8 +23,8 @@ Single source of truth for confirmed epic/story slices derived from elicitation 
 
 | Story ID | Story Title | User Goal | Slicing Rationale |
 |---|---|---|---|
-| us-001 | Configure Email Accounts & Secure Credentials | As a **user**, I want **to add and manage multiple email accounts with TLS settings and securely stored App Passwords** so that **the app can connect directly to my mailboxes without exposing credentials**. | CRUD+L on email accounts; isolates sensitive OS keychain integration and connection testing. |
-| us-002 | Manual Incremental Sync & Ingestion | As a **user**, I want **to trigger a manual sync that fetches only new bank emails matching allowlists since my last sync** so that **my local data updates quickly without re-scanning old or non-financial messages**. | Entry trigger & watermark filtering; isolates IMAP fetching, timestamp updating, and read-only safety. |
+| us-001 | Configure Email Accounts & Secure Credentials | As a **user**, I want **to connect email accounts via 1-click OAuth 2.0 (Google/Microsoft) and securely store refresh tokens in the OS keyring** so that **the app can access bank transaction notices without exposing credentials**. | CRUD+L on email accounts; isolates sensitive OS keychain integration and OAuth token management. |
+| us-002 | Manual Incremental Sync & Ingestion | As a **user**, I want **to trigger a manual sync that fetches only new bank emails matching allowlists since my last sync via provider REST APIs** so that **my local data updates quickly without re-scanning old or non-financial messages**. | Entry trigger & watermark filtering; isolates REST API fetching, timestamp updating, and read-only safety. |
 
 ### Open Slicing Questions
 - None
