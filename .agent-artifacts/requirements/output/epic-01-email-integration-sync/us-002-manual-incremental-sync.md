@@ -1,7 +1,7 @@
 ---
 type: Requirement Story
 epic: "Epic 01: Email Integration & Incremental Sync"
-status: draft
+status: completed
 description: "User triggers manual sync to incrementally fetch unread/new bank transaction emails matching allowlists since last sync timestamp via OAuth REST APIs."
 tags: [requirement, user-story, oauth2-sync, incremental-watermark, rest-api]
 timestamp: "2026-08-27T12:00:00Z"

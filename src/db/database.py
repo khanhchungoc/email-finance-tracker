@@ -218,6 +218,134 @@ class Database:
             cursor.execute("SELECT COUNT(*) FROM transactions")
             return cursor.fetchone()[0]
 
+    def update_transaction_category(self, transaction_id: int, new_category: str) -> bool:
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE transactions SET category = ? WHERE id = ?", (new_category, transaction_id))
+            conn.commit()
+            return cursor.rowcount > 0
+
+    def query_transactions(
+        self,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        search_query: Optional[str] = None,
+        bank_name: Optional[str] = None,
+        category: Optional[str] = None,
+        transaction_type: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0
+    ) -> List[Dict[str, Any]]:
+        query = "SELECT * FROM transactions WHERE 1=1"
+        params: List[Any] = []
+
+        if start_date:
+            query += " AND transaction_datetime >= ?"
+            params.append(start_date if "T" in start_date else f"{start_date}T00:00:00")
+        if end_date:
+            query += " AND transaction_datetime <= ?"
+            params.append(end_date if "T" in end_date else f"{end_date}T23:59:59")
+        if search_query:
+            query += " AND (merchant LIKE ? OR raw_ref_id LIKE ? OR category LIKE ?)"
+            term = f"%{search_query}%"
+            params.extend([term, term, term])
+        if bank_name and bank_name != "All Banks":
+            query += " AND bank_name = ?"
+            params.append(bank_name)
+        if category and category != "All Categories":
+            query += " AND category = ?"
+            params.append(category)
+        if transaction_type and transaction_type != "All":
+            query += " AND transaction_type = ?"
+            params.append(transaction_type)
+
+        query += " ORDER BY transaction_datetime DESC LIMIT ? OFFSET ?"
+        params.extend([limit, offset])
+
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, params)
+            return [dict(row) for row in cursor.fetchall()]
+
+    def get_analytics_summary(
+        self,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None
+    ) -> Dict[str, Any]:
+        params = []
+        where_clause = " WHERE 1=1"
+        if start_date:
+            where_clause += " AND transaction_datetime >= ?"
+            params.append(start_date if "T" in start_date else f"{start_date}T00:00:00")
+        if end_date:
+            where_clause += " AND transaction_datetime <= ?"
+            params.append(end_date if "T" in end_date else f"{end_date}T23:59:59")
+
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+
+            # KPI Totals
+            cursor.execute(
+                f"""
+                SELECT
+                    SUM(CASE WHEN transaction_type = 'Debit' THEN amount ELSE 0 END) as total_spent,
+                    SUM(CASE WHEN transaction_type = 'Credit' THEN amount ELSE 0 END) as total_income,
+                    COUNT(DISTINCT card_identifier) as active_accounts,
+                    COUNT(*) as total_count
+                FROM transactions
+                {where_clause}
+                """,
+                params
+            )
+            kpi_row = cursor.fetchone()
+            total_spent = kpi_row["total_spent"] or 0.0
+            total_income = kpi_row["total_income"] or 0.0
+            active_accounts = kpi_row["active_accounts"] or 0
+            total_count = kpi_row["total_count"] or 0
+            net_cash_flow = total_income - total_spent
+
+            # Category Breakdown
+            cursor.execute(
+                f"""
+                SELECT category, SUM(amount) as total_amount, COUNT(*) as count
+                FROM transactions
+                {where_clause} AND transaction_type = 'Debit'
+                GROUP BY category
+                ORDER BY total_amount DESC
+                """,
+                params
+            )
+            category_breakdown = [dict(row) for row in cursor.fetchall()]
+
+            # Bank Breakdown
+            cursor.execute(
+                f"""
+                SELECT bank_name, card_identifier, SUM(amount) as total_amount, COUNT(*) as count
+                FROM transactions
+                {where_clause} AND transaction_type = 'Debit'
+                GROUP BY bank_name, card_identifier
+                ORDER BY total_amount DESC
+                """,
+                params
+            )
+            bank_breakdown = [dict(row) for row in cursor.fetchall()]
+
+            # Latest available limit
+            cursor.execute("SELECT remaining_balance FROM transactions WHERE remaining_balance IS NOT NULL ORDER BY transaction_datetime DESC LIMIT 1")
+            limit_row = cursor.fetchone()
+            latest_limit = limit_row["remaining_balance"] if limit_row else None
+
+            return {
+                "total_spent": total_spent,
+                "total_income": total_income,
+                "net_cash_flow": net_cash_flow,
+                "active_accounts": active_accounts,
+                "total_transactions": total_count,
+                "latest_available_limit": latest_limit,
+                "category_breakdown": category_breakdown,
+                "bank_breakdown": bank_breakdown
+            }
+
     # --- Unparsed Emails Diagnostic Operations ---
 
     def log_unparsed_email(

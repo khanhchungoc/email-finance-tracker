@@ -195,27 +195,24 @@ Four metric cards displayed in a responsive grid:
 
 ### 4.6. 1-Click OAuth Account Management Modal
 
-When the user clicks the Header Settings icon (`⚙`), a modal opens:
+When the user clicks the Header Settings icon (`Settings`), a modal opens:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  Email Accounts & Sync Settings                          [X]│
 ├─────────────────────────────────────────────────────────────┤
-│  Connect your email accounts to automatically ingest bank   │
-│  transaction notifications. 100% local, read-only access.   │
+│  Connect your Google (Gmail) account to securely ingest     │
+│  bank transaction notifications. 100% local, read-only.     │
 │                                                             │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │ [G] Connect with Google (Gmail)                       │  │
-│  └───────────────────────────────────────────────────────┘  │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │ [M] Connect with Microsoft (Outlook / 365)            │  │
+│  │ [Icon: Google] Connect with Google (Gmail)            │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                                                             │
 │  CONNECTED ACCOUNTS (1)                                     │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │ [G] user@gmail.com                                    │  │
-│  │     Provider: Google | Status: Active | 🛡 Keyring    │  │
-│  │     Last synced: Today, 14:20                         │  │
+│  │ user@gmail.com                                        │  │
+│  │ Provider: Google | Status: Active | Keyring Secured   │  │
+│  │ Last synced: Today, 14:20                             │  │
 │  │                                  [Test]  [Disconnect] │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                                                             │
@@ -224,10 +221,9 @@ When the user clicks the Header Settings icon (`⚙`), a modal opens:
 ```
 
 - **Buttons**:
-  - **"Connect with Google"**: Triggers `start_oauth_flow("google")`, opens system browser with `gmail.readonly` scope, receives redirect on `127.0.0.1:<port>/callback`, and encrypts refresh token in OS Keyring.
-  - **"Connect with Microsoft"**: Triggers `start_oauth_flow("microsoft")`, opens system browser with `Mail.Read` scope.
+  - **"Connect with Google"**: Triggers `initiate_oauth_session("google")`, opens browser with `gmail.readonly` scope, receives redirect on `127.0.0.1:<port>/callback`, and encrypts refresh token in OS Keyring.
 - **Account Actions**:
-  - **Test**: Tests token refresh validity against provider.
+  - **Test**: Tests token refresh validity against Google API.
   - **Disconnect**: Prompts confirmation modal, deletes secret from OS Keyring, and deletes SQLite account record while preserving historical transactions.
 
 ---

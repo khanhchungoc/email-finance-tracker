@@ -64,47 +64,6 @@ class AccountService:
             "account": account
         }
 
-    def connect_microsoft_oauth(
-        self,
-        client_id: Optional[str] = None,
-        client_secret: Optional[str] = None,
-        timeout_seconds: int = 120,
-        open_browser: bool = True
-    ) -> Dict[str, Any]:
-        """
-        Executes 1-click OAuth for Microsoft, stores refresh token in Keyring, and saves account to DB.
-        """
-        oauth_result = self.oauth_svc.start_oauth_flow(
-            provider="microsoft",
-            client_id=client_id,
-            client_secret=client_secret,
-            timeout_seconds=timeout_seconds,
-            open_browser=open_browser
-        )
-
-        email = oauth_result["email"].lower()
-        refresh_token = oauth_result.get("refresh_token")
-
-        if not refresh_token:
-            raise ValueError("Microsoft OAuth response did not include a refresh token.")
-
-        # Store in OS Keyring
-        self.keyring_mgr.store_credential(email, refresh_token)
-
-        # Save to SQLite
-        account = self.db.add_email_account(
-            email=email,
-            provider="microsoft",
-            auth_type="oauth2",
-            status="active"
-        )
-
-        return {
-            "success": True,
-            "message": f"Microsoft account [{email}] connected successfully!",
-            "account": account
-        }
-
     def connect_imap_account(
         self,
         email: str,

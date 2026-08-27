@@ -58,7 +58,7 @@ When working on Frontend (FE) development:
    - **4 KPI Cards in VND**: Total Spent (`TrendingDown`), Total Income (`TrendingUp`), Net Cash Flow (`Scale`), Active Cards/Accounts (`CreditCard`).
    - **Visualizations**: Spending Trend Chart (Recharts) & Category Distribution Donut Chart with center total and interactive slice filtering.
    - **Transaction Ledger Table**: Real-time debounced search (`Search`), multi-filter toolbar (`Filter`), and **inline click-to-edit category dropdowns** (`Tag`) that instantly persist to SQLite.
-   - **1-Click OAuth Modal**: Google & Microsoft 1-click connect buttons, active accounts list, and disconnect confirmation.
+   - **1-Click OAuth Modal**: Google 1-click connect button, active accounts list, and disconnect confirmation.
 
 6. **Interactive Feedback & Accessibility**:
    - Non-blocking asynchronous sync states with spinning icon.
@@ -76,7 +76,7 @@ Whenever writing backend code or implementing user stories:
    - Full dashboard analytics, ledger querying, and searching must function 100% offline.
 
 2. **Strict Read-Only Scope Minimization**:
-   - OAuth 2.0 requests are strictly limited to `gmail.readonly` (Google) and `Mail.Read` (Microsoft).
+   - OAuth 2.0 authorization requests are strictly limited to `gmail.readonly` (Google).
    - Never request write, delete, send, or full mailbox permissions.
    - Sync queries must never modify message read/unread flags or labels.
 

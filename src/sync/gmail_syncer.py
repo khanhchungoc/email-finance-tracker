@@ -3,7 +3,7 @@ Google Gmail REST API Syncer (using read-only gmail.readonly scope).
 """
 
 import base64
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import requests
 from typing import List, Dict, Any, Optional
 
@@ -14,7 +14,7 @@ class GmailSyncer:
         self,
         email_address: str,
         access_token: str,
-        sender_query: str = "from:(care.vpb.com.vn OR vpbank.com.vn OR techcombank.com.vn OR vietcombank.com.vn OR chase.com)"
+        sender_query: str = 'from:(care.vpb.com.vn OR vpb.com.vn OR vpbank.com.vn OR techcombank.com.vn OR vietcombank.com.vn OR tcb.com.vn OR tpb.vn OR mbbank.com.vn OR hsbc.com.vn OR vib.com.vn OR sacombank.com.vn OR acb.com.vn) subject:("bien dong" OR "so du" OR "balance change" OR "giao dich" OR "bien dong so du" OR "thong bao")'
     ):
         self.email_address = email_address
         self.access_token = access_token
@@ -22,7 +22,8 @@ class GmailSyncer:
 
     def fetch_incremental_emails(
         self,
-        last_synced_timestamp: Optional[str] = None
+        last_synced_timestamp: Optional[str] = None,
+        max_messages: int = 500
     ) -> List[Dict[str, Any]]:
         headers = {"Authorization": f"Bearer {self.access_token}"}
         
@@ -34,16 +35,35 @@ class GmailSyncer:
                 query_parts.append(f"after:{epoch_sec}")
             except Exception:
                 pass
+        else:
+            # First time sync: fetch past 6 months (180 days)
+            six_months_ago = datetime.now(timezone.utc) - timedelta(days=180)
+            epoch_sec = int(six_months_ago.timestamp())
+            query_parts.append(f"after:{epoch_sec}")
 
         q = " ".join(query_parts)
-        params = {"q": q, "maxResults": 50}
+        
+        messages_meta = []
+        page_token = None
 
-        res = requests.get(f"{GMAIL_API_BASE}/messages", headers=headers, params=params, timeout=15)
-        if res.status_code != 200:
-            raise RuntimeError(f"Gmail API query failed ({res.status_code}): {res.text}")
+        while len(messages_meta) < max_messages:
+            params = {"q": q, "maxResults": min(100, max_messages - len(messages_meta))}
+            if page_token:
+                params["pageToken"] = page_token
 
-        data = res.json()
-        messages_meta = data.get("messages", [])
+            res = requests.get(f"{GMAIL_API_BASE}/messages", headers=headers, params=params, timeout=15)
+            if res.status_code != 200:
+                raise RuntimeError(f"Gmail API query failed ({res.status_code}): {res.text}")
+
+            data = res.json()
+            batch = data.get("messages", [])
+            if not batch:
+                break
+
+            messages_meta.extend(batch)
+            page_token = data.get("nextPageToken")
+            if not page_token:
+                break
         results = []
 
         for m_meta in messages_meta:

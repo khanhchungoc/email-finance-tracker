@@ -6,3 +6,4 @@ package-stage/
 .codex/memory/
 .agents/
 docs/
+.env

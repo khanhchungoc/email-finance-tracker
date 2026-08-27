@@ -30,20 +30,6 @@ OAUTH_PROVIDERS = {
             "profile",
             "https://www.googleapis.com/auth/gmail.readonly"
         ]
-    },
-    "microsoft": {
-        "auth_url": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
-        "token_url": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-        "userinfo_url": "https://graph.microsoft.com/v1.0/me",
-        "default_client_id": os.environ.get("MICROSOFT_CLIENT_ID", "mock-microsoft-client-id"),
-        "default_client_secret": os.environ.get("MICROSOFT_CLIENT_SECRET", None),
-        "scopes": [
-            "openid",
-            "email",
-            "profile",
-            "offline_access",
-            "https://graph.microsoft.com/Mail.Read"
-        ]
     }
 }
 
@@ -105,12 +91,156 @@ class OAuthCallbackHandler(BaseHTTPRequestHandler):
 class OAuthService:
     def __init__(self, provider_configs: Optional[Dict[str, Any]] = None):
         self.providers = provider_configs or OAUTH_PROVIDERS
+        self.active_sessions: Dict[str, Dict[str, Any]] = {}
 
     def get_provider_config(self, provider: str) -> Dict[str, Any]:
         provider_key = provider.lower()
         if provider_key not in self.providers:
             raise ValueError(f"Unsupported OAuth provider: {provider}. Supported: {list(self.providers.keys())}")
-        return self.providers[provider_key]
+        conf = dict(self.providers[provider_key])
+        if provider_key == "google":
+            conf["default_client_id"] = os.environ.get("GOOGLE_CLIENT_ID", conf.get("default_client_id"))
+            conf["default_client_secret"] = os.environ.get("GOOGLE_CLIENT_SECRET", conf.get("default_client_secret"))
+        return conf
+
+    def initiate_oauth_session(
+        self,
+        provider: str,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        custom_redirect_uri: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Non-blocking initialization:
+        1. Generates PKCE verifier, challenge, CSRF state.
+        2. Sets up redirect URI (using main server /callback or loopback server).
+        3. Returns { session_id, auth_url, redirect_uri } so browser can open URL immediately.
+        """
+        config = self.get_provider_config(provider)
+        active_client_id = client_id or config["default_client_id"]
+        active_client_secret = client_secret or config.get("default_client_secret")
+
+        verifier, challenge = generate_pkce_pair()
+        state = secrets.token_urlsafe(16)
+        session_id = secrets.token_hex(8)
+
+        server = None
+        thread = None
+
+        if custom_redirect_uri:
+            redirect_uri = custom_redirect_uri
+        else:
+            # Bind to standard loopback port 8080 if available, otherwise ephemeral port
+            port = 8080
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            try:
+                sock.bind(('127.0.0.1', port))
+                sock.close()
+            except OSError:
+                sock.bind(('127.0.0.1', 0))
+                port = sock.getsockname()[1]
+                sock.close()
+
+            redirect_uri = f"http://127.0.0.1:{port}/callback"
+
+            server = HTTPServer(('127.0.0.1', port), OAuthCallbackHandler)
+            server.received_code = None
+            server.received_state = None
+            server.received_error = None
+            server.timeout = 180
+
+            def run_server():
+                server.handle_request()
+
+            thread = threading.Thread(target=run_server, daemon=True)
+            thread.start()
+
+        params = {
+            "client_id": active_client_id,
+            "response_type": "code",
+            "redirect_uri": redirect_uri,
+            "scope": " ".join(config["scopes"]),
+            "state": state,
+            "code_challenge": challenge,
+            "code_challenge_method": "S256",
+            "access_type": "offline",
+            "prompt": "consent"
+        }
+        auth_url = f"{config['auth_url']}?{urllib.parse.urlencode(params)}"
+
+        self.active_sessions[session_id] = {
+            "provider": provider.lower(),
+            "client_id": active_client_id,
+            "client_secret": active_client_secret,
+            "verifier": verifier,
+            "state": state,
+            "redirect_uri": redirect_uri,
+            "server": server,
+            "thread": thread,
+            "code": None,
+            "error": None,
+            "status": "PENDING"
+        }
+
+        return {
+            "session_id": session_id,
+            "auth_url": auth_url,
+            "redirect_uri": redirect_uri
+        }
+
+    def record_callback_code(self, state: str, code: Optional[str] = None, error: Optional[str] = None) -> bool:
+        """
+        Records authorization code or error from main server /callback endpoint matching CSRF state.
+        """
+        for s_id, session in list(self.active_sessions.items()):
+            if session["state"] == state:
+                session["code"] = code
+                session["error"] = error
+                return True
+        return False
+
+    def poll_oauth_session(self, session_id: str) -> Dict[str, Any]:
+        """
+        Polls an active OAuth session to check if user completed authentication in the browser.
+        """
+        session = self.active_sessions.get(session_id)
+        if not session:
+            return {"status": "EXPIRED", "message": "OAuth session expired or not found."}
+
+        server = session.get("server")
+        received_code = session.get("code") or (server.received_code if server else None)
+        received_error = session.get("error") or (server.received_error if server else None)
+
+        if received_error:
+            del self.active_sessions[session_id]
+            return {"status": "FAILED", "message": f"Authentication cancelled: {received_error}"}
+
+        if received_code:
+            try:
+                tokens = self.exchange_code_for_tokens(
+                    provider=session["provider"],
+                    code=received_code,
+                    verifier=session["verifier"],
+                    redirect_uri=session["redirect_uri"],
+                    client_id=session["client_id"],
+                    client_secret=session["client_secret"]
+                )
+
+                email = self.fetch_user_email(session["provider"], tokens["access_token"])
+
+                del self.active_sessions[session_id]
+                return {
+                    "status": "COMPLETED",
+                    "email": email,
+                    "provider": session["provider"],
+                    "access_token": tokens.get("access_token"),
+                    "refresh_token": tokens.get("refresh_token")
+                }
+            except Exception as e:
+                del self.active_sessions[session_id]
+                return {"status": "FAILED", "message": f"Token exchange failed: {str(e)}"}
+
+        return {"status": "PENDING"}
 
     def start_oauth_flow(
         self,
@@ -137,11 +267,16 @@ class OAuthService:
         verifier, challenge = generate_pkce_pair()
         state = secrets.token_urlsafe(16)
 
-        # Allocate ephemeral local port
+        # Bind to standard loopback port 8080 if available, otherwise ephemeral port
+        port = 8080
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind(('127.0.0.1', 0))
-        port = sock.getsockname()[1]
-        sock.close()
+        try:
+            sock.bind(('127.0.0.1', port))
+            sock.close()
+        except OSError:
+            sock.bind(('127.0.0.1', 0))
+            port = sock.getsockname()[1]
+            sock.close()
 
         redirect_uri = f"http://127.0.0.1:{port}/callback"
 
@@ -229,8 +364,8 @@ class OAuthService:
             "redirect_uri": redirect_uri,
             "code_verifier": verifier
         }
-        if client_secret:
-            data["client_secret"] = client_secret
+        if client_secret and client_secret.strip():
+            data["client_secret"] = client_secret.strip()
 
         response = requests.post(config["token_url"], data=data, timeout=15)
         if response.status_code != 200:
@@ -279,8 +414,4 @@ class OAuthService:
             raise RuntimeError(f"Failed to fetch user email info ({response.status_code}): {response.text}")
 
         data = response.json()
-        if provider.lower() == "google":
-            return data.get("email", "")
-        elif provider.lower() == "microsoft":
-            return data.get("mail") or data.get("userPrincipalName", "")
         return data.get("email", "")

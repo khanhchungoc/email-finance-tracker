@@ -1,7 +1,7 @@
 ---
-type: Requirement Story
-epic: "Epic 01: Email Integration & Incremental Sync"
-status: draft
+type: Requirement User Story
+epic: "epic-01-email-integration-sync"
+status: completed
 description: "User can connect email accounts via 1-click OAuth 2.0 (Google/Microsoft), with tokens securely stored in native OS keyring."
 tags: [requirement, user-story, oauth2, email-setup, os-keychain]
 timestamp: "2026-08-27T12:00:00Z"
@@ -46,22 +46,22 @@ As a **personal finance tracker**, I want to **connect my email accounts using 1
 
 ### Business Acceptance Criteria
 
-**AC 1** [Happy Path] 1-Click OAuth 2.0 Authorization (Google / Microsoft)
+**AC 1** [Happy Path] 1-Click Google OAuth 2.0 Authorization
 
    **Given** the user is in the "Email Accounts" settings modal  
-   **When** the user clicks "Connect with Google" (or "Connect with Microsoft")  
+   **When** the user clicks "Connect with Google"  
    **Then** the desktop app:
    1. Spawns a temporary local loopback listener on `127.0.0.1:<port>`.
-   2. Opens the system browser to the official OAuth consent page with read-only scope (`gmail.readonly` or `Mail.Read`).
+   2. Opens the system browser to the official Google OAuth consent page with read-only scope (`gmail.readonly`).
    3. Captures the authorization code on loopback redirect, exchanges it for an Access Token & Refresh Token.
    4. Securely encrypts the Refresh Token in the native OS Keyring.
-   5. Saves account metadata (Email Address, Provider: `Google`/`Microsoft`, Auth Type: `OAuth2`, Status: `Active`) to SQLite `email_accounts`.
+   5. Saves account metadata (Email Address, Provider: `Google`, Auth Type: `OAuth2`, Status: `Active`) to SQLite `email_accounts`.
    6. Closes the browser tab and displays a success notification: "Google account [user@gmail.com] connected successfully!"
 
 **AC 2** [Validation] OAuth Consent Cancelled or Timed Out
 
    **Given** the user starts the OAuth flow in the browser  
-   **When** the user closes the browser tab or clicks "Cancel" on the Google/Microsoft consent screen  
+   **When** the user closes the browser tab or clicks "Cancel" on the Google consent screen  
    **Then** the desktop app terminates the local loopback listener and displays: "Authentication was cancelled. No account was added."
 
 **AC 3** [Security / State] Disconnect Account & Revoke Credentials

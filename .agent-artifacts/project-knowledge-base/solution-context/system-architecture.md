@@ -10,11 +10,11 @@ timestamp: "2026-08-27T12:05:00Z"
 
 ## 1. Executive Summary & Architectural Principles
 
-The **Email Reader / Local Email Transaction Dashboard** is a **100% privacy-first, local-desktop personal finance application**. It automatically connects to a user's email accounts via **1-Click OAuth 2.0 (Google & Microsoft)**, extracts bank transaction notices (with VPBank as the baseline), and presents financial health metrics, spending trends, and transaction history in **VND** without routing any financial data through third-party servers or external AI cloud services.
+The **Email Reader / Local Email Transaction Dashboard** is a **100% privacy-first, local-desktop personal finance application**. It automatically connects to a user's email accounts via **1-Click Google OAuth 2.0 (`gmail.readonly`)**, extracts bank transaction notices (with VPBank as the baseline), and presents financial health metrics, spending trends, and transaction history in **VND** without routing any financial data through third-party servers or external AI cloud services.
 
 ### Key Architectural Principles
 1. **Zero Privacy Leakage (Local-First)**: Direct client-to-provider connectivity; credentials, tokens, email contents, and financial transactions never leave the user's local machine.
-2. **Strict Read-Only Scope Minimization**: Authorizations strictly require read-only email scopes (`gmail.readonly` and `Mail.Read`). No send, write, modify, or delete permissions are ever requested.
+2. **Strict Read-Only Scope Minimization**: Authorizations strictly require read-only email scope (`gmail.readonly`). No send, write, modify, or delete permissions are ever requested.
 3. **OS-Level Secret Protection**: Sensitive OAuth refresh tokens are encrypted in the native operating system keyring (Windows Credential Manager / macOS Keychain / Linux Secret Service).
 4. **Deterministic & Offline-Capable**: Transaction parsing relies on deterministic DOM and regex templates with SHA-256 fingerprint deduplication. Dashboard viewing, filtering, search, and recategorization operate 100% offline.
 5. **Incremental Timestamp Watermarking**: Manual sync operations fetch only emails received strictly after the `last_synced_timestamp`, minimizing bandwidth and sync duration.
@@ -59,7 +59,6 @@ graph TB
 
     subgraph External Email Providers [OAuth 2.0 Providers & REST APIs]
         GoogleOAuth[Google OAuth 2.0 & Gmail API<br/>Scope: gmail.readonly]
-        MSGraph[Microsoft Identity & Graph API<br/>Scope: Mail.Read]
         SysBrowser[Default System Browser<br/>127.0.0.1 Loopback Callback]
     end
 
@@ -71,13 +70,11 @@ graph TB
 
     AS --> KM
     AS --> GoogleOAuth
-    AS --> MSGraph
     AS --> SysBrowser
     KM --> OSKeyring
 
     SS --> KM
     SS --> GoogleOAuth
-    SS --> MSGraph
     SS --> PE
     PE --> CAT
     PE --> DB_Tx
@@ -97,7 +94,7 @@ graph TB
   - **KPI Header & Overview**: Shows Net Monthly Spending, Total Expense (Debit), Total Refunds/Income (Credit), and Active Accounts.
   - **Visualizations**: Monthly/Weekly spending trend curves, category allocation donut chart, and per-card spending distribution.
   - **Searchable Ledger Table**: Filterable by date range, merchant search, transaction type, category dropdown, and inline manual category reassignment.
-  - **Account Settings Modal**: 1-Click "Connect with Google" and "Connect with Microsoft" buttons with real-time status and disconnect options.
+  - **Account Settings Modal**: 1-Click "Connect with Google" button with real-time status and disconnect options.
 - **CLI Interface (`src/cli.py`)**: Scriptable command-line interface for headless execution, automated ingestion, account diagnostics, and reporting.
 
 ### 3.2. Application & Service Layer
